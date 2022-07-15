@@ -37,6 +37,12 @@ onMounted(() => window.addEventListener('resize', () => open.value = window.inne
 
         <TopbarDropdown />
       </div>
+
+      <div class="min-h-full max-h-full overflow-auto dark:text-gray-100">
+        <main class="flex flex-col space-y-4 py-4 px-6">
+          <slot />
+        </main>
+      </div>
     </div>
   </div>
 </template>
