@@ -1,0 +1,42 @@
+<script setup>
+import { getCurrentInstance, onMounted, ref } from 'vue'
+import { Head } from '@inertiajs/inertia-vue3'
+import Toggler from '@/Components/DashboardLayout/SidebarToggler.vue'
+import TopbarDropdown from '@/Components/DashboardLayout/TopbarDropdown.vue'
+import Sidebar from '@/Components/DashboardLayout/Sidebar.vue';
+
+const { title } = defineProps({
+  title: String,
+})
+
+const self = getCurrentInstance()
+const open = ref(window.innerWidth > 669)
+
+onMounted(() => window.addEventListener('resize', () => open.value = window.innerWidth > 669))
+</script>
+
+<template>
+  <div class="flex bg-gray-200 dark:bg-gray-900 w-full h-screen font-nunito">
+    <Head :title="title" />
+
+    <div class="flex-none flex flex-col transition-all ease-in-out duration-300" :class="`${themes().get('sidebar', 'bg-gray-700 text-gray-200 hover:bg-gray-800 hover:text-gray-100 transition-all ease-in-out duration-150').replace(/hover:(bg|text)-(.*?)-(\d+)/)} ${open ? 'w-60' : 'w-0'}`">
+      <div class="flex-none flex items-center justify-between w-full h-14 px-2" :class="themes().get('topbar', 'bg-cyan-500 text-gray-700 hover:bg-cyan-600 hover:text-gray-800 transition-all ease-in-out duration-150').replace(/hover:(bg|text)-(.*?)-(\d+)/, '')">
+        <Toggler @toggle="open = ! open" class="sm:hidden" />
+
+        <h1 class="text-2xl text-center font-bold w-full">Template</h1>
+
+        <Toggler class="sm:hidden" />
+      </div>
+
+      <Sidebar v-if="open" />
+    </div>
+
+    <div class="flex flex-col w-full h-screen">
+      <div class="flex-none flex justify-between w-full h-14 px-2" :class="themes().get('topbar', 'bg-cyan-500 text-gray-700 hover:bg-cyan-600 hover:text-gray-800 transition-all ease-in-out duration-150').replace(/hover:(bg|text)-(.*?)-(\d+)/, '')">
+        <Toggler @toggle="open = ! open" />
+
+        <TopbarDropdown />
+      </div>
+    </div>
+  </div>
+</template>
