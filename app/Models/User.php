@@ -63,31 +63,4 @@ class User extends Authenticatable
     protected $appends = [
         'profile_photo_url',
     ];
-
-    /**
-     * @return \Illuminate\Support\Collection
-     */
-    public function menus()
-    {
-        return Menu::where(function (Builder $query) {
-                        $this->roles->each(function (Role $role) use ($query) {
-                            $query->orWhereHas('permissions', function (Builder $query) use ($role) {
-                                $query->whereIn('permissions.id', $role->permissions->pluck('id')->toArray());
-                            });
-                        });
-
-                        $query->orWhereHas('roles', function (Builder $query) {
-                            $query->whereIn('roles.id', $this->roles->pluck('id')->toArray());
-                        });
-
-                        $query->orWhereHas('permissions', function (Builder $query) {
-                            $query->whereIn('permissions.id', $this->permissions->pluck('id')->toArray());
-                        });
-                    })
-                    ->orWhere(function (Builder $query) {
-                        $query->orDoesntHave('permissions');
-                        $query->orDoesntHave('roles');
-                    })
-                    ->get();
-    }
 }
