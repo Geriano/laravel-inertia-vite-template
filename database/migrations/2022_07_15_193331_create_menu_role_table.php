@@ -18,7 +18,7 @@ return new class extends Migration
             $table->foreignId('menu_id')
                     ->constrained()
                     ->cascadeOnDelete();
-            $table->foreignId('permission_id')
+            $table->foreignId('role_id')
                     ->constrained()
                     ->cascadeOnDelete();
             $table->timestamps();
