@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\Permission;
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -35,5 +37,21 @@ class InitialSeeder extends Seeder
 
         $user->email_verified_at = now();
         $user->save();
+
+        Role::create([
+            'name' => 'superuser',
+            'guard_name' => 'web',
+        ]);
+
+        $su->assignRole('superuser');
+
+        collect(['user', 'permission', 'role', 'menu'])->each(function ($name) {
+            collect(['create', 'read', 'update', 'delete'])->each(function ($ability) use ($name) {
+                Permission::create([
+                    'name' => sprintf('%s %s', $ability, $name),
+                    'guard_name' => 'web',
+                ]);
+            });
+        });
     }
 }
