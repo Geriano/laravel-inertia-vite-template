@@ -11,6 +11,7 @@ import JetValidationErrors from '@/Jetstream/ValidationErrors.vue';
 const form = useForm({
     name: '',
     email: '',
+    username: '',
     password: '',
     password_confirmation: '',
     terms: false,
@@ -53,6 +54,17 @@ const submit = () => {
                     id="email"
                     v-model="form.email"
                     type="email"
+                    class="mt-1 block w-full"
+                    required
+                />
+            </div>
+
+            <div class="mt-4">
+                <JetLabel for="username" value="Username" />
+                <JetInput
+                    id="username"
+                    v-model="form.username"
+                    type="text"
                     class="mt-1 block w-full"
                     required
                 />
