@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -62,4 +63,18 @@ class User extends Authenticatable
     protected $appends = [
         'profile_photo_url',
     ];
+
+    /**
+     * @return \Illuminate\Support\Collection
+     */
+    public function menus()
+    {
+        return Menu::where(function (Builder $query) {
+            $this->permissions->each(fn (Permission $permission) => $query->orWhereRelation('permissions', 'id', $permission->id));
+            $this->roles->each(function (Role $role) use ($query) {
+                $role->permissions->each(fn (Permission $permission) => $query->orWhereRelation('permissions', 'id', $permission->id));
+                $query->orWhereRelation('roles', 'id', $role->id);
+            });
+        })->get();
+    }
 }
