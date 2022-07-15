@@ -70,11 +70,24 @@ class User extends Authenticatable
     public function menus()
     {
         return Menu::where(function (Builder $query) {
-            $this->permissions->each(fn (Permission $permission) => $query->orWhereRelation('permissions', 'id', $permission->id));
-            $this->roles->each(function (Role $role) use ($query) {
-                $role->permissions->each(fn (Permission $permission) => $query->orWhereRelation('permissions', 'id', $permission->id));
-                $query->orWhereRelation('roles', 'id', $role->id);
-            });
-        })->get();
+                        $this->roles->each(function (Role $role) use ($query) {
+                            $query->orWhereHas('permissions', function (Builder $query) use ($role) {
+                                $query->whereIn('permissions.id', $role->permissions->pluck('id')->toArray());
+                            });
+                        });
+
+                        $query->orWhereHas('roles', function (Builder $query) {
+                            $query->whereIn('roles.id', $this->roles->pluck('id')->toArray());
+                        });
+
+                        $query->orWhereHas('permissions', function (Builder $query) {
+                            $query->whereIn('permissions.id', $this->permissions->pluck('id')->toArray());
+                        });
+                    })
+                    ->orWhere(function (Builder $query) {
+                        $query->orDoesntHave('permissions');
+                        $query->orDoesntHave('roles');
+                    })
+                    ->get();
     }
 }
