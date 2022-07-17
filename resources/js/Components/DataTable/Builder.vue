@@ -6,7 +6,10 @@ import { getCurrentInstance, onMounted, ref } from 'vue'
 
 const { url, sticky } = defineProps({
   url: String,
-  sticky: Boolean,
+  sticky: {
+    type: Boolean,
+    default: true,
+  },
 })
 
 const paginator = ref({})
