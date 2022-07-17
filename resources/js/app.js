@@ -12,6 +12,26 @@ import { Inertia } from '@inertiajs/inertia';
 
 const appName = window.document.getElementsByTagName('title')[0]?.innerText || 'Laravel';
 
+const can = (abilities) => {
+  const { $permissions } = usePage().props.value
+
+  if (Array.isArray(abilities)) {
+    for (const ability of abilities) {
+      if (can(ability)) {
+        return true
+      }
+    }
+  } else if (typeof abilities === 'string') {
+    return $permissions.find(permission => permission.name === abilities) !== undefined
+  } else if (typeof abilities === 'number') {
+    return $permissions.find(permission => permission.id === abilities) !== undefined
+  } else {
+    return false
+  }
+}
+
+window.can = can
+
 createInertiaApp({
     title: (title) => `${title} - ${appName}`,
     resolve: (name) => resolvePageComponent(`./Pages/${name}.vue`, import.meta.glob('./Pages/**/*.vue')),
@@ -21,6 +41,7 @@ createInertiaApp({
             .use(ZiggyVue, Ziggy)
             .mixin({
                 methods: {
+                    can,
                     themes: () => Themes,
                 },
             })
