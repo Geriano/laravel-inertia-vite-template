@@ -61,7 +61,7 @@ onMounted(fetch)
 
       <div class="w-full sm:max-w-sm flex items-center space-x-2 sm:justify-end">
         <label for="search" class="w-1/4 sm:w-auto lowercase first-letter:capitalize">search</label>
-        <input v-model="config.search" type="search" name="search" class="w-full bg-transparent border dark border-gray-600 rounded-md px-3 py-1 placeholder:capitalize" placeholder="search">
+        <input v-model="config.search" @input.prevent="fetch()" type="search" name="search" class="w-full bg-transparent border dark border-gray-600 rounded-md px-3 py-1 placeholder:capitalize" placeholder="search" autofocus>
       </div>
     </div>
 
