@@ -35,8 +35,8 @@ const floating = () => {
     const { th, float } = self.refs
 
     if (th && float) {
-      float.style.width = th.clientWidth + 'px'
-      float.style.height = th.clientHeight + 'px'
+      // float.style.width = th.clientWidth + 'px'
+      // float.style.height = th.clientHeight + 'px'
 
       const parent = th.parentElement
 
@@ -74,7 +74,7 @@ onMounted(() => {
       </template>
     </div>
 
-    <div ref="float" v-if="table?.config?.sticky" class="absolute top-0 left-0" :class="`${sort && 'cursor-pointer'} ${$props.class} bg-transparent dark:bg-transparent`">
+    <div ref="float" v-if="table?.config?.sticky" class="absolute top-0 left-0 w-full h-full" :class="`${sort && 'cursor-pointer'} ${$props.class} bg-transparent dark:bg-transparent`">
     </div>
   </th>
 </template>
