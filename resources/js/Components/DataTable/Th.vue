@@ -55,7 +55,7 @@ onMounted(floating)
 </script>
 
 <template>
-  <th ref="th" class="relative uppercase font-semibold" :class="`${table?.config?.sticky && 'sticky top-0 left-0'} ${sort && 'cursor-pointer'} ${$props.class}`" @click.prevent="sort && table && click()">
+  <th ref="th" class="relative uppercase font-semibold" :class="`${table?.config?.sticky && 'sticky top-0 left-0 border-0'} ${sort && 'cursor-pointer'} ${$props.class}`" @click.prevent="sort && table && click()">
     <div class="flex items-center justify-center space-x-2">
       <div>
         <slot />
