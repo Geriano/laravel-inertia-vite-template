@@ -2,7 +2,10 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Permission;
+use App\Models\Role;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 use Inertia\Middleware;
 
 class HandleInertiaRequests extends Middleware
@@ -43,6 +46,17 @@ class HandleInertiaRequests extends Middleware
                 'info' => $request->session()->get('info'),
                 'warning' => $request->session()->get('warning'),
             ],
+
+            '$roles' => $roles = fn () => $request->user()?->roles()->with('permissions:id,name')->get(['id', 'name']),
+            '$permissions' => function () use ($roles, $request) {
+                $permissions = $request->user()?->permissions()->get(['id', 'name']);
+                
+                return $roles()->reduce(function (Collection $prev, Role $role) {
+                    $role->permissions->each(fn (Permission $permission) => $prev->push($permission));
+    
+                    return $prev;
+                }, $permissions);
+            },
         ]);
     }
 }
