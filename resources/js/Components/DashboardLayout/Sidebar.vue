@@ -21,9 +21,22 @@ const fetch = async () => {
 fetch()
 </script>
 
+<style scoped>
+.op-enter-active, .op-leave-active {
+  transition: all 50ms ease-in-out;
+  opacity: 1;
+}
+
+.op-enter-from, .op-leave-to {
+  opacity: 0;
+}
+</style>
+
 <template>
   <div class="flex flex-col w-full h-full bg-inherit">
-    <Builder v-if="menus.length" :menus="menus" />
+    <transition name="op" mode="in-out">
+      <Builder v-if="menus.length" :menus="menus" />
+    </transition>
   </div>
 
   <div class="hidden pl-8"></div>
