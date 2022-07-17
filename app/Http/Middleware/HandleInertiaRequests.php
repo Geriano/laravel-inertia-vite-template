@@ -47,11 +47,17 @@ class HandleInertiaRequests extends Middleware
                 'warning' => $request->session()->get('warning'),
             ],
 
-            '$roles' => $roles = fn () => $request->user()?->roles()->with('permissions:id,name')->get(['id', 'name']),
+            '$roles' => $roles = fn () => $request->user()?->roles()->with('permissions:id,name')->get(['id', 'name']) ?: [],
             '$permissions' => function () use ($roles, $request) {
-                $permissions = $request->user()?->permissions()->get(['id', 'name']);
+                $user = $request->user();
+
+                if (!$user) {
+                    return [];
+                }
+
+                $permissions = $user->permissions()->get(['id', 'name']);
                 
-                return $roles()->reduce(function (Collection $prev, Role $role) {
+                return $roles()?->reduce(function (Collection $prev, Role $role) {
                     $role->permissions->each(fn (Permission $permission) => $prev->push($permission));
     
                     return $prev;
