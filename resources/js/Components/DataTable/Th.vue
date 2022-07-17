@@ -52,11 +52,6 @@ const floating = () => {
 }
 
 onMounted(floating)
-onMounted(() => {
-  const main = document.getElementById('main')
-
-  main.addEventListener('scroll', e => floating())
-})
 </script>
 
 <template>
