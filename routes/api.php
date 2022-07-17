@@ -16,4 +16,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::prefix('/v1')->name('api.v1.')->group(function () {
     Route::get('/user/{user}/menu', fn (App\Models\User $user) => $user->menus())->name('user.menu');
+
+    Route::name('superuser.')->group(function () {
+        Route::get('/superuser/permission', [App\Http\Controllers\Superuser\PermissionController::class, 'get'])->name('permission');
+    });
 });

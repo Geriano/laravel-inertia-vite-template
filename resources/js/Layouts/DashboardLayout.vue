@@ -1,6 +1,6 @@
 <script setup>
 import { getCurrentInstance, onMounted, ref } from 'vue'
-import { Head } from '@inertiajs/inertia-vue3'
+import { Head, usePage } from '@inertiajs/inertia-vue3'
 import Toggler from '@/Components/DashboardLayout/SidebarToggler.vue'
 import TopbarDropdown from '@/Components/DashboardLayout/TopbarDropdown.vue'
 import Sidebar from '@/Components/DashboardLayout/Sidebar.vue';
@@ -14,6 +14,17 @@ const open = ref(window.innerWidth > 669)
 
 onMounted(() => window.addEventListener('resize', () => open.value = window.innerWidth > 669))
 </script>
+
+<style>
+.fade-enter-active, .fade-leave-active {
+  transition: all 300ms ease-in-out;
+  opacity: 1;
+}
+
+.fade-enter-from, .fade-leave-to {
+  opacity: 0;
+}
+</style>
 
 <template>
   <div class="flex bg-gray-200 dark:bg-gray-900 w-full h-screen font-nunito">
