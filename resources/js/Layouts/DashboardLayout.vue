@@ -27,7 +27,7 @@ onMounted(() => window.addEventListener('resize', () => open.value = window.inne
 </style>
 
 <template>
-  <div class="flex bg-gray-200 dark:bg-gray-900 w-full h-screen font-nunito">
+  <div class="flex bg-gray-200 dark:bg-gray-900 w-full h-screen max-h-screen font-sans">
     <Head :title="title" />
 
     <div class="flex-none flex flex-col transition-all ease-in-out duration-300" :class="`${themes().get('sidebar', 'bg-gray-700 text-gray-200 hover:bg-gray-800 hover:text-gray-100 transition-all ease-in-out duration-150').replace(/hover:(bg|text)-(.*?)-(\d+)/)} ${open ? 'w-60' : 'w-0'}`">
@@ -42,14 +42,14 @@ onMounted(() => window.addEventListener('resize', () => open.value = window.inne
       <Sidebar v-if="open" />
     </div>
 
-    <div class="flex flex-col w-full h-screen">
-      <div class="flex-none flex justify-between w-full h-14 px-2" :class="themes().get('topbar', 'bg-cyan-500 text-gray-700 hover:bg-cyan-600 hover:text-gray-800 transition-all ease-in-out duration-150').replace(/hover:(bg|text)-(.*?)-(\d+)/, '')">
+    <div class="flex flex-col w-full h-screen max-h-screen overflow-hidden">
+      <div class="flex-none flex justify-between w-full h-14 px-2 sticky top-0 left-0" :class="themes().get('topbar', 'bg-cyan-500 text-gray-700 hover:bg-cyan-600 hover:text-gray-800 transition-all ease-in-out duration-150').replace(/hover:(bg|text)-(.*?)-(\d+)/, '')">
         <Toggler @toggle="open = ! open" />
 
         <TopbarDropdown />
       </div>
 
-      <div class="min-h-full max-h-full overflow-auto dark:text-gray-100">
+      <div class="min-h-full overflow-auto">
         <main class="flex flex-col space-y-4 py-4 px-6">
           <slot />
         </main>
