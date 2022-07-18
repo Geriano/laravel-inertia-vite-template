@@ -22,13 +22,15 @@ const fetch = async () => {
     const response = await axios.get(route('api.v1.superuser.permission'))
     permissions.value = response.data
   } catch (e) {
-    Swal.fire({
-      title: 'error',
+    const response = await Swal.fire({
+      title: 'Do you want to try again?',
       text: `${e}`,
       icon: 'error',
+      showCancelButton: true,
+      showCloseButton: true,
     })
-
-    setTimeout(fetch, 2500)
+    
+    response.isConfirmed && fetch()
   }
 }
 

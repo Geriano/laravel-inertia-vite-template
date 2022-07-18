@@ -4,6 +4,7 @@ import axios from 'axios'
 import { usePage } from '@inertiajs/inertia-vue3'
 import Builder from './Sidebar/Builder.vue'
 import Icon from '@/Components/Icon.vue'
+import Swal from 'sweetalert2'
 
 const self = getCurrentInstance()
 const menus = ref([])
@@ -14,7 +15,15 @@ const fetch = async () => {
     const response = await axios.get(route('api.v1.user.menu', user.id))
     return menus.value = response.data
   } catch (e) {
-    setTimeout(fetch, 1000)
+    const response = await Swal.fire({
+      title: 'Do you want to try again?',
+      text: `${e}`,
+      icon: 'error',
+      showCancelButton: true,
+      showCloseButton: true,
+    })
+
+    response.isConfirmed && fetch()
   }
 }
 
