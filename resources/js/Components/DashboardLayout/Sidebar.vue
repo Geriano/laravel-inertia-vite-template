@@ -7,7 +7,7 @@ import Icon from '@/Components/Icon.vue'
 import Swal from 'sweetalert2'
 
 const self = getCurrentInstance()
-const menus = ref([])
+const menus = ref(usePage().props.value.$menus || [])
 const { user } = usePage().props.value
 
 const fetch = async () => {

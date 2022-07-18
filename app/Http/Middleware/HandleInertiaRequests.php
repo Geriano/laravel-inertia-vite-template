@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Menu;
 use App\Models\Permission;
 use App\Models\Role;
 use Illuminate\Http\Request;
@@ -63,6 +64,7 @@ class HandleInertiaRequests extends Middleware
                     return $prev;
                 }, $permissions);
             },
+            '$menus' => $request->user()?->menus(),
         ]);
     }
 }
