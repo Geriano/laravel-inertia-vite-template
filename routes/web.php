@@ -30,5 +30,12 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
         ]);
 
         Route::patch('/role/{role}/detach/{permission}', [App\Http\Controllers\Superuser\RoleController::class, 'detach'])->name('role.detach');
+
+        Route::resource('user', App\Http\Controllers\Superuser\UserController::class)->only([
+            'index', 'store', 'update', 'destroy',
+        ]);
+
+        Route::patch('/user/{user}/role/{role}/detach', [App\Http\Controllers\Superuser\UserController::class, 'detachRole'])->name('user.role.detach');
+        Route::patch('/user/{user}/permission/{permission}/detach', [App\Http\Controllers\Superuser\UserController::class, 'detachPermission'])->name('user.permission.detach');
     });
 });
