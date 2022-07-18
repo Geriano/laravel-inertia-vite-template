@@ -42,11 +42,11 @@ const detach = async (role, permission, refresh) => {
     showCancelButton: true,
   })
 
-  if (!response.isConfirmed) return
+  if (!response.isConfirmed)
+    return
 
   Inertia.on('finish', () => refresh())
-
-  return Inertia.patch(route('superuser.role.detach', { role: role.id, permission: permission.id }))
+  Inertia.patch(route('superuser.role.detach', { role: role.id, permission: permission.id }))
 }
 
 const store = () => {
