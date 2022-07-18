@@ -122,6 +122,15 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
               </tr>
             </template>
 
+            <template v-slot:tfoot="table">
+              <tr>
+                <Th class="dark:bg-gray-800 border dark:border-gray-900 px-3 py-2 text-center" :table="table" :sort="false">no</Th>
+                <Th class="dark:bg-gray-800 border dark:border-gray-900 px-3 py-2 text-center whitespace-nowrap" :table="table" :sort="false">name</Th>
+                <Th class="dark:bg-gray-800 border dark:border-gray-900 px-3 py-2 text-center whitespace-nowrap" :table="table" :sort="false">permissions</Th>
+                <Th class="dark:bg-gray-800 border dark:border-gray-900 px-3 py-2 text-center whitespace-nowrap" :table="table" :sort="false">action</Th>
+              </tr>
+            </template>
+
             <template v-slot:tbody="{ data, refresh }">
               <tr v-for="(role, i) in (tableRefresh = refresh) ? data : data" :key="i">
                 <td class="px-2 py-1 border dark:border-gray-800 text-center">{{ i + 1 }}</td>
