@@ -19,5 +19,7 @@ Route::prefix('/v1')->name('api.v1.')->group(function () {
 
     Route::name('superuser.')->group(function () {
         Route::get('/superuser/permission', [App\Http\Controllers\Superuser\PermissionController::class, 'get'])->name('permission');
+        Route::get('/superuser/role', [App\Http\Controllers\Superuser\RoleController::class, 'get'])->name('role');
+        Route::post('/superuser/role/paginate', [App\Http\Controllers\Superuser\RoleController::class, 'paginate'])->name('role.paginate');
     });
 });

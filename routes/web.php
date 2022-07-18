@@ -20,9 +20,15 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
         return Inertia::render('Dashboard');
     })->name('dashboard');
 
-    Route::name('superuser.')->group(function () {
+    Route::prefix('/superuser')->name('superuser.')->group(function () {
         Route::resource('permission', App\Http\Controllers\Superuser\PermissionController::class)->only([
             'index', 'store', 'update', 'destroy',
         ]);
+
+        Route::resource('role', App\Http\Controllers\Superuser\RoleController::class)->only([
+            'index', 'store', 'update', 'destroy',
+        ]);
+
+        Route::patch('/role/{role}/detach/{permission}', [App\Http\Controllers\Superuser\RoleController::class, 'detach'])->name('role.detach');
     });
 });
