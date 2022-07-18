@@ -29,33 +29,10 @@ const click = () => {
 
   table.refresh()
 }
-
-const floating = () => {
-  if (table && table.config.sticky) {
-    const { th, float } = self.refs
-
-    if (th && float) {
-      // float.style.width = th.clientWidth + 'px'
-      // float.style.height = th.clientHeight + 'px'
-
-      const parent = th.parentElement
-
-      if (parent.firstElementChild == th) {
-        float.classList.add('rounded-tl-md')
-      }
-
-      if (parent.children[parent.children.length - 1] === th) {
-        float.classList.add('rounded-tr-md')
-      }
-    }
-  }
-}
-
-onMounted(floating)
 </script>
 
 <template>
-  <th ref="th" class="relative uppercase font-semibold" :class="`${table?.config?.sticky && 'sticky top-0 left-0 border-0'} ${sort && 'cursor-pointer'} ${$props.class}`" @click.prevent="sort && table && click()">
+  <th ref="th" class="relative uppercase font-semibold" :class="`${table?.config?.sticky ? 'sticky top-0 left-0 border-0' : 'border-1'} ${sort && 'cursor-pointer'} ${$props.class}`" @click.prevent="sort && table && click()">
     <div class="flex items-center justify-center space-x-2">
       <div>
         <slot />
@@ -67,9 +44,6 @@ onMounted(floating)
           <Icon name="caret-down" class="transition-all duration-300" :class="desc ? 'dark:text-white' : 'dark:text-gray-400'" />
         </div>
       </template>
-    </div>
-
-    <div ref="float" v-if="table?.config?.sticky" class="absolute top-0 left-0 w-full h-full" :class="`${sort && 'cursor-pointer'} ${$props.class} bg-transparent dark:bg-transparent`">
     </div>
   </th>
 </template>

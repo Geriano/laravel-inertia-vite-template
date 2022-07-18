@@ -4,6 +4,7 @@ import axios from 'axios'
 import Swal from 'sweetalert2'
 import { getCurrentInstance, onMounted, ref } from 'vue'
 
+const self = getCurrentInstance()
 const { url, sticky } = defineProps({
   url: String,
   sticky: {
@@ -45,7 +46,37 @@ const fetch = async u => {
   }
 }
 
+const createFloatingTh = () => {
+  const { thead, tfoot, tbody } = self.refs
+
+  if (thead) {
+    let ths = thead.querySelectorAll('th')
+    ths.forEach((th, i) => {
+      const floating = document.createElement('div')
+      floating.className = 'absolute top-0 left-0 w-full h-full border border-1 border-inherit'
+      i === 0 && floating.classList.add('rounded-tl-md')
+      i + 1 === ths.length && floating.classList.add('rounded-tr-md')
+
+      th.append(floating)
+    })
+  }
+
+  if (tfoot) {
+    let ths = tfoot.querySelectorAll('th')
+    ths.forEach((th, i) => {
+      const floating = document.createElement('div')
+      floating.className = 'absolute top-0 left-0 w-full h-full border border-1 border-inherit'
+      i === 0 && floating.classList.add('rounded-bl-md')
+      i + 1 === ths.length && floating.classList.add('rounded-br-md')
+
+      th.append(floating)
+    })
+  }
+}
+
 onMounted(fetch)
+
+onMounted(() => config.sticky && createFloatingTh())
 </script>
 
 <template>
@@ -71,15 +102,15 @@ onMounted(fetch)
     <div class="p-2">
       <div class="overflow-auto rounded-md border dark:border-gray-900">
         <table class="w-full border-collapse">
-          <thead class="border-inherit">
+          <thead ref="thead" class="border-inherit">
             <slot name="thead" :config="config" :paginator="paginator" :data="paginator.data" :refresh="fetch" />
           </thead>
 
-          <tfoot class="border-inherit">
+          <tfoot ref="tfoot" class="border-inherit">
             <slot name="tfoot" :config="config" :paginator="paginator" :data="paginator.data" :refresh="fetch" />
           </tfoot>
 
-          <tbody class="border-inherit">
+          <tbody ref="tbody" class="border-inherit">
             <slot name="tbody" :config="config" :paginator="paginator" :data="paginator.data" :refresh="fetch" />
           </tbody>
         </table>
