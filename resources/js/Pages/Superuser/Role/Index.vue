@@ -75,6 +75,7 @@ const destroy = async (role, refresh) => {
   const response = await Swal.fire({
     title: 'Are you sure?',
     text: 'You can\'t restore it after deleted',
+    icon: 'question',
     showCancelButton: true,
     showCloseButton: true,
   })
