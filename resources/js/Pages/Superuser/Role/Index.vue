@@ -149,7 +149,7 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
                     <button @click.prevent="destroy(role, refresh)" class="bg-red-600 rounded-md px-3 py-1 transition-all hover:bg-red-700 text-white text-sm">
                       <div class="flex items-center space-x-2">
                         <Icon name="trash" />
-                        <p class="uppercase">edit</p>
+                        <p class="uppercase">delete</p>
                       </div>
                     </button>
                   </div>
