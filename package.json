@@ -21,6 +21,7 @@
         "vue": "^3.2.31"
     },
     "dependencies": {
+        "@vueform/multiselect": "^2.5.1",
         "sweetalert2": "^11.4.23"
     }
 }
