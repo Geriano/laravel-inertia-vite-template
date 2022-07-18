@@ -92,8 +92,6 @@ const submit = () => form.id ? update() : store()
 const esc = e => e.key === 'Escape' && close()
 onMounted(() => window.addEventListener('keydown', esc))
 onUnmounted(() => window.removeEventListener('keydown', esc))
-
-const load = e => console.log(e)
 </script>
 
 <style src="@vueform/multiselect/themes/default.css"></style>
