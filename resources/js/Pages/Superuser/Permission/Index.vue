@@ -109,7 +109,7 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
     <Card class="bg-gray-100 dark:bg-slate-700 shadow-md">
       <template #header>
         <div class="flex items-center space-x-2 bg-gray-800 p-2">
-          <button @click.prevent="show()" class="bg-green-600 rounded-md px-3 py-1 text-sm text-white">
+          <button @click.prevent="show()" class="bg-green-600 hover:bg-green-700 rounded-md px-3 py-1 text-sm text-white transition-all">
             <div class="flex items-center space-x-1">
               <Icon name="plus" />
               <p class="font-semibold uppercase">create</p>
