@@ -182,11 +182,11 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
           </template>
 
           <template #body>
-            <div class="flex flex-col space-y-4 p-2">
+            <div class="flex flex-col space-y-4 p-4">
               <div class="flex flex-col space-y-2">
                 <div class="flex items-center space-x-2">
                   <label for="name" class="w-1/3 lowercase first-letter:capitalize">name</label>
-                  <input ref="name" type="text" name="name" v-model="form.name" class="w-full bg-transparent rounded-md px-3 py-1 placeholder:capitalize" placeholder="name" required>
+                  <input ref="name" type="text" name="name" v-model="form.name" class="w-full bg-transparent rounded px-3 py-2 placeholder:capitalize" placeholder="name" required>
                 </div>
 
                 <p v-if="form.errors.name" class="text-red-500 text-right lowercase first-letter:capitalize">{{ form.errors.name }}</p>
@@ -202,6 +202,8 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
                       value: p.id,
                     }))"
                     :searchable="true"
+                    :clearOnSelect="false"
+                    :closeOnSelect="false"
                     class="text-gray-800 uppercase"
                     mode="tags" />
                 </div>

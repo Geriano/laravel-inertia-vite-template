@@ -227,8 +227,8 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
   </DashboardLayout>
 
   <transition name="fade">
-    <div v-if="open" class="fixed top-0 left-0 w-full h-full bg-black bg-opacity-25 flex items-center justify-center">
-      <form @submit.prevent="submit" class="w-full max-w-xl shadow-xl">
+    <div v-if="open" class="fixed top-0 left-0 w-full h-full bg-black bg-opacity-40 flex items-center justify-center">
+      <form @submit.prevent="submit" class="w-full max-w-5xl shadow-xl">
         <Card class="dark:bg-gray-700 dark:text-gray-100">
           <template #header>
             <div class="flex items-center justify-end bg-gray-800 p-2">
@@ -237,11 +237,11 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
           </template>
 
           <template #body>
-            <div class="flex flex-col space-y-4 p-2">
+            <div class="flex flex-col space-y-4 p-4">
               <div class="flex flex-col space-y-2">
                 <div class="flex items-center space-x-2">
                   <label for="name" class="w-1/3 lowercase first-letter:capitalize">name</label>
-                  <input ref="name" type="text" name="name" v-model="form.name" class="w-full bg-transparent rounded-md px-3 py-1 placeholder:capitalize" placeholder="name" required>
+                  <input ref="name" type="text" name="name" v-model="form.name" class="w-full bg-transparent rounded px-3 py-2 placeholder:capitalize" placeholder="name" required>
                 </div>
 
                 <p v-if="form.errors.name" class="text-red-500 text-right lowercase first-letter:capitalize">{{ form.errors.name }}</p>
@@ -250,7 +250,7 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
               <div class="flex flex-col space-y-2">
                 <div class="flex items-center space-x-2">
                   <label for="username" class="w-1/3 lowercase first-letter:capitalize">username</label>
-                  <input ref="username" type="text" name="username" v-model="form.username" class="w-full bg-transparent rounded-md px-3 py-1 placeholder:capitalize" placeholder="username" required>
+                  <input ref="username" type="text" name="username" v-model="form.username" class="w-full bg-transparent rounded px-3 py-2 placeholder:capitalize" placeholder="username" required>
                 </div>
 
                 <p v-if="form.errors.username" class="text-red-500 text-right lowercase first-letter:capitalize">{{ form.errors.username }}</p>
@@ -259,7 +259,7 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
               <div class="flex flex-col space-y-2">
                 <div class="flex items-center space-x-2">
                   <label for="email" class="w-1/3 lowercase first-letter:capitalize">email</label>
-                  <input ref="email" type="email" name="email" v-model="form.email" class="w-full bg-transparent rounded-md px-3 py-1 placeholder:capitalize" placeholder="email" required>
+                  <input ref="email" type="email" name="email" v-model="form.email" class="w-full bg-transparent rounded px-3 py-2 placeholder:capitalize" placeholder="email" required>
                 </div>
 
                 <p v-if="form.errors.email" class="text-red-500 text-right lowercase first-letter:capitalize">{{ form.errors.email }}</p>
@@ -268,7 +268,7 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
               <div class="flex flex-col space-y-2">
                 <div class="flex items-center space-x-2">
                   <label for="password" class="w-1/3 lowercase first-letter:capitalize">password</label>
-                  <input ref="password" type="password" name="password" v-model="form.password" class="w-full bg-transparent rounded-md px-3 py-1 placeholder:capitalize" placeholder="password" :required="form.id === null">
+                  <input ref="password" type="password" name="password" v-model="form.password" class="w-full bg-transparent rounded px-3 py-2 placeholder:capitalize" placeholder="password" :required="form.id === null">
                 </div>
 
                 <p v-if="form.errors.password" class="text-red-500 text-right lowercase first-letter:capitalize">{{ form.errors.password }}</p>
@@ -277,7 +277,7 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
               <div class="flex flex-col space-y-2">
                 <div class="flex items-center space-x-2">
                   <label for="password_confirmation" class="w-1/3 lowercase first-letter:capitalize">password confirmation</label>
-                  <input ref="password_confirmation" type="password" name="password_confirmation" v-model="form.password_confirmation" class="w-full bg-transparent rounded-md px-3 py-1 placeholder:capitalize" placeholder="password confirmation" :required="form.id === null">
+                  <input ref="password_confirmation" type="password" name="password_confirmation" v-model="form.password_confirmation" class="w-full bg-transparent rounded px-3 py-2 placeholder:capitalize" placeholder="password confirmation" :required="form.id === null">
                 </div>
 
                 <p v-if="form.errors.password_confirmation" class="text-red-500 text-right lowercase first-letter:capitalize">{{ form.errors.password_confirmation }}</p>
@@ -292,6 +292,8 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
                       label: p.name,
                       value: p.id,
                     }))"
+                    :clearOnSelect="false"
+                    :closeOnSelect="false"
                     :searchable="true"
                     class="text-gray-800 uppercase"
                     mode="tags" />
@@ -310,6 +312,8 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
                       value: r.id,
                     }))"
                     :searchable="true"
+                    :clearOnSelect="false"
+                    :closeOnSelect="false"
                     class="text-gray-800 uppercase"
                     mode="tags" />
                 </div>
