@@ -28,10 +28,10 @@ onUpdated(rounded)
 </script>
 
 <template>
-  <div class="flex items-center space-x-2 dark:bg-gray-800 rounded-md px-4 py-2" :draggable="true">
+  <div class="flex items-center space-x-2 dark:bg-gray-800 rounded-md px-4 py-2" :draggable="true" :id="`menu:${menu.id}`">
     <div class="flex items-center space-x-2 w-full" :draggable="false">
       <Icon :name="menu.icon" :draggable="false" />
-      <p class="uppercase" :draggable="false">{{ menu.name }}({{ menu.position }})</p>
+      <p class="uppercase" :draggable="false">{{ menu.name }}</p>
     </div>
 
     <div ref="container" class="flex items-center flex-none rounded-md border dark:border-gray-800" :draggable="false">

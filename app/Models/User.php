@@ -78,6 +78,7 @@ class User extends Authenticatable
                             $this->roles->each(fn (Role $role) => $query->orWhereIn('permissions.id', $role->permissions->pluck('id')));
                         })->orDoesntHave('permissions');
                     })
+                    ->orderBy('position')
                     ->with('childs')
                     ->get();
     }

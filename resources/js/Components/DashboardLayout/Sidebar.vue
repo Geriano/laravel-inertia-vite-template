@@ -1,10 +1,11 @@
 <script setup>
-import { getCurrentInstance, ref } from 'vue'
+import { getCurrentInstance, onMounted, ref } from 'vue'
 import axios from 'axios'
 import { usePage } from '@inertiajs/inertia-vue3'
 import Builder from './Sidebar/Builder.vue'
 import Icon from '@/Components/Icon.vue'
 import Swal from 'sweetalert2'
+import { Inertia } from '@inertiajs/inertia'
 
 const self = getCurrentInstance()
 const menus = ref(usePage().props.value.$menus || [])
@@ -27,7 +28,9 @@ const fetch = async () => {
   }
 }
 
-fetch()
+Inertia.on('finish', () => fetch())
+
+onMounted(fetch)
 </script>
 
 <style scoped>
