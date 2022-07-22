@@ -9,7 +9,7 @@ const { menu, childs } = defineProps({
 
 const trace = menu => {
   if (menu.childs?.length) {
-    for (const child of menu.child) {
+    for (const child of menu.childs) {
       if (trace(child)) {
         return true
       }
