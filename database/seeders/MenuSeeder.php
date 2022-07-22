@@ -37,6 +37,9 @@ class MenuSeeder extends Seeder
             'icon' => 'key',
             'position' => 1,
             'deleteable' => false,
+            'actives' => [
+                'superuser.permission.*',
+            ],
         ]);
 
         $permission->permissions()->attach(
@@ -51,6 +54,9 @@ class MenuSeeder extends Seeder
             'icon' => 'user-cog',
             'position' => 2,
             'deleteable' => false,
+            'actives' => [
+                'superuser.role.*',
+            ],
         ]);
 
         $role->permissions()->attach(
@@ -65,6 +71,9 @@ class MenuSeeder extends Seeder
             'icon' => 'user',
             'position' => 3,
             'deleteable' => false,
+            'actives' => [
+                'superuser.user.*',
+            ],
         ]);
 
         $user->permissions()->attach(
@@ -79,6 +88,9 @@ class MenuSeeder extends Seeder
             'icon' => 'bars',
             'position' => 4,
             'deleteable' => false,
+            'actives' => [
+                'superuser.menu.*',
+            ],
         ]);
 
         $menu->permissions()->attach(

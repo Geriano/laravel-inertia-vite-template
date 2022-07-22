@@ -27,11 +27,18 @@ class Menu extends Model
     ];
 
     /**
+     * @var string[]
+     */
+    protected $with = [
+        'permissions',
+    ];
+
+    /**
      * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
     public function parent()
     {
-        return $this->hasOne(Menu::class, 'id', 'parent_id')->without(['childs'])->with(['parent']);
+        return $this->hasOne(Menu::class, 'id', 'parent_id')->without(['childs'])->withCount(['childs']);
     }
 
     /**

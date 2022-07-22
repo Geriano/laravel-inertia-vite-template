@@ -37,5 +37,14 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
 
         Route::patch('/user/{user}/role/{role}/detach', [App\Http\Controllers\Superuser\UserController::class, 'detachRole'])->name('user.role.detach');
         Route::patch('/user/{user}/permission/{permission}/detach', [App\Http\Controllers\Superuser\UserController::class, 'detachPermission'])->name('user.permission.detach');
+
+        Route::resource('menu', App\Http\Controllers\Superuser\MenuController::class)->only([
+            'index', 'store', 'update', 'destroy',
+        ]);
+
+        Route::patch('/menu/{menu}/up', [App\Http\Controllers\Superuser\MenuController::class, 'up'])->name('menu.up');
+        Route::patch('/menu/{menu}/down', [App\Http\Controllers\Superuser\MenuController::class, 'down'])->name('menu.down');
+        Route::patch('/menu/{menu}/left', [App\Http\Controllers\Superuser\MenuController::class, 'left'])->name('menu.left');
+        Route::patch('/menu/{menu}/right', [App\Http\Controllers\Superuser\MenuController::class, 'right'])->name('menu.right');
     });
 });

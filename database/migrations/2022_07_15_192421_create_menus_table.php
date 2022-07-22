@@ -21,7 +21,9 @@ return new class extends Migration
             $table->string('name');
             $table->string('icon')
                     ->default('circle');
-            $table->string('route_or_url')->default('#');
+            $table->string('route_or_url')
+                    ->nullable()
+                    ->default('#');
             $table->unsignedTinyInteger('position');
             $table->boolean('enable')->default(true);
             $table->boolean('deleteable')->default(true);

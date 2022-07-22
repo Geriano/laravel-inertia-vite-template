@@ -64,7 +64,7 @@ class HandleInertiaRequests extends Middleware
                     return $prev;
                 }, $permissions);
             },
-            '$menus' => $request->user()?->menus(),
+            '$menus' => fn () => $request->user()?->menus(),
         ]);
     }
 }
