@@ -1,10 +1,11 @@
 <script setup>
-import { getCurrentInstance, ref } from 'vue'
+import { getCurrentInstance, onMounted, onUpdated, ref } from 'vue'
 import Icon from '@/Components/Icon.vue'
 
 const { menu, childs } = defineProps({
   menu: Object,
   childs: Array,
+  padding: Number,
 })
 
 const trace = menu => {
@@ -26,7 +27,7 @@ const open = ref(active ? true : false)
 
 <template>
   <div class="w-full flex flex-col">
-    <button @click.prevent="open = ! open" class="w-full p-4" :class="`${themes().get('sidebar', 'bg-slate-700 text-gray-200')} ${open && 'dark:bg-gray-800'}`">
+    <button @click.prevent="open = ! open" class="w-full p-4" :class="`${themes().get('sidebar', 'bg-slate-700 text-gray-200')} ${open && 'dark:bg-gray-800'} pl-${padding}`">
       <div class="flex items-center space-x-2">
         <Icon :name="menu.icon" />
         <p class="uppercase font-semibold w-full text-left">{{ menu.name }}</p>
@@ -34,7 +35,7 @@ const open = ref(active ? true : false)
       </div>
     </button>
 
-    <div v-if="open" class="flex flex-col">
+    <div v-if="open" class="flex flex-col" ref="container">
       <slot />
     </div>
   </div>
