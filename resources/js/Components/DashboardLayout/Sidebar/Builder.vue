@@ -11,16 +11,21 @@ export default defineComponent({
   setup(props, { attrs }) {
     return props => {
       const { menus } = props
+      const padding = (menu, initial = 0) => menu && menu.parent_id !== null ? padding(menu.parent, initial + 8) : initial
+
       const generate = (menu, attrs = {}) => {
         if (menu.childs?.length > 0) {
           return h(Links, {
             ...attrs,
+            padding: padding(menu),
             menu,
             childs: menu.childs,
-          }, menu.childs.map(child => generate(child, { class: 'pl-8' })))
+          }, menu.childs.map(child => generate(child, {
+            padding: padding(child)
+          })))
         }
-
-        return h(Link, { ...attrs, menu })
+        
+        return h(Link, { ...attrs, padding: padding(menu), menu })
       }
 
       return h('div', { class: 'flex flex-col' }, menus.map(menu => generate(menu)))
@@ -28,3 +33,7 @@ export default defineComponent({
   },
 })
 </script>
+
+<template>
+  <div class="hidden pl-0 pl-8 pl-16 pl-24 pl-32 pl-40 pl-48 pl-56 pl-64 pl-72 pl-80 pl-96"></div>
+</template>
