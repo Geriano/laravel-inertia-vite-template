@@ -120,8 +120,8 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
 
       <template #body>
         <div class="flex flex-col">
-          <div class="flex items-center space-x-2 text-sm dark:text-gray-100 px-4 py-2">
-            <input v-model="search" type="search" class="bg-transparent w-full max-w-sm rounded-md placeholder:capitalize" placeholder="search">
+          <div class="flex items-center justify-end space-x-2 text-sm dark:text-gray-100 px-4 py-2">
+            <input v-model="search" type="search" class="bg-transparent w-full max-w-sm rounded-md placeholder:capitalize py-1" placeholder="search">
           </div>
 
           <div class="flex-wrap px-4 pb-2 dark:bg-gray-700 dark:text-gray-100 rounded-b-md">
