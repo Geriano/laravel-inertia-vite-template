@@ -172,7 +172,7 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
   </DashboardLayout>
 
   <transition name="fade">
-    <div v-if="open" class="fixed top-0 left-0 w-full h-full bg-black bg-opacity-40 flex items-center justify-center">
+    <div v-if="open" class="fixed top-0 left-0 w-full h-full bg-black bg-opacity-40 flex sm:items-center justify-center overflow-auto">
       <form @submit.prevent="submit" class="w-full max-w-xl shadow-xl">
         <Card class="bg-gray-50 dark:bg-gray-700 dark:text-gray-100">
           <template #header>

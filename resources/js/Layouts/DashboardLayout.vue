@@ -27,10 +27,10 @@ onMounted(() => window.addEventListener('resize', () => open.value = window.inne
 </style>
 
 <template>
-  <div class="flex bg-gray-300 dark:bg-gray-900 w-full h-screen max-h-screen font-sans">
+  <div class="flex bg-gray-300 dark:bg-gray-900 w-full h-screen max-h-screen font-sans overflow-hidden">
     <Head :title="title" />
 
-    <div ref="sidebar" class="fixed sm:static flex-none flex flex-col h-full transition-all ease-in-out duration-300 z-10 sm:z-0" :class="`${themes().get('sidebar', 'bg-gray-700 text-gray-200 hover:bg-gray-800 hover:text-gray-100 transition-all ease-in-out duration-100').replace(/hover:(bg|text)-(.*?)-(\d+)/)} ${open ? 'w-full sm:w-60' : 'w-0'}`">
+    <div ref="sidebar" class="fixed sm:static flex-none flex flex-col h-full transition-all ease-in-out duration-300 z-10 sm:z-0 overflow-auto sm:overflow-hidden" :class="`${themes().get('sidebar', 'bg-gray-700 text-gray-200 hover:bg-gray-800 hover:text-gray-100 transition-all ease-in-out duration-100').replace(/hover:(bg|text)-(.*?)-(\d+)/)} ${open ? 'w-full sm:w-60' : 'w-0'}`">
       <div v-if="open" class="flex-none flex items-center justify-between w-full h-14 px-2" :class="themes().get('topbar', 'bg-cyan-500 text-gray-700 hover:bg-cyan-600 hover:text-gray-800 transition-all ease-in-out duration-150').replace(/hover:(bg|text)-(.*?)-(\d+)/, '')">
         <Toggler @toggle="open = ! open" class="sm:hidden" />
 
