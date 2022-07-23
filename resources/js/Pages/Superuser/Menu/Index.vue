@@ -130,9 +130,9 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
 
 <template>
   <DashboardLayout title="Menu">
-    <Card class="dark:bg-gray-700 dark:text-gray-100">
+    <Card class="bg-gray-50 dark:bg-gray-700 dark:text-gray-100">
       <template #header>
-        <div class="flex items-center space-x-2 p-2 dark:bg-gray-800">
+        <div class="flex items-center space-x-2 p-2 bg-gray-200 dark:bg-gray-800">
           <button @click.prevent="show" class="bg-green-600 hover:bg-green-700 rounded-md px-3 py-1 text-sm text-white transition-all">
             <div class="flex items-center space-x-1">
               <Icon name="plus" />
@@ -153,10 +153,10 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
   <transition name="fade">
     <div v-if="open" class="fixed top-0 left-0 w-full h-screen flex items-center justify-center bg-black bg-opacity-40">
       <form @submit.prevent="submit" class="w-full max-w-5xl rounded-md shadow-xl">
-        <Card class="dark:bg-gray-700 dark:text-gray-100">
+        <Card class="bg-gray-50 dark:bg-gray-700 dark:text-gray-100">
           <template #header>
-            <div class="flex items-center space-x-2 p-2 justify-end dark:bg-gray-800">
-              <Icon @click.prevent="close" name="times" class="px-2 py-1 dark:bg-gray-700 dark:hover:bg-gray-600 rounded-md transition-all cursor-pointer" />
+            <div class="flex items-center space-x-2 p-2 justify-end bg-gray-200 dark:bg-gray-800">
+              <Icon @click.prevent="close" name="times" class="px-2 py-1 bg-gray-300 hover:bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 rounded-md transition-all cursor-pointer" />
             </div>
           </template>
 
@@ -165,7 +165,7 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
               <div class="flex flex-col space-y-1">
                 <div class="flex items-center space-x-2">
                   <label for="name" class="lowercase first-letter:capitalize w-1/3">name</label>
-                  <input type="text" name="name" v-model="form.name" ref="name" class="w-full bg-transparent rounded px-3 py-2 border dark:border-gray-800 uppercase placeholder:capitalize" placeholder="name" required>
+                  <input type="text" name="name" v-model="form.name" ref="name" class="w-full bg-white dark:bg-transparent rounded px-3 py-2 border dark:border-gray-800 uppercase placeholder:capitalize" placeholder="name" required>
                 </div>
 
                 <div v-if="form.errors.name" class="text-right text-sm text-red-500">{{ form.errors.name }}</div>
@@ -248,7 +248,7 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
           </template>
 
           <template #footer>
-            <div class="flex items-center justify-end space-x-2 dark:bg-gray-800 py-1 px-2">
+            <div class="flex items-center justify-end space-x-2 bg-gray-200 dark:bg-gray-800 py-1 px-2">
               <button type="submit" class="bg-green-600 hover:bg-green-700 rounded-md px-3 py-1 text-white text-sm transition-all">
                 <div class="flex items-center space-x-1">
                   <Icon name="check" />
@@ -264,17 +264,17 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
 
   <transition name="fade">
     <div v-if="icon" class="fixed top-0 left-0 w-full h-screen flex items-center justify-center bg-black bg-opacity-40">
-      <Card class="dark:bg-gray-700 dark:text-gray-100 w-full max-w-5xl">
+      <Card class="bg-gray-50 dark:bg-gray-700 dark:text-gray-100 w-full max-w-5xl">
         <template #header>
-          <div class="flex items-center space-x-2 p-2 justify-end dark:bg-gray-800">
-            <input type="search" v-model="search" class="w-full bg-transparent rounded-md text-sm uppercase" placeholder="search something">
-            <Icon @click.prevent="icon = false" name="times" class="px-2 py-1 dark:bg-gray-700 dark:hover:bg-gray-600 rounded-md transition-all cursor-pointer" />
+          <div class="flex items-center space-x-2 p-2 justify-end bg-gray-200 dark:bg-gray-800">
+            <input type="search" v-model="search" class="py-1 w-full bg-white dark:bg-transparent rounded-md text-sm uppercase" placeholder="search something">
+            <Icon @click.prevent="icon = false" name="times" class="px-2 py-1 bg-gray-300 hover:bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 rounded-md transition-all cursor-pointer" />
           </div>
         </template>
 
         <template #body>
           <div class="flex-wrap p-4 max-h-96 overflow-auto">
-            <Icon v-for="(icx, i) in icons.filter(icx => icx.includes(search.trim().toLocaleLowerCase()))" :key="i" @click.prevent="form.icon = icx; icon = false" :name="icx" class="m-1 text-5xl px-2 py-1 text-gray-800 dark:text-white dark:bg-gray-600 dark:hover:bg-gray-700 rounded-md cursor-pointer transition-all" />
+            <Icon v-for="(icx, i) in icons.filter(icx => icx.includes(search.trim().toLocaleLowerCase()))" :key="i" @click.prevent="form.icon = icx; icon = false" :name="icx" class="m-1 text-5xl px-2 py-1 text-gray-800 bg-gray-200 hover:bg-gray-100 dark:text-white dark:bg-gray-600 dark:hover:bg-gray-700 rounded-md cursor-pointer transition-all" />
           </div>
         </template>
       </Card>

@@ -33,7 +33,7 @@ const logout = () => Inertia.post(route('logout'))
     <p class="hidden sm:inline font-semibold lowercase first-letter:capitalize truncate w-full">{{ user.name }}</p>
 
     <div class="flex-none w-14 h-14 p-3">
-      <button @click.prevent="open = ! open" class="rounded-md border dark:border-gray-600 w-full h-full text-white dark:text-gray-700 transition-all ease-in-out duration-150 hover:border-gray-700 hover:text-gray-900">
+      <button @click.prevent="open = ! open" class="rounded-md border border-gray-600 w-full h-full text-gray-700 transition-all ease-in-out duration-150 hover:border-gray-700 hover:text-gray-900">
         <Icon name="caret-left" class="transition-all ease-linear duration-500" :class="open && '-rotate-90'" />
       </button>
     </div>
@@ -41,7 +41,7 @@ const logout = () => Inertia.post(route('logout'))
 
   <transition name="slide">
     <div v-if="open" class="fixed right-0 sm:right-4 top-12 w-full sm:max-w-xl sm:w-48 bg-white dark:bg-gray-700 rounded-md shadow-xl">
-      <Link :href="route('profile.show')" as="button" class="w-full border-l-8 border-transparent dark:hover:border-gray-600 px-4 py-2 rounded-t-md transition-all ease-linear duration-150 hover:bg-gray-800">
+      <Link :href="route('profile.show')" as="button" class="w-full border-l-8 border-transparent dark:hover:border-gray-600 px-4 py-2 rounded-t-md transition-all ease-linear duration-150 hover:bg-gray-200 dark:hover:bg-gray-800">
         <div class="flex items-center space-x-2 dark:text-white font-semibold">
           <Icon name="user" />
 
@@ -49,7 +49,7 @@ const logout = () => Inertia.post(route('logout'))
         </div>
       </Link>
 
-      <button @click.prevent="logout" class="w-full border-l-8 border-transparent dark:hover:border-gray-600 px-4 py-2 rounded-b-md transition-all ease-linear duration-150 hover:bg-gray-800">
+      <button @click.prevent="logout" class="w-full border-l-8 border-transparent dark:hover:border-gray-600 px-4 py-2 rounded-b-md transition-all ease-linear duration-150 hover:bg-gray-200 dark:hover:bg-gray-800">
         <div class="flex items-center space-x-2 dark:text-white font-semibold">
           <Icon name="door-open" />
 

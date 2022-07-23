@@ -98,10 +98,10 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
 
 <template>
   <DashboardLayout title="role">
-    <Card class="dark:bg-gray-700 dark:text-gray-100">
+    <Card class="bg-gray-50 dark:bg-gray-700 dark:text-gray-100">
       <template #header>
-        <div class="flex items-center space-x-2 p-2 dark:bg-gray-800">
-          <button v-if="can('create role')" @click.prevent="show" class="bg-green-600 hover:bg-green-700 rounded-md px-3 py-1 text-sm transition-all">
+        <div class="flex items-center space-x-2 p-2 bg-gray-200 dark:bg-gray-800">
+          <button v-if="can('create role')" @click.prevent="show" class="bg-green-600 hover:bg-green-700 rounded-md px-3 py-1 text-sm text-white transition-all">
             <div class="flex items-center space-x-1">
               <Icon name="plus" />
               <p class="uppercase font-semibold">create</p>
@@ -114,20 +114,20 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
         <div class="flex flex-col space-y-2">
           <Builder :url="route('api.v1.superuser.role.paginate')">
             <template v-slot:thead="table">
-              <tr>
-                <Th class="dark:bg-gray-800 border dark:border-gray-900 px-3 py-2 text-center" :table="table" :sort="false">no</Th>
-                <Th class="dark:bg-gray-800 border dark:border-gray-900 px-3 py-2 text-center whitespace-nowrap" :table="table" :sort="true" name="name">name</Th>
-                <Th class="dark:bg-gray-800 border dark:border-gray-900 px-3 py-2 text-center whitespace-nowrap" :table="table" :sort="false">permissions</Th>
-                <Th class="dark:bg-gray-800 border dark:border-gray-900 px-3 py-2 text-center whitespace-nowrap" :table="table" :sort="false">action</Th>
+              <tr class="bg-gray-200 dark:bg-gray-800">
+                <Th class="border border-gray-300 dark:border-gray-900 px-3 py-2 text-center" :table="table" :sort="false">no</Th>
+                <Th class="border border-gray-300 dark:border-gray-900 px-3 py-2 text-center whitespace-nowrap" :table="table" :sort="true" name="name">name</Th>
+                <Th class="border border-gray-300 dark:border-gray-900 px-3 py-2 text-center whitespace-nowrap" :table="table" :sort="false">permissions</Th>
+                <Th class="border border-gray-300 dark:border-gray-900 px-3 py-2 text-center whitespace-nowrap" :table="table" :sort="false">action</Th>
               </tr>
             </template>
 
             <template v-slot:tfoot="table">
-              <tr>
-                <Th class="dark:bg-gray-800 border dark:border-gray-900 px-3 py-2 text-center" :table="table" :sort="false">no</Th>
-                <Th class="dark:bg-gray-800 border dark:border-gray-900 px-3 py-2 text-center whitespace-nowrap" :table="table" :sort="false">name</Th>
-                <Th class="dark:bg-gray-800 border dark:border-gray-900 px-3 py-2 text-center whitespace-nowrap" :table="table" :sort="false">permissions</Th>
-                <Th class="dark:bg-gray-800 border dark:border-gray-900 px-3 py-2 text-center whitespace-nowrap" :table="table" :sort="false">action</Th>
+              <tr class="bg-gray-200 dark:bg-gray-800">
+                <Th class="border border-gray-300 dark:border-gray-900 px-3 py-2 text-center" :table="table" :sort="false">no</Th>
+                <Th class="border border-gray-300 dark:border-gray-900 px-3 py-2 text-center whitespace-nowrap" :table="table" :sort="false">name</Th>
+                <Th class="border border-gray-300 dark:border-gray-900 px-3 py-2 text-center whitespace-nowrap" :table="table" :sort="false">permissions</Th>
+                <Th class="border border-gray-300 dark:border-gray-900 px-3 py-2 text-center whitespace-nowrap" :table="table" :sort="false">action</Th>
               </tr>
             </template>
 
@@ -137,11 +137,11 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
                 <td class="px-2 py-1 border dark:border-gray-800 uppercase">{{ role.name }}</td>
                 <td class="px-2 py-1 border dark:border-gray-800">
                   <div class="flex-wrap">
-                    <div v-for="(permission, j) in role.permissions" :key="j" class="inline-block dark:bg-gray-600 dark:hover:bg-gray-700 border dark:border-gray-700 dark:hover:border-gray-800 rounded-md px-3 py-1 m-[1px] text-sm">
+                    <div v-for="(permission, j) in role.permissions" :key="j" class="inline-block bg-gray-200 hover:bg-gray-100 dark:bg-gray-600 dark:hover:bg-gray-700 border dark:border-gray-700 dark:hover:border-gray-800 rounded-md px-3 py-1 m-[1px] text-sm">
                       <div class="flex items-center justify-between space-x-1">
                         <p class="uppercase font-semibold">{{ permission.name }}</p>
 
-                        <Icon @click.prevent="detach(role, permission, refresh)" v-if="can('update role')" name="times" class="px-2 py-1 rounded-md dark:bg-gray-700 transition-all hover:bg-red-500 cursor-pointer" />
+                        <Icon @click.prevent="detach(role, permission, refresh)" v-if="can('update role')" name="times" class="px-2 py-1 rounded-md bg-red-500 transition-all hover:bg-red-600 text-white cursor-pointer" />
                       </div>
                     </div>
                   </div>
@@ -174,10 +174,10 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
   <transition name="fade">
     <div v-if="open" class="fixed top-0 left-0 w-full h-full bg-black bg-opacity-40 flex items-center justify-center">
       <form @submit.prevent="submit" class="w-full max-w-xl shadow-xl">
-        <Card class="dark:bg-gray-700 dark:text-gray-100">
+        <Card class="bg-gray-50 dark:bg-gray-700 dark:text-gray-100">
           <template #header>
-            <div class="flex items-center justify-end bg-gray-800 p-2">
-              <Icon @click.prevent="close" name="times" class="px-2 py-1 dark:bg-gray-700 dark:hover:bg-gray-600 rounded-md transition-all cursor-pointer" />
+            <div class="flex items-center justify-end bg-gray-200 dark:bg-gray-800 p-2">
+              <Icon @click.prevent="close" name="times" class="px-2 py-1 bg-gray-300 hover:bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 rounded-md transition-all cursor-pointer" />
             </div>
           </template>
 
@@ -186,7 +186,7 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
               <div class="flex flex-col space-y-2">
                 <div class="flex items-center space-x-2">
                   <label for="name" class="w-1/3 lowercase first-letter:capitalize">name</label>
-                  <input ref="name" type="text" name="name" v-model="form.name" class="w-full bg-transparent rounded px-3 py-2 placeholder:capitalize" placeholder="name" required>
+                  <input ref="name" type="text" name="name" v-model="form.name" class="w-full bg-white dark:bg-transparent rounded px-3 py-2 placeholder:capitalize" placeholder="name" required>
                 </div>
 
                 <p v-if="form.errors.name" class="text-red-500 text-right lowercase first-letter:capitalize">{{ form.errors.name }}</p>
@@ -214,8 +214,8 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
           </template>
 
           <template #footer>
-            <div class="flex items-center justify-end space-x-2 dark:bg-gray-800 px-2 py-1">
-              <button type="submit" class="bg-green-600 hover:bg-green-700 rounded-md px-3 py-1 text-sm transition-all">
+            <div class="flex items-center justify-end space-x-2 bg-gray-200 dark:bg-gray-800 px-2 py-1">
+              <button type="submit" class="bg-green-600 hover:bg-green-700 rounded-md px-3 py-1 text-sm text-white transition-all">
                 <div class="flex items-center space-x-1">
                   <Icon name="check" />
 

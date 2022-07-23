@@ -106,9 +106,9 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
 
 <template>
   <DashboardLayout title="Permission">
-    <Card class="bg-gray-100 dark:bg-slate-700 shadow-md">
+    <Card class="bg-gray-50 dark:bg-slate-700 shadow-md">
       <template #header>
-        <div class="flex items-center space-x-2 bg-gray-800 p-2">
+        <div class="flex items-center space-x-2 bg-gray-200 dark:bg-gray-800 p-2">
           <button @click.prevent="show()" class="bg-green-600 hover:bg-green-700 rounded-md px-3 py-1 text-sm text-white transition-all">
             <div class="flex items-center space-x-1">
               <Icon name="plus" />
@@ -126,13 +126,13 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
 
           <div class="flex-wrap px-4 pb-2 dark:bg-gray-700 dark:text-gray-100 rounded-b-md">
             <transition-group name="opacity">
-              <div v-for="(permission, i) in permissions.filter(p => p.name?.toLowerCase().includes(search?.trim().toLowerCase()))" :key="i" class="inline-block dark:bg-gray-600 dark:hover:bg-gray-700 transition-all border dark:border-gray-700 dark:hover:border-gray-800 rounded-md m-[2px] px-3 py-1">
+              <div v-for="(permission, i) in permissions.filter(p => p.name?.toLowerCase().includes(search?.trim().toLowerCase()))" :key="i" class="inline-block bg-gray-200 hover:bg-gray-100 dark:bg-gray-600 dark:hover:bg-gray-700 transition-all border dark:border-gray-700 dark:hover:border-gray-800 rounded-md m-[2px] px-3 py-1">
                 <div class="flex items-center space-x-2 text-sm">
                   <p class="uppercase">{{ permission.name }}</p>
 
                   <div class="flex items-center space-x-1">
-                    <Icon @click.prevent="edit(permission)" name="pen" class="px-2 py-1 rounded cursor-pointer bg-blue-600 hover:bg-blue-700 transition-all" />
-                    <Icon @click.prevent="destroy(permission)" name="trash" class="px-2 py-1 rounded cursor-pointer bg-red-600 hover:bg-red-700 transition-all" />
+                    <Icon @click.prevent="edit(permission)" name="pen" class="px-2 py-1 rounded cursor-pointer text-white bg-blue-600 hover:bg-blue-700 transition-all" />
+                    <Icon @click.prevent="destroy(permission)" name="trash" class="px-2 py-1 rounded cursor-pointer text-white bg-red-600 hover:bg-red-700 transition-all" />
                   </div>
                 </div>
               </div>
@@ -146,10 +146,10 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
   <transition name="fade">
     <div v-if="open" class="fixed top-0 left-0 w-full h-screen flex items-center justify-center bg-black bg-opacity-40">
       <form @submit.prevent="submit" class="w-full max-w-xl shadow-xl">
-        <Card class="dark:bg-gray-700 dark:text-gray-100 border dark:border-gray-700">
+        <Card class="bg-gray-50 dark:bg-gray-700 dark:text-gray-100 border dark:border-gray-700">
           <template #header>
-            <div class="flex items-center space-x-2 justify-end dark:bg-gray-800 dark:text-gray-50 p-2">
-              <Icon @click.prevent="close" name="times" class="border border-transparent dark:bg-gray-700 px-2 py-1 rounded-md cursor-pointer transition-all dark:hover:bg-gray-600 dark:hover:border-gray-600" />
+            <div class="flex items-center space-x-2 justify-end bg-gray-200 dark:bg-gray-800 dark:text-gray-50 p-2">
+              <Icon @click.prevent="close" name="times" class="border border-transparent dark:bg-gray-700 px-2 py-1 rounded-md cursor-pointer transition-all bg-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:border-gray-600" />
             </div>
           </template>
 
@@ -169,11 +169,11 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
           </template>
 
           <template #footer>
-            <div class="flex items-center space-x-2 justify-end dark:bg-gray-800 dark:text-gray-50 p-2">
+            <div class="flex items-center space-x-2 justify-end bg-gray-200 dark:bg-gray-800 text-white px-2 py-1">
               <button type="submit" class="bg-green-600 rounded-md px-3 py-1 text-sm transition-all hover:bg-green-700">
                 <div class="flex items-center space-x-1">
                   <Icon name="check" />
-                  <p class="uppercase font-semibold">submit</p>
+                  <p class="uppercase font-semibold">{{ form.id ? 'update' : 'create' }}</p>
                 </div>
               </button>
             </div>
