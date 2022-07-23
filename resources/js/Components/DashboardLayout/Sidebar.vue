@@ -1,5 +1,5 @@
 <script setup>
-import { getCurrentInstance, onMounted, ref } from 'vue'
+import { getCurrentInstance, onMounted, onUpdated, ref } from 'vue'
 import axios from 'axios'
 import { usePage } from '@inertiajs/inertia-vue3'
 import Builder from './Sidebar/Builder.vue'
@@ -11,10 +11,11 @@ const self = getCurrentInstance()
 const menus = ref(usePage().props.value.$menus || [])
 const { user } = usePage().props.value
 
-const fetch = async () => {
+const f = async () => {
   try {
     const response = await axios.get(route('api.v1.user.menu', user.id))
-    return menus.value = response.data
+
+    menus.value = response.data
   } catch (e) {
     const response = await Swal.fire({
       title: 'Do you want to try again?',
@@ -27,10 +28,6 @@ const fetch = async () => {
     response.isConfirmed && fetch()
   }
 }
-
-Inertia.on('finish', () => fetch())
-
-onMounted(fetch)
 </script>
 
 <style scoped>

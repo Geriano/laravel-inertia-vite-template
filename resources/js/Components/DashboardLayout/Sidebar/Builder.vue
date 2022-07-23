@@ -35,5 +35,5 @@ export default defineComponent({
 </script>
 
 <template>
-  <div class="hidden pl-8 pl-16 pl-24 pl-32 pl-40 pl-48 pl-56 pl-64 pl-72 pl-80 pl-96"></div>
+  <div class="hidden pl-0 pl-8 pl-16 pl-24 pl-32 pl-40 pl-48 pl-56 pl-64 pl-72 pl-80 pl-96"></div>
 </template>

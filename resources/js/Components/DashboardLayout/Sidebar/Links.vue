@@ -27,7 +27,7 @@ const open = ref(active ? true : false)
 
 <template>
   <div class="w-full flex flex-col">
-    <button @click.prevent="open = ! open" class="w-full p-4" :class="`${themes().get('sidebar', 'bg-slate-700 text-gray-200')} ${open && 'dark:bg-gray-800'} pl-${padding}`">
+    <button @click.prevent="open = ! open" class="w-full p-4" :class="`${themes().get('sidebar', 'bg-slate-700 text-gray-200')} ${open && 'dark:bg-gray-800'} pl-${padding !== 0 && padding}`">
       <div class="flex items-center space-x-2">
         <Icon :name="menu.icon" />
         <p class="uppercase font-semibold w-full text-left">{{ menu.name }}</p>
