@@ -137,7 +137,7 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
                 <td class="px-2 py-1 border dark:border-gray-800 uppercase">{{ role.name }}</td>
                 <td class="px-2 py-1 border dark:border-gray-800">
                   <div class="flex-wrap">
-                    <div v-for="(permission, j) in role.permissions" :key="j" class="inline-block bg-gray-600 rounded-md px-3 py-1 m-[1px] text-sm">
+                    <div v-for="(permission, j) in role.permissions" :key="j" class="inline-block dark:bg-gray-600 dark:hover:bg-gray-700 border dark:border-gray-700 dark:hover:border-gray-800 rounded-md px-3 py-1 m-[1px] text-sm">
                       <div class="flex items-center justify-between space-x-1">
                         <p class="uppercase font-semibold">{{ permission.name }}</p>
 
@@ -172,7 +172,7 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
   </DashboardLayout>
 
   <transition name="fade">
-    <div v-if="open" class="fixed top-0 left-0 w-full h-full bg-black bg-opacity-25 flex items-center justify-center">
+    <div v-if="open" class="fixed top-0 left-0 w-full h-full bg-black bg-opacity-40 flex items-center justify-center">
       <form @submit.prevent="submit" class="w-full max-w-xl shadow-xl">
         <Card class="dark:bg-gray-700 dark:text-gray-100">
           <template #header>
@@ -215,7 +215,7 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
 
           <template #footer>
             <div class="flex items-center justify-end space-x-2 dark:bg-gray-800 px-2 py-1">
-              <button type="submit" class="bg-green-600 rounded-md px-3 py-1 text-sm">
+              <button type="submit" class="bg-green-600 hover:bg-green-700 rounded-md px-3 py-1 text-sm transition-all">
                 <div class="flex items-center space-x-1">
                   <Icon name="check" />
 
