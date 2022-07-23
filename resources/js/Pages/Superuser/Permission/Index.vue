@@ -126,7 +126,7 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
 
           <div class="flex-wrap px-4 pb-2 dark:bg-gray-700 dark:text-gray-100 rounded-b-md">
             <transition-group name="opacity">
-              <div v-for="(permission, i) in permissions.filter(p => p.name?.toLowerCase().includes(search?.trim().toLowerCase()))" :key="i" class="inline-block bg-gray-200 hover:bg-gray-100 dark:bg-gray-600 dark:hover:bg-gray-700 transition-all border dark:border-gray-700 dark:hover:border-gray-800 rounded-md m-[2px] px-3 py-1">
+              <div v-for="(permission, i) in permissions.filter(p => p.name?.toLowerCase().includes(search?.trim().toLowerCase()))" :key="i" class="inline-block bg-gray-200 hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-900 transition-all border dark:border-gray-700 dark:hover:border-gray-800 rounded-md m-[2px] px-3 py-1">
                 <div class="flex items-center space-x-2 text-sm">
                   <p class="uppercase">{{ permission.name }}</p>
 

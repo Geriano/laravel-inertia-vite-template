@@ -137,11 +137,11 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
                 <td class="px-2 py-1 border dark:border-gray-800 uppercase">{{ role.name }}</td>
                 <td class="px-2 py-1 border dark:border-gray-800">
                   <div class="flex-wrap">
-                    <div v-for="(permission, j) in role.permissions" :key="j" class="inline-block bg-gray-200 hover:bg-gray-100 dark:bg-gray-600 dark:hover:bg-gray-700 border dark:border-gray-700 dark:hover:border-gray-800 rounded-md px-3 py-1 m-[1px] text-sm">
-                      <div class="flex items-center justify-between space-x-1">
+                    <div v-for="(permission, j) in role.permissions" :key="j" class="inline-block bg-gray-200 hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-900 border dark:border-gray-700 dark:hover:border-gray-800 rounded-md px-3 py-1 m-[1px] text-sm">
+                      <div class="flex items-center justify-between space-x-2">
                         <p class="uppercase font-semibold">{{ permission.name }}</p>
 
-                        <Icon @click.prevent="detach(role, permission, refresh)" v-if="can('update role')" name="times" class="px-2 py-1 rounded-md bg-red-500 transition-all hover:bg-red-600 text-white cursor-pointer" />
+                        <Icon @click.prevent="detach(role, permission, refresh)" v-if="can('update role')" name="times" class="px-2 py-1 rounded-md bg-red-500 dark:bg-gray-700 transition-all hover:bg-red-600 text-white cursor-pointer" />
                       </div>
                     </div>
                   </div>

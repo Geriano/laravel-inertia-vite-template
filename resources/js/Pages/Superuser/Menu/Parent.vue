@@ -36,7 +36,7 @@ Inertia.on('finish', () => {
 
 <template>
   <div class="flex flex-col space-y-1" :id="`menu:${menu.id}`">
-    <div class="flex items-center space-x-2 bg-gray-200 hover:bg-gray-100 dark:bg-gray-800 rounded-md px-4 py-2 transition-all" :draggable="true">
+    <div class="flex items-center space-x-2 bg-gray-200 hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-900 rounded-md px-4 py-2 transition-all" :draggable="true">
       <div class="flex items-center space-x-2 w-full" :draggable="false">
         <Icon :name="menu.icon" :draggable="false" />
         <p class="uppercase" :draggable="false">{{ menu.name }}</p>
@@ -47,7 +47,7 @@ Inertia.on('finish', () => {
         <Icon @click.prevent="right(menu)" v-if="menu.position > 1" name="arrow-right" class="px-2 py-1 bg-gray-100 hover:bg-gray-50 dark:bg-gray-700 dark:hover:bg-gray-800 dark:text-white transition-all cursor-pointer" :draggable="false" />
         <Icon @click.prevent="up(menu)" v-if="menu.position > 1" name="arrow-up" class="px-2 py-1 bg-gray-100 hover:bg-gray-50 dark:bg-gray-700 dark:hover:bg-gray-800 dark:text-white transition-all cursor-pointer" :draggable="false" />
         <Icon @click.prevent="down(menu)" v-if="menu.position !== menu.parent?.childs_count" name="arrow-down" class="px-2 py-1 bg-gray-100 hover:bg-gray-50 dark:bg-gray-700 dark:hover:bg-gray-800 dark:text-white transition-all cursor-pointer" :draggable="false" />
-        <Icon @click.prevent="open = ! open" :name="open ? 'minus' : 'plus'" class="px-2 py-1 bg-gray-100 hover:bg-gray-50 dark:bg-gray-100 dark:hover:bg-gray-50 text-gray-800 dark:text-white transition-all cursor-pointer" :draggable="false" />
+        <Icon @click.prevent="open = ! open" :name="open ? 'minus' : 'plus'" class="px-2 py-1 bg-gray-100 hover:bg-gray-50 dark:bg-gray-700 dark:hover:bg-gray-800 text-gray-800 dark:text-white transition-all cursor-pointer" :draggable="false" />
         <Icon @click.prevent="edit(menu)" name="edit" class="px-2 py-1 bg-blue-600 hover:bg-blue-700 text-white transition-all cursor-pointer" :draggable="false" />
         <Icon @click.prevent="destroy(menu)" name="trash" class="px-2 py-1 bg-red-600 hover:bg-red-700 text-white transition-all cursor-pointer" :draggable="false" />
       </div>

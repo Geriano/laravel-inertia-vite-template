@@ -28,7 +28,7 @@ onUpdated(rounded)
 </script>
 
 <template>
-  <div class="flex items-center space-x-2 bg-gray-200 hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-700 rounded-md px-4 py-2 transition-all" :draggable="true" :id="`menu:${menu.id}`">
+  <div class="flex items-center space-x-2 bg-gray-200 hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-900 rounded-md px-4 py-2 transition-all" :draggable="true" :id="`menu:${menu.id}`">
     <div class="flex items-center space-x-2 w-full" :draggable="false">
       <Icon :name="menu.icon" :draggable="false" />
       <p class="uppercase" :draggable="false">{{ menu.name }}</p>

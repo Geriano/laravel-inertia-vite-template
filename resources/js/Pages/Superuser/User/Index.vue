@@ -189,8 +189,8 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
                 </td>
                 <td class="px-2 py-1 border dark:border-gray-800">
                   <div class="flex-wrap">
-                    <div v-for="(role, j) in user.roles" :key="j" class="inline-block dark:bg-gray-600 dark:hover:bg-gray-700 border dark:border-gray-800 rounded-md px-3 py-1 m-[1px] text-sm">
-                      <div class="flex items-center justify-between space-x-1">
+                    <div v-for="(role, j) in user.roles" :key="j" class="inline-block dark:bg-gray-800 dark:hover:bg-gray-900 border dark:border-gray-800 rounded-md px-3 py-1 m-[1px] text-sm transition-all">
+                      <div class="flex items-center justify-between space-x-2">
                         <p class="uppercase font-semibold">{{ role.name }}</p>
 
                         <Icon @click.prevent="detachRole(user, role, refresh)" v-if="can('update user')" name="times" class="px-2 py-1 rounded-md dark:bg-gray-700 transition-all hover:bg-red-500 cursor-pointer" />
