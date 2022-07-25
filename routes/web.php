@@ -35,16 +35,20 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
             'index', 'store', 'update', 'destroy',
         ]);
 
-        Route::patch('/user/{user}/role/{role}/detach', [App\Http\Controllers\Superuser\UserController::class, 'detachRole'])->name('user.role.detach');
-        Route::patch('/user/{user}/permission/{permission}/detach', [App\Http\Controllers\Superuser\UserController::class, 'detachPermission'])->name('user.permission.detach');
+        Route::prefix('/user/{user}')->name('user.')->controller(App\Http\Controllers\Superuser\UserController::class)->group(function () {
+            Route::patch('/role/{role}/detach', 'detachRole')->name('role.detach');
+            Route::patch('/permission/{permission}/detach', 'detachPermission')->name('permission.detach');
+        });
 
         Route::resource('menu', App\Http\Controllers\Superuser\MenuController::class)->only([
             'index', 'store', 'update', 'destroy',
         ]);
 
-        Route::patch('/menu/{menu}/up', [App\Http\Controllers\Superuser\MenuController::class, 'up'])->name('menu.up');
-        Route::patch('/menu/{menu}/down', [App\Http\Controllers\Superuser\MenuController::class, 'down'])->name('menu.down');
-        Route::patch('/menu/{menu}/left', [App\Http\Controllers\Superuser\MenuController::class, 'left'])->name('menu.left');
-        Route::patch('/menu/{menu}/right', [App\Http\Controllers\Superuser\MenuController::class, 'right'])->name('menu.right');
+        Route::prefix('/menu/{menu}')->name('menu.')->controller(App\Http\Controllers\Superuser\MenuController::class)->group(function () {
+            Route::patch('/up', 'up')->name('up');
+            Route::patch('/down', 'down')->name('down');
+            Route::patch('/left', 'left')->name('left');
+            Route::patch('/right', 'right')->name('right');
+        });
     });
 });
