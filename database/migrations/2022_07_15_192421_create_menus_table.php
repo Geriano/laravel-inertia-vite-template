@@ -32,7 +32,8 @@ return new class extends Migration
 
             $table->foreign('parent_id')
                     ->references('id')
-                    ->on('menus');
+                    ->on('menus')
+                    ->cascadeOnDelete();
         });
     }
 
