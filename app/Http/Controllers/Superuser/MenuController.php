@@ -161,6 +161,10 @@ class MenuController extends Controller
                 }
             } catch (Throwable $e) {
                 DB::rollBack();
+
+                return redirect()->back()->with('error', __(
+                    $e->getMessage(),
+                ));
             }
         }
 
