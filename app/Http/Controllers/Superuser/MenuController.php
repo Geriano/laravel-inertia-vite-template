@@ -50,7 +50,7 @@ class MenuController extends Controller
                     ),
                     array: glob(
                         pattern: public_path(
-                            path: '/vendors/fontawesome/svgs/**/*.svg'
+                            path: '/vendors/fontawesome/svgs/solid/*.svg'
                         ),
                     ),
                 ),
