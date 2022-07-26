@@ -42,7 +42,7 @@ const f = async () => {
 </style>
 
 <template>
-  <div class="flex flex-col w-full h-full bg-inherit">
+  <div class="flex flex-col w-full h-full bg-inherit overflow-auto">
     <transition name="op" mode="in-out">
       <Builder v-if="menus.length" :menus="menus" />
     </transition>
