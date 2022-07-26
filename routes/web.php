@@ -40,15 +40,10 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
             Route::patch('/permission/{permission}/detach', 'detachPermission')->name('permission.detach');
         });
 
+        Route::patch('/menu/save', [App\Http\Controllers\Superuser\MenuController::class, 'save'])->name('menu.save');
         Route::resource('menu', App\Http\Controllers\Superuser\MenuController::class)->only([
             'index', 'store', 'update', 'destroy',
         ]);
-
-        Route::prefix('/menu/{menu}')->name('menu.')->controller(App\Http\Controllers\Superuser\MenuController::class)->group(function () {
-            Route::patch('/up', 'up')->name('up');
-            Route::patch('/down', 'down')->name('down');
-            Route::patch('/left', 'left')->name('left');
-            Route::patch('/right', 'right')->name('right');
-        });
+        
     });
 });

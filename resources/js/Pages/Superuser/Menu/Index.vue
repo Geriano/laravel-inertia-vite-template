@@ -8,7 +8,7 @@ import Icon from '@/Components/Icon.vue'
 import axios from 'axios'
 import Swal from 'sweetalert2'
 import Select from '@vueform/multiselect'
-import Builder from './Builder.vue'
+import Nested from './Nested.vue'
 
 const self = getCurrentInstance()
 const { permissions, routes, icons } = defineProps({
@@ -107,10 +107,9 @@ const destroy = async menu => {
 
 const submit = () => form.id ? update() : store()
 
-const up = menu => Inertia.patch(route('superuser.menu.up', menu.id))
-const down = menu => Inertia.patch(route('superuser.menu.down', menu.id))
-const right = menu => Inertia.patch(route('superuser.menu.right', menu.id))
-const left = menu => Inertia.patch(route('superuser.menu.left', menu.id))
+const save = () => {
+  return useForm({ menus: menus.value }).patch(route('superuser.menu.save'))
+}
 
 const esc = e => e.key === 'Escape' && close()
 
@@ -143,8 +142,19 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
       </template>
 
       <template #body>
-        <div class="flex flex-col p-2">
-          <Builder :menus="menus" :edit="edit" :destroy="destroy" :up="up" :down="down" :left="left" :right="right" />
+        <div class="flex flex-col space-y-1 p-2 max-h-96 overflow-auto">
+          <Nested :menus="menus" :edit="edit" :destroy="destroy" />
+        </div>
+      </template>
+
+      <template #footer>
+        <div class="flex items-center space-x-1 dark:bg-gray-800 p-2">
+          <button @click.prevent="save" class="bg-green-600 hover:bg-green-700 rounded-md px-3 py-1 text-sm text-white transition-all">
+            <div class="flex items-center space-x-1">
+              <Icon name="save" />
+              <p class="uppercase font-semibold">save</p>
+            </div>
+          </button>
         </div>
       </template>
     </Card>

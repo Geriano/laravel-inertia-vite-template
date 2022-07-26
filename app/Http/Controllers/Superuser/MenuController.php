@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Menu;
 use App\Models\Permission;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -169,171 +170,80 @@ class MenuController extends Controller
     }
 
     /**
-     * @param \App\Models\Menu $menu
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function up(Menu $menu)
+    public function save(Request $request)
     {
-        $before = Menu::where('parent_id', $menu->parent_id)
-                        ->where('position', $menu->position - 1)
-                        ->first();
+        $request->validate([
+            'menus' => 'required',
+        ]);
 
-        if (!$before) {
-            return redirect()->back()->with('error', __(
-                'can\'t find menu before `:name`', [
-                    'name' => $menu->name,
-                ]
-            ));
-        }
+        $menus = collect($this->positions($request->menus))->flatMap([$this, 'flatMap']);
 
         DB::beginTransaction();
 
         try {
-            Menu::where('id', $before->id)->update([
-                'position' => $menu->position,
-            ]);
-    
-            $menu->update([
-                'position' => $before->position,
-            ]);
+            $menus->each(function (Menu $menu) {
+                Menu::where('id', $menu->id)->update($menu->only([
+                    'parent_id',
+                    'position',
+                ]));
+            });
 
             DB::commit();
+
+            return redirect()->back()->with('success', __(
+                'menu positions has been saved',
+            ));
         } catch (Throwable $e) {
             DB::rollBack();
 
-            return redirect()->back()->with('error', __($e->getMessage()));
+            return redirect()->back()->with('error', __(
+                $e->getMessage(),
+            ));
         }
-
-        return redirect()->back()->with('success', __(
-            'position has been updated',
-        ));
     }
 
     /**
      * @param \App\Models\Menu $menu
-     * @return \Illuminate\Http\Response
+     * @return array
      */
-    public function down(Menu $menu)
+    public function flatMap(Menu $menu)
     {
-        $after = Menu::where('parent_id', $menu->parent_id)
-                        ->where('position', $menu->position + 1)
-                        ->first();
-
-        if (!$after) {
-            return redirect()->back()->with('error', __(
-                'can\'t find menu after `:name`', [
-                    'name' => $menu->name,
-                ]
-            ));
-        }
-
-        DB::beginTransaction();
-
-        try {
-            Menu::where('id', $after->id)->update([
-                'position' => $menu->position,
-            ]);
-    
-            $menu->update([
-                'position' => $after->position,
-            ]);
-
-            DB::commit();
-        } catch (Throwable $e) {
-            DB::rollBack();
-
-            return redirect()->back()->with('error', __($e->getMessage()));
-        }
-
-        return redirect()->back()->with('success', __(
-            'position has been updated',
-        ));
+        return [
+            $menu,
+            ...collect($menu->childs)->flatMap([$this, 'flatMap']),
+        ];
     }
 
     /**
-     * @param \App\Models\Menu $menu
-     * @return \Illuminate\Http\Response
+     * @param array $menu
+     * @return array
      */
-    public function right(Menu $menu)
+    public function updateWithChild(array $menu)
     {
-        $before = Menu::where('parent_id', $menu->parent_id)
-                        ->where('position', $menu->position - 1)
-                        ->withCount('childs')
-                        ->first();
-
-        if (!$before) {
-            return redirect()->back()->with('error', __(
-                'can\'t find menu before `:name`', [
-                    'name' => $menu->name,
-                ]
-            ));
+        if (array_key_exists('childs', $menu) && $menu['childs']) {
+            return $this->updateWithChilds($menu['childs']);
         }
 
-        DB::beginTransaction();
-
-        try {
-            Menu::where('parent_id', $menu->parent_id)
-                    ->where('position', '>', $menu->position)
-                    ->decrement('position');
-
-            $menu->update([
-                'parent_id' => $before->id,
-                'position' => $before->childs_count + 1,
-            ]);
-
-            DB::commit();
-        } catch (Throwable $e) {
-            DB::rollBack();
-
-            return redirect()->back()->with('error', __($e->getMessage()));
-        }
-
-        return redirect()->back()->with('success', __(
-            'position has been updated',
-        ));
+        return new Menu($menu);
     }
 
     /**
-     * @param \App\Models\Menu $menu
-     * @return \Illuminate\Http\Response
+     * @param \Illuminate\Support\Collection|\App\Models\Menu|array
+     * @param int $parent
      */
-    public function left(Menu $menu)
+    private function positions(Collection|Menu|array $menus, int $parent = null)
     {
-        $parent = $menu->parent;
+        return array_map(function ($menu) use (&$i, $parent) {
+            $new = new Menu($menu);
+            $new->id = $menu['id'];
+            $new->position = ++$i;
+            $new->parent_id = $parent;
+            $new->childs = array_key_exists('childs', $menu) ? $this->positions($menu['childs'], $new->id) : [];
 
-        if (!$parent) {
-            return redirect()->back()->with('error', __(
-                'can\'t find parent menu `:name`', [
-                    'name' => $menu->name,
-                ]
-            ));
-        }
-
-        DB::beginTransaction();
-
-        try {
-            Menu::where('parent_id', $parent->parent_id)
-                    ->where('position', '>', $parent->position)
-                    ->increment('position');
-
-            Menu::where('parent_id', $menu->parent_id)
-                    ->where('position', '>', $menu->position)
-                    ->decrement('position');
-
-            $menu->update([
-                'parent_id' => $parent->parent_id,
-                'position' => $parent->position + 1,
-            ]);
-
-            DB::commit();
-        } catch (Throwable $e) {
-            DB::rollBack();
-
-            return redirect()->back()->with('error', __($e->getMessage()));
-        }
-
-        return redirect()->back()->with('success', __(
-            'position has been updated',
-        ));
+            return $new;
+        }, $menus);
     }
 }
