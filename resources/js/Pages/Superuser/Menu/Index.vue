@@ -112,7 +112,10 @@ const save = () => {
   timeout.value && clearTimeout(timeout.value)
   timeout.value = setTimeout(() => {
     return useForm({ menus: menus.value }).patch(route('superuser.menu.save'), {
-      onFinish: () => clearTimeout(timeout.value)
+      onFinish: () => {
+        clearTimeout(timeout.value)
+        Inertia.get(route(route().current()))
+      }
     }, 100)
   })
 }
