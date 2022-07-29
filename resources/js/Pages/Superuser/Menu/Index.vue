@@ -161,7 +161,7 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
   </DashboardLayout>
 
   <transition name="fade">
-    <div v-if="open" class="fixed top-0 left-0 w-full h-screen flex sm:items-center justify-center bg-black bg-opacity-40 overflow-auto">
+    <div v-if="open" class="fixed top-0 left-0 w-full h-screen flex sm:items-center justify-center bg-black bg-opacity-40 overflow-auto z-10">
       <form @submit.prevent="submit" class="w-full max-w-xl sm:max-w-5xl rounded-md shadow-xl">
         <Card class="bg-gray-50 dark:bg-gray-700 dark:text-gray-100">
           <template #header>
@@ -273,7 +273,7 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
   </transition>
 
   <transition name="fade">
-    <div v-if="icon" class="fixed top-0 left-0 w-full h-screen flex sm:items-center justify-center bg-black bg-opacity-40 overflow-auto">
+    <div v-if="icon" class="fixed top-0 left-0 w-full h-screen flex sm:items-center justify-center bg-black bg-opacity-40 overflow-auto z-10">
       <Card class="bg-gray-50 dark:bg-gray-700 dark:text-gray-100 w-full max-w-xl sm:max-w-5xl">
         <template #header>
           <div class="flex items-center space-x-2 p-2 justify-end bg-gray-200 dark:bg-gray-800">
