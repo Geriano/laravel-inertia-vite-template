@@ -22,6 +22,8 @@
     },
     "dependencies": {
         "@vueform/multiselect": "^2.5.1",
+        "laravel-echo": "^1.13.0",
+        "pusher-js": "^7.3.0",
         "sweetalert2": "^11.4.23",
         "vuedraggable": "^4.1.0"
     }

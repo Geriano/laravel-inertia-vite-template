@@ -6,12 +6,14 @@
     "license": "MIT",
     "require": {
         "php": "^8.0.2",
+        "beyondcode/laravel-websockets": "^1.13",
         "guzzlehttp/guzzle": "^7.2",
         "inertiajs/inertia-laravel": "^0.5.2",
         "laravel/framework": "^9.19",
         "laravel/jetstream": "^2.9",
         "laravel/sanctum": "^2.14.1",
         "laravel/tinker": "^2.7",
+        "pusher/pusher-php-server": "^7.0",
         "spatie/laravel-permission": "^5.5",
         "tightenco/ziggy": "^1.0"
     },
