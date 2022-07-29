@@ -107,8 +107,14 @@ const destroy = async menu => {
 
 const submit = () => form.id ? update() : store()
 
+const timeout = ref(null)
 const save = () => {
-  return useForm({ menus: menus.value }).patch(route('superuser.menu.save'))
+  timeout.value && clearTimeout(timeout.value)
+  timeout.value = setTimeout(() => {
+    return useForm({ menus: menus.value }).patch(route('superuser.menu.save'), {
+      onFinish: () => clearTimeout(timeout.value)
+    }, 100)
+  })
 }
 
 const esc = e => e.key === 'Escape' && close()
@@ -143,18 +149,7 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
 
       <template #body>
         <div class="flex flex-col space-y-1 p-2 max-h-96 overflow-auto">
-          <Nested :menus="menus" :edit="edit" :destroy="destroy" />
-        </div>
-      </template>
-
-      <template #footer>
-        <div class="flex items-center space-x-1 dark:bg-gray-800 p-2">
-          <button @click.prevent="save" class="bg-green-600 hover:bg-green-700 rounded-md px-3 py-1 text-sm text-white transition-all">
-            <div class="flex items-center space-x-1">
-              <Icon name="save" />
-              <p class="uppercase font-semibold">save</p>
-            </div>
-          </button>
+          <Nested :menus="menus" :edit="edit" :destroy="destroy" :save="save" />
         </div>
       </template>
     </Card>

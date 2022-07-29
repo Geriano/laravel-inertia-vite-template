@@ -4,8 +4,9 @@ import Dragable from 'vuedraggable'
 import Icon from '@/Components/Icon.vue'
 
 const self = getCurrentInstance()
-const { menus, edit, destroy } = defineProps({
+const { menus, edit, destroy, save } = defineProps({
   menus: Array,
+  save: Function,
   edit: Function,
   destroy: Function,
 })
@@ -16,7 +17,8 @@ const { menus, edit, destroy } = defineProps({
     tag="ul"
     :list="menus"
     :group="{ name: 'g1' }"
-    item-key="name">
+    item-key="id"
+    @change="save">
     <template #item="{ element }">
       <div class="flex flex-col space-y-1">
         <div class="flex items-center space-x-2 bg-gray-200 hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-900 rounded-md px-4 py-2 transition-all">
@@ -31,7 +33,7 @@ const { menus, edit, destroy } = defineProps({
           </div>
         </div>
 
-        <Nested :menus="element.childs" :edit="edit" :destroy="destroy" class="ml-8" />
+        <Nested :menus="element.childs" :edit="edit" :destroy="destroy" :save="save" class="ml-8" />
       </div>
     </template>
   </Dragable>
