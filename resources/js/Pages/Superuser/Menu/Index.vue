@@ -160,8 +160,20 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
     </Card>
   </DashboardLayout>
 
-  <transition name="fade">
-    <div v-if="open" class="fixed top-0 left-0 w-full h-screen flex sm:items-center justify-center bg-black bg-opacity-40 overflow-auto z-10">
+  <transition
+    enterActiveClass="transition-all duration-500"
+    leaveActiveClass="transition-all duration-500"
+    enterFromClass="opacity-0"
+    leaveToClass="opacity-0">
+    <div v-if="open || icon" class="fixed top-0 left-0 w-full h-screen bg-black bg-opacity-80 overflow-auto z-20 blur-3xl"></div>
+  </transition>
+
+  <transition
+    enterActiveClass="transition-all duration-150"
+    leaveActiveClass="transition-all duration-150"
+    enterFromClass="-translate-y-full opacity-0"
+    leaveToClass="-translate-y-full opacity-0">
+    <div v-if="open" class="fixed top-0 left-0 w-full h-screen flex justify-center z-20 p-10 overflow-auto">
       <form @submit.prevent="submit" class="w-full max-w-xl sm:max-w-5xl rounded-md shadow-xl">
         <Card class="bg-gray-50 dark:bg-gray-700 dark:text-gray-100">
           <template #header>
@@ -272,18 +284,22 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
     </div>
   </transition>
 
-  <transition name="fade">
-    <div v-if="icon" class="fixed top-0 left-0 w-full h-screen flex sm:items-center justify-center bg-black bg-opacity-40 overflow-auto z-10">
-      <Card class="bg-gray-50 dark:bg-gray-700 dark:text-gray-100 w-full max-w-xl sm:max-w-5xl">
+  <transition
+    enterActiveClass="transition-all duration-150"
+    leaveActiveClass="transition-all duration-150"
+    enterFromClass="-translate-y-full opacity-0"
+    leaveToClass="-translate-y-full opacity-0">
+    <div v-if="icon" class="fixed top-0 left-0 w-full h-screen flex justify-center overflow-auto z-20 p-10">
+      <Card class="bg-gray-50 dark:bg-gray-700 dark:text-gray-100 w-full max-w-xl sm:max-w-5xl max-h-96 overflow-auto">
         <template #header>
-          <div class="flex items-center space-x-2 p-2 justify-end bg-gray-200 dark:bg-gray-800">
+          <div class="flex items-center space-x-2 p-2 justify-end bg-gray-200 dark:bg-gray-800 sticky top-0 left-0">
             <input type="search" v-model="search" class="py-1 w-full bg-white dark:bg-transparent rounded-md text-sm uppercase" placeholder="search something">
             <Icon @click.prevent="icon = false" name="times" class="px-2 py-1 bg-gray-300 hover:bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 rounded-md transition-all cursor-pointer" />
           </div>
         </template>
 
         <template #body>
-          <div class="flex-wrap p-4 max-h-96 overflow-auto">
+          <div class="flex-wrap p-4">
             <Icon v-for="(icx, i) in icons.filter(icx => icx.includes(search.trim().toLocaleLowerCase()))" :key="i" @click.prevent="form.icon = icx; icon = false" :name="icx" class="m-1 text-5xl px-2 py-1 text-gray-800 bg-gray-200 hover:bg-gray-100 dark:text-white dark:bg-gray-600 dark:hover:bg-gray-700 rounded-md cursor-pointer transition-all" />
           </div>
         </template>

@@ -171,70 +171,76 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
             </template>
 
             <template v-slot:tbody="{ data, processing, empty, refresh }">
-              <template v-if="processing">
-                <tr v-for="i in Array(5).fill(0)" :key="i">
-                  <td class="text-5xl text-center p-2" colspan="1000">
-                    <div class="lowercase first-letter:capitalize font-semibold dark:bg-gray-800 animate-pulse p-5 rounded-md"></div>
-                  </td>
-                </tr>
-              </template>
+              <transition-group
+                enterActiveClass="transition-all duration-100"
+                leaveActiveClass="transition-all duration-50"
+                enterFromClass="opacity-0 -scale-y-100"
+                leaveToClass="opacity-0 -scale-y-100">
+                <template v-if="processing">
+                  <tr v-for="i in Array(5).fill(0)" :key="i" class="border dark:border-gray-800">
+                    <td class="text-5xl text-center p-2" colspan="1000">
+                      <div class="lowercase first-letter:capitalize font-semibold dark:bg-gray-800 animate-pulse p-5 rounded-md"></div>
+                    </td>
+                  </tr>
+                </template>
 
-              <template v-else>
-                <tr v-for="(user, i) in (tableRefresh = refresh) ? data : data" :key="i" class="dark:hover:bg-gray-600 transition-all">
-                  <td class="px-2 py-1 border dark:border-gray-800 text-center">{{ i + 1 }}</td>
-                  <td class="px-2 py-1 border dark:border-gray-800 uppercase">{{ user.name }}</td>
-                  <td class="px-2 py-1 border dark:border-gray-800 uppercase">{{ user.username }}</td>
-                  <td class="px-2 py-1 border dark:border-gray-800 uppercase">{{ user.email }}</td>
-                  <td class="px-2 py-1 border dark:border-gray-800">
-                    <div class="flex-wrap">
-                      <div v-for="(permission, j) in user.permissions" :key="j" class="inline-block bg-gray-600 rounded-md px-3 py-1 m-[1px] text-sm">
-                        <div class="flex items-center justify-between space-x-1">
-                          <p class="uppercase font-semibold">{{ permission.name }}</p>
+                <template v-else>
+                  <tr v-for="(user, i) in (tableRefresh = refresh) ? data : data" :key="i" class="dark:hover:bg-gray-600 transition-all">
+                    <td class="px-2 py-1 border dark:border-gray-800 text-center">{{ i + 1 }}</td>
+                    <td class="px-2 py-1 border dark:border-gray-800 uppercase">{{ user.name }}</td>
+                    <td class="px-2 py-1 border dark:border-gray-800 uppercase">{{ user.username }}</td>
+                    <td class="px-2 py-1 border dark:border-gray-800 uppercase">{{ user.email }}</td>
+                    <td class="px-2 py-1 border dark:border-gray-800">
+                      <div class="flex-wrap">
+                        <div v-for="(permission, j) in user.permissions" :key="j" class="inline-block bg-gray-600 rounded-md px-3 py-1 m-[1px] text-sm">
+                          <div class="flex items-center justify-between space-x-1">
+                            <p class="uppercase font-semibold">{{ permission.name }}</p>
 
-                          <Icon @click.prevent="detachPermission(user, permission, refresh)" v-if="can('update user')" name="times" class="px-2 py-1 rounded-md dark:bg-gray-700 transition-all hover:bg-red-500 cursor-pointer" />
+                            <Icon @click.prevent="detachPermission(user, permission, refresh)" v-if="can('update user')" name="times" class="px-2 py-1 rounded-md dark:bg-gray-700 transition-all hover:bg-red-500 cursor-pointer" />
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  </td>
-                  <td class="px-2 py-1 border dark:border-gray-800">
-                    <div class="flex-wrap">
-                      <div v-for="(role, j) in user.roles" :key="j" class="inline-block dark:bg-gray-800 dark:hover:bg-gray-900 border dark:border-gray-800 rounded-md px-3 py-1 m-[1px] text-sm transition-all">
-                        <div class="flex items-center justify-between space-x-2">
-                          <p class="uppercase font-semibold">{{ role.name }}</p>
+                    </td>
+                    <td class="px-2 py-1 border dark:border-gray-800">
+                      <div class="flex-wrap">
+                        <div v-for="(role, j) in user.roles" :key="j" class="inline-block dark:bg-gray-800 dark:hover:bg-gray-900 border dark:border-gray-800 rounded-md px-3 py-1 m-[1px] text-sm transition-all">
+                          <div class="flex items-center justify-between space-x-2">
+                            <p class="uppercase font-semibold">{{ role.name }}</p>
 
-                          <Icon @click.prevent="detachRole(user, role, refresh)" v-if="can('update user')" name="times" class="px-2 py-1 rounded-md dark:bg-gray-700 transition-all hover:bg-red-500 cursor-pointer" />
+                            <Icon @click.prevent="detachRole(user, role, refresh)" v-if="can('update user')" name="times" class="px-2 py-1 rounded-md dark:bg-gray-700 transition-all hover:bg-red-500 cursor-pointer" />
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  </td>
-                  <td class="px-2 py-1 border dark:border-gray-800 uppercase">{{ new Date(user.email_verified_at).toLocaleString('id') }}</td>
-                  <td class="px-2 py-1 border dark:border-gray-800 uppercase">{{ new Date(user.created_at).toLocaleString('id') }}</td>
-                  <td class="px-2 py-1 border dark:border-gray-800 uppercase">{{ new Date(user.updated_at).toLocaleString('id') }}</td>
-                  <td class="px-2 py-1 border dark:border-gray-800">
-                    <div class="flex items-center space-x-2">
-                      <button @click.prevent="edit(user, refresh)" class="bg-blue-600 rounded-md px-3 py-1 transition-all hover:bg-blue-700 text-white text-sm">
-                        <div class="flex items-center space-x-2">
-                          <Icon name="edit" />
-                          <p class="uppercase">edit</p>
-                        </div>
-                      </button>
+                    </td>
+                    <td class="px-2 py-1 border dark:border-gray-800 uppercase">{{ new Date(user.email_verified_at).toLocaleString('id') }}</td>
+                    <td class="px-2 py-1 border dark:border-gray-800 uppercase">{{ new Date(user.created_at).toLocaleString('id') }}</td>
+                    <td class="px-2 py-1 border dark:border-gray-800 uppercase">{{ new Date(user.updated_at).toLocaleString('id') }}</td>
+                    <td class="px-2 py-1 border dark:border-gray-800">
+                      <div class="flex items-center space-x-2">
+                        <button @click.prevent="edit(user, refresh)" class="bg-blue-600 rounded-md px-3 py-1 transition-all hover:bg-blue-700 text-white text-sm">
+                          <div class="flex items-center space-x-2">
+                            <Icon name="edit" />
+                            <p class="uppercase">edit</p>
+                          </div>
+                        </button>
 
-                      <button @click.prevent="destroy(user, refresh)" class="bg-red-600 rounded-md px-3 py-1 transition-all hover:bg-red-700 text-white text-sm">
-                        <div class="flex items-center space-x-2">
-                          <Icon name="trash" />
-                          <p class="uppercase">delete</p>
-                        </div>
-                      </button>
-                    </div>
+                        <button @click.prevent="destroy(user, refresh)" class="bg-red-600 rounded-md px-3 py-1 transition-all hover:bg-red-700 text-white text-sm">
+                          <div class="flex items-center space-x-2">
+                            <Icon name="trash" />
+                            <p class="uppercase">delete</p>
+                          </div>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                </template>
+
+                <tr v-if="empty">
+                  <td class="text-5xl text-center p-4" colspan="1000">
+                    <p class="lowercase first-letter:capitalize font-semibold">there are no data available</p>
                   </td>
                 </tr>
-              </template>
-
-              <tr v-if="empty">
-                <td class="text-5xl text-center p-4" colspan="1000">
-                  <p class="lowercase first-letter:capitalize font-semibold">there are no data available</p>
-                </td>
-              </tr>
+              </transition-group>
             </template>
           </Builder>
         </div>
@@ -242,8 +248,20 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
     </Card>
   </DashboardLayout>
 
-  <transition name="fade">
-    <div v-if="open" class="fixed top-0 left-0 w-full h-full bg-black bg-opacity-40 flex sm:items-center justify-center overflow-auto z-10">
+  <transition
+    enterActiveClass="transition-all duration-500"
+    leaveActiveClass="transition-all duration-500"
+    enterFromClass="opacity-0"
+    leaveToClass="opacity-0">
+    <div v-if="open" class="fixed top-0 left-0 w-full h-full bg-black bg-opacity-80 z-20 overflow-hidden blur-3xl"></div>
+  </transition>
+
+  <transition
+    enterActiveClass="transition-all duration-150"
+    leaveActiveClass="transition-all duration-150"
+    enterFromClass="-translate-y-full opacity-0"
+    leaveToClass="-translate-y-full opacity-0">
+    <div v-if="open" class="fixed top-0 left-0 w-full h-full flex justify-center overflow-auto z-20 p-10">
       <form @submit.prevent="submit" class="w-full max-w-xl sm:max-w-5xl shadow-xl">
         <Card class="bg-gray-50 dark:bg-gray-700 dark:text-gray-100">
           <template #header>

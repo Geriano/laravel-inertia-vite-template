@@ -45,15 +45,21 @@ const self = getCurrentInstance()
           </template>
 
           <template #tbody="{ data }">
-            <tr v-for="(activity, i) in data" :key="i" class="dark:hover:bg-gray-600 dark:border-gray-800 transition-all">
-              <td class="px-2 py-1 border border-inherit text-center">{{ i + 1 }}</td>
-              <td class="px-2 py-1 border border-inherit uppercase">{{ activity.name }}</td>
-              <td class="px-2 py-1 border border-inherit uppercase">{{ activity.username }}</td>
-              <td class="px-2 py-1 border border-inherit uppercase">{{ activity.ip_address }}</td>
-              <td class="px-2 py-1 border border-inherit uppercase">{{ activity.browser }}</td>
-              <td class="px-2 py-1 border border-inherit uppercase">{{ activity.platform }}</td>
-              <td class="px-2 py-1 border border-inherit uppercase">{{ new Date(activity.created_at).toLocaleString('id') }}</td>
-            </tr>
+            <transition-group
+              enterActiveClass="transition-all duration-100"
+              leaveActiveClass="transition-all duration-50"
+              enterFromClass="opacity-0 -scale-y-100"
+              leaveToClass="opacity-0 -scale-y-100">
+              <tr v-for="(activity, i) in data" :key="i" class="dark:hover:bg-gray-600 dark:border-gray-800 transition-all">
+                <td class="px-2 py-1 border border-inherit text-center">{{ i + 1 }}</td>
+                <td class="px-2 py-1 border border-inherit uppercase">{{ activity.name }}</td>
+                <td class="px-2 py-1 border border-inherit uppercase">{{ activity.username }}</td>
+                <td class="px-2 py-1 border border-inherit uppercase">{{ activity.ip_address }}</td>
+                <td class="px-2 py-1 border border-inherit uppercase">{{ activity.browser }}</td>
+                <td class="px-2 py-1 border border-inherit uppercase">{{ activity.platform }}</td>
+                <td class="px-2 py-1 border border-inherit uppercase">{{ new Date(activity.created_at).toLocaleString('id') }}</td>
+              </tr>
+            </transition-group>
           </template>
         </Builder>
       </template>

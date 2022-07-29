@@ -93,17 +93,6 @@ onMounted(() => {
 onUnmounted(() => window.removeEventListener('keydown', esc))
 </script>
 
-<style>
-.opacity-enter-active, .opacity-leave-active {
-  transition: all 100ms ease-in-out;
-  opacity: 1;
-}
-
-.opacity-enter-from, .opacity-enter-to {
-  opacity: 0;
-}
-</style>
-
 <template>
   <DashboardLayout title="Permission">
     <Card class="bg-gray-50 dark:bg-slate-700 shadow-md">
@@ -119,14 +108,18 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
       </template>
 
       <template #body>
-        <div class="flex flex-col">
-          <div class="flex items-center justify-end space-x-2 text-sm dark:text-gray-100 px-4 py-2">
+        <div class="flex flex-col space-y-2  p-4 h-screen max-h-96 overflow-auto">
+          <div class="flex items-center justify-end space-x-2 text-sm dark:text-gray-100 px-4">
             <input v-model="search" type="search" class="bg-transparent w-full max-w-sm rounded-md placeholder:capitalize py-1" placeholder="search">
           </div>
 
           <div class="flex-wrap px-4 pb-2 dark:bg-gray-700 dark:text-gray-100 rounded-b-md">
-            <transition-group name="opacity">
-              <div v-for="(permission, i) in permissions.filter(p => p.name?.toLowerCase().includes(search?.trim().toLowerCase()))" :key="i" class="inline-block bg-gray-200 hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-900 transition-all border dark:border-gray-700 dark:hover:border-gray-800 rounded-md m-[2px] px-3 py-1">
+            <transition-group
+                enterActiveClass="transition-all duration-300"
+                leaveActiveClass="transition-all duration-300"
+                enterFromClass="opacity-0 -translate-y-100"
+                leaveToClass="opacity-0 -translate-y-100">
+              <div v-for="(permission, i) in permissions.filter(p => p.name?.toLowerCase().includes(search?.trim().toLowerCase()))" :key="i" class="inline-block bg-gray-200 hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-900 transition-all duration-300 border dark:border-gray-700 dark:hover:border-gray-800 rounded-md m-[2px] px-3 py-1">
                 <div class="flex items-center space-x-2 text-sm">
                   <p class="uppercase">{{ permission.name }}</p>
 
@@ -143,8 +136,20 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
     </Card>
   </DashboardLayout>
 
-  <transition name="fade">
-    <div v-if="open" class="fixed top-0 left-0 w-full h-screen flex sm:items-center justify-center bg-black bg-opacity-40 overflow-auto z-10">
+  <transition
+    enterActiveClass="transition-all duration-500"
+    leaveActiveClass="transition-all duration-500"
+    enterFromClass="opacity-0"
+    leaveToClass="opacity-0">
+    <div v-if="open" class="fixed top-0 left-0 w-full h-screen bg-black bg-opacity-80 z-20 overflow-hidden blur-3xl"></div>
+  </transition>
+
+  <transition
+    enterActiveClass="transition-all duration-150"
+    leaveActiveClass="transition-all duration-150"
+    enterFromClass="-translate-y-full opacity-0"
+    leaveToClass="-translate-y-full opacity-0">
+    <div v-if="open" class="fixed top-0 left-0 w-full h-screen flex justify-center overflow-auto z-20 p-10">
       <form @submit.prevent="submit" class="w-full max-w-xl shadow-xl">
         <Card class="bg-gray-50 dark:bg-gray-700 dark:text-gray-100 border dark:border-gray-700">
           <template #header>

@@ -132,54 +132,57 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
             </template>
 
             <template v-slot:tbody="{ data, processing, empty, refresh }">
-              <template v-if="processing">
-                <tr v-for="i in Array(5).fill(0)" :key="i">
-                  <td class="text-5xl text-center p-2" colspan="1000">
-                    <div class="lowercase first-letter:capitalize font-semibold dark:bg-gray-800 animate-pulse p-5 rounded-md"></div>
-                  </td>
-                </tr>
-              </template>
+              <transition-group
+                enterActiveClass="transition-all duration-300"
+                leaveActiveClass="transition-all duration-100"
+                enterFromClass="opacity-0"
+                leaveToClass="opacity-0">
+                <template v-if="processing">
+                  <tr v-for="i in Array(1).fill(0)" :key="i">
+                  </tr>
+                </template>
 
-              <template v-else>
-                <tr v-for="(role, i) in (tableRefresh = refresh) ? data : data" :key="i">
-                  <td class="px-2 py-1 border dark:border-gray-800 text-center">{{ i + 1 }}</td>
-                  <td class="px-2 py-1 border dark:border-gray-800 uppercase">{{ role.name }}</td>
-                  <td class="px-2 py-1 border dark:border-gray-800">
-                    <div class="flex-wrap">
-                      <div v-for="(permission, j) in role.permissions" :key="j" class="inline-block bg-gray-200 hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-900 border dark:border-gray-700 dark:hover:border-gray-800 rounded-md px-3 py-1 m-[1px] text-sm">
-                        <div class="flex items-center justify-between space-x-2">
-                          <p class="uppercase font-semibold">{{ permission.name }}</p>
+                <template v-else>
+                  <tr v-for="(role, i) in (tableRefresh = refresh) ? data : data" :key="i">
+                    <td class="px-2 py-1 border dark:border-gray-800 text-center">{{ i + 1 }}</td>
+                    <td class="px-2 py-1 border dark:border-gray-800 uppercase">{{ role.name }}</td>
+                    <td class="px-2 py-1 border dark:border-gray-800">
+                      <div class="flex-wrap">
+                        <div v-for="(permission, j) in role.permissions" :key="j" class="inline-block bg-gray-200 hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-900 border dark:border-gray-700 dark:hover:border-gray-800 rounded-md px-3 py-1 m-[1px] text-sm">
+                          <div class="flex items-center justify-between space-x-2">
+                            <p class="uppercase font-semibold">{{ permission.name }}</p>
 
-                          <Icon @click.prevent="detach(role, permission, refresh)" v-if="can('update role')" name="times" class="px-2 py-1 rounded-md bg-red-500 dark:bg-gray-700 transition-all hover:bg-red-600 text-white cursor-pointer" />
+                            <Icon @click.prevent="detach(role, permission, refresh)" v-if="can('update role')" name="times" class="px-2 py-1 rounded-md bg-red-500 dark:bg-gray-700 transition-all hover:bg-red-600 text-white cursor-pointer" />
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  </td>
-                  <td class="px-2 py-1 border dark:border-gray-800">
-                    <div class="flex items-center space-x-2">
-                      <button @click.prevent="edit(role, refresh)" class="bg-blue-600 rounded-md px-3 py-1 transition-all hover:bg-blue-700 text-white text-sm">
-                        <div class="flex items-center space-x-2">
-                          <Icon name="edit" />
-                          <p class="uppercase">edit</p>
-                        </div>
-                      </button>
+                    </td>
+                    <td class="px-2 py-1 border dark:border-gray-800">
+                      <div class="flex items-center space-x-2">
+                        <button @click.prevent="edit(role, refresh)" class="bg-blue-600 rounded-md px-3 py-1 transition-all hover:bg-blue-700 text-white text-sm">
+                          <div class="flex items-center space-x-2">
+                            <Icon name="edit" />
+                            <p class="uppercase">edit</p>
+                          </div>
+                        </button>
 
-                      <button @click.prevent="destroy(role, refresh)" class="bg-red-600 rounded-md px-3 py-1 transition-all hover:bg-red-700 text-white text-sm">
-                        <div class="flex items-center space-x-2">
-                          <Icon name="trash" />
-                          <p class="uppercase">delete</p>
-                        </div>
-                      </button>
-                    </div>
+                        <button @click.prevent="destroy(role, refresh)" class="bg-red-600 rounded-md px-3 py-1 transition-all hover:bg-red-700 text-white text-sm">
+                          <div class="flex items-center space-x-2">
+                            <Icon name="trash" />
+                            <p class="uppercase">delete</p>
+                          </div>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                </template>
+
+                <tr v-if="empty">
+                  <td class="text-5xl text-center p-4" colspan="1000">
+                    <p class="lowercase first-letter:capitalize font-semibold">there are no data available</p>
                   </td>
                 </tr>
-              </template>
-
-              <tr v-if="empty">
-                <td class="text-5xl text-center p-4" colspan="1000">
-                  <p class="lowercase first-letter:capitalize font-semibold">there are no data available</p>
-                </td>
-              </tr>
+              </transition-group>
             </template>
           </Builder>
         </div>
@@ -187,8 +190,20 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
     </Card>
   </DashboardLayout>
 
-  <transition name="fade">
-    <div v-if="open" class="fixed top-0 left-0 w-full h-full bg-black bg-opacity-40 flex sm:items-center justify-center overflow-auto z-10">
+  <transition
+    enterActiveClass="transition-all duration-500"
+    leaveActiveClass="transition-all duration-500"
+    enterFromClass="opacity-0"
+    leaveToClass="opacity-0">
+    <div v-if="open" class="fixed top-0 left-0 w-full h-full bg-black bg-opacity-80 z-20 overflow-hidden blur-3xl"></div>
+  </transition>
+
+  <transition
+    enterActiveClass="transition-all duration-150"
+    leaveActiveClass="transition-all duration-150"
+    enterFromClass="-translate-y-full opacity-0"
+    leaveToClass="-translate-y-full opacity-0">
+    <div v-if="open" class="fixed top-0 left-0 w-full h-full flex justify-center overflow-auto z-20 p-10">
       <form @submit.prevent="submit" class="w-full max-w-xl shadow-xl">
         <Card class="bg-gray-50 dark:bg-gray-700 dark:text-gray-100">
           <template #header>
