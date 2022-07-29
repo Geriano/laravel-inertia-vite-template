@@ -61,6 +61,7 @@ const store = () => {
     onSuccess: () => {
       close()
       form.reset()
+      Inertia.get(route(route().current()))
     },
 
     onError: () => {
@@ -85,6 +86,7 @@ const update = () => {
     onSuccess: () => {
       close()
       form.reset()
+      Inertia.get(route(route().current()))
     },
 
     onError: () => {
@@ -102,7 +104,9 @@ const destroy = async menu => {
     showCancelButton: true,
   })
 
-  response.isConfirmed && Inertia.delete(route('superuser.menu.destroy', menu.id))
+  response.isConfirmed && Inertia.delete(route('superuser.menu.destroy', menu.id), {
+    onSuccess: () => Inertia.get(route(route().current()))
+  })
 }
 
 const submit = () => form.id ? update() : store()
