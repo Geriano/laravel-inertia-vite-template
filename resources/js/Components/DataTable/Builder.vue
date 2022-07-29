@@ -14,6 +14,7 @@ const { url, sticky } = defineProps({
 })
 
 const paginator = ref({})
+const processing = ref(false)
 const last = ref(null)
 const config = useForm({
   page: 1,
@@ -37,6 +38,7 @@ const goTo = link => {
 
 const fetch = async u => {
   try {
+    processing.value = true
     const a = last.value = u || url
     const response = await axios.post(a || last.value, config.data())
     paginator.value = response.data
@@ -53,6 +55,8 @@ const fetch = async u => {
       return fetch(last.value)
     }
   }
+
+  processing.value = false
 }
 
 const createFloatingTh = () => {
@@ -129,16 +133,16 @@ onUpdated(() => rounded())
     <div class="p-2">
       <div class="overflow-auto rounded-md border dark:border-gray-900 max-h-96">
         <table class="w-full border-collapse">
-          <thead ref="thead" class="border-inherit" :class="config.sticky && 'sticky top-0 left-0'">
+          <thead ref="thead" class="border-inherit z-10" :class="config.sticky && 'sticky top-0 left-0'">
             <slot name="thead" :config="config" :paginator="paginator" :data="paginator.data" :refresh="fetch" />
           </thead>
 
-          <tfoot ref="tfoot" class="border-inherit" :class="config.sticky && 'sticky bottom-0 left-0'">
+          <tfoot ref="tfoot" class="border-inherit z-10" :class="config.sticky && 'sticky bottom-0 left-0'">
             <slot name="tfoot" :config="config" :paginator="paginator" :data="paginator.data" :refresh="fetch" />
           </tfoot>
 
           <tbody ref="tbody" class="border-inherit">
-            <slot name="tbody" :config="config" :paginator="paginator" :data="paginator.data" :refresh="fetch" />
+            <slot name="tbody" :config="config" :paginator="paginator" :data="paginator.data" :refresh="fetch" :processing="processing" :empty="!processing && !paginator?.data?.length" />
           </tbody>
         </table>
       </div>
