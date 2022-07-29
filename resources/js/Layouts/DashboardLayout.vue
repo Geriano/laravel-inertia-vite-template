@@ -13,6 +13,12 @@ const self = getCurrentInstance()
 const open = ref(window.innerWidth > 669)
 
 onMounted(() => window.addEventListener('resize', () => open.value = window.innerWidth > 669))
+
+const { user } = usePage().props.value
+Echo.private(`App.Models.User.${user.id}`)
+    .notification(notification => {
+      console.log(notification)
+    })
 </script>
 
 <style>
