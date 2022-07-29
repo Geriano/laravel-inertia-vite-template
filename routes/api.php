@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::prefix('/v1')->name('api.v1.')->group(function () {
+Route::prefix('/v1')->name('api.v1.')->middleware(['auth:sanctum'])->group(function () {
     Route::get('/user/{user}/menu', fn (App\Models\User $user) => $user->menus())->name('user.menu');
 
     Route::name('superuser.')->group(function () {
@@ -25,4 +25,6 @@ Route::prefix('/v1')->name('api.v1.')->group(function () {
         Route::post('/superuser/activity/login', [App\Http\Controllers\ActivityController::class, 'logins'])->name('activity.login');
         Route::get('/superuser/menu', [App\Http\Controllers\Superuser\MenuController::class, 'get'])->name('menu');
     });
+
+    Route::get('/user', fn () => request()->user());
 });

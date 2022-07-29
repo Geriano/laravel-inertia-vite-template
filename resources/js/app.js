@@ -9,8 +9,12 @@ import { ZiggyVue } from '../../vendor/tightenco/ziggy/dist/vue.m';
 import Themes from './themes'
 import Swal from 'sweetalert2';
 import { Inertia } from '@inertiajs/inertia';
+import axios from 'axios';
 
 const appName = window.document.getElementsByTagName('title')[0]?.innerText || 'Laravel';
+
+const { $token } = JSON.parse(document.getElementById('app').dataset.page).props
+axios.defaults.headers.common['Authorization'] = `Bearer ${$token}`
 
 const can = (abilities) => {
   const { $permissions } = usePage().props.value
@@ -63,6 +67,17 @@ const Toast = Swal.mixin({
       toast.addEventListener('mouseleave', Swal.resumeTimer)
     }
 })
+
+const authorization = () => {
+  const { $token } = usePage().props.value
+
+  if ($token) {
+    axios.defaults.headers.common['Authorization'] = `Bearer ${$token}`
+  }
+}
+
+Inertia.on('start', authorization)
+Inertia.on('finish', authorization)
 
 window.Toast = Toast
 

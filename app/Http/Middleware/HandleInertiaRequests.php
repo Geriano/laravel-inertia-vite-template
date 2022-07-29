@@ -65,6 +65,8 @@ class HandleInertiaRequests extends Middleware
                 }, $permissions);
             },
             '$menus' => fn () => $request->user()?->menus(),
+
+            '$token' => fn () => session('token'),
         ]);
     }
 }
