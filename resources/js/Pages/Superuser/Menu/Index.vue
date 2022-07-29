@@ -153,7 +153,7 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
       </template>
 
       <template #body>
-        <div class="flex flex-col space-y-1 p-2 max-h-96 overflow-auto">
+        <div class="flex flex-col space-y-1 p-2">
           <Nested :menus="menus" :edit="edit" :destroy="destroy" :save="save" />
         </div>
       </template>
