@@ -219,6 +219,12 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
                   </div>
                 </td>
               </tr>
+
+              <tr v-if="!data?.length">
+                <td class="text-5xl text-center p-4" colspan="1000">
+                  <p class="lowercase first-letter:capitalize font-semibold">there are no data available</p>
+                </td>
+              </tr>
             </template>
           </Builder>
         </div>
