@@ -37,8 +37,11 @@ class ActivityController extends Controller
                                 ->orWhere('login_activities.platform', 'like', $search)
                                 ->orWhere('login_activities.created_at', 'like', $search);
                     })
+                    ->when(!$request->user()->hasRole('superuser'), function (Builder $query) use ($request) {
+                        $query->where('users.id', $request->user()->id);
+                    })
                     ->select(['users.*', 'login_activities.*'])
-                    ->orderBy($request->input('order.key') ?: 'created_at', $request->input('order.dir') ?: 'asc')
+                    ->orderBy($request->input('order.key') ?: 'created_at', $request->input('order.dir') ?: 'desc')
                     ->paginate($request->per_page ?: 10);
     }
 }
