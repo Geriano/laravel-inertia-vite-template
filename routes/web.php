@@ -45,5 +45,6 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
             'index', 'store', 'update', 'destroy',
         ]);
         
+        Route::get('/activity/login', [App\Http\Controllers\ActivityController::class, 'login'])->name('activity.login');
     });
 });
