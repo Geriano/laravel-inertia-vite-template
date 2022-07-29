@@ -124,8 +124,6 @@ Inertia.on('finish', () => {
   nextTick(() => a.value = true)
 })
 
-Inertia.on('finish', () => fetch())
-
 onMounted(fetch)
 onMounted(() => window.addEventListener('keydown', esc))
 onUnmounted(() => window.removeEventListener('keydown', esc))
