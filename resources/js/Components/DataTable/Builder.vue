@@ -2,7 +2,7 @@
 import { useForm } from '@inertiajs/inertia-vue3'
 import axios from 'axios'
 import Swal from 'sweetalert2'
-import { getCurrentInstance, onMounted, ref } from 'vue'
+import { getCurrentInstance, onMounted, onUpdated, ref } from 'vue'
 
 const self = getCurrentInstance()
 const { url, sticky } = defineProps({
@@ -25,6 +25,15 @@ const config = useForm({
   },
   sticky,
 })
+
+const goTo = link => {
+  if (!link.url) {
+    return
+  }
+  
+  config.page = Number(link.url.match(/page=([\d]+)/)[1])
+  paginator.value.current_page !== config.page && fetch()
+}
 
 const fetch = async u => {
   try {
@@ -74,9 +83,17 @@ const createFloatingTh = () => {
   }
 }
 
-onMounted(fetch)
+const rounded = () => {
+  const { links } = self.refs
 
+  links && links.firstElementChild?.classList.add('rounded-l-md')
+  links && links.lastElementChild?.classList.add('rounded-r-md')
+}
+
+onMounted(fetch)
 onMounted(() => config.sticky && createFloatingTh())
+onMounted(() => rounded())
+onUpdated(() => rounded())
 </script>
 
 <template>
@@ -114,6 +131,16 @@ onMounted(() => config.sticky && createFloatingTh())
             <slot name="tbody" :config="config" :paginator="paginator" :data="paginator.data" :refresh="fetch" />
           </tbody>
         </table>
+      </div>
+    </div>
+
+    <div class="flex items-center space-x-4 p-2">
+      <p class="flex-none w-1/4">
+        Displaying from {{ paginator.from }} to {{ paginator.to }} in total {{ paginator.total }}
+      </p>
+
+      <div ref="links" class="flex items-center justify-end overflow-auto w-full">
+        <button v-for="(link, i) in paginator.links" :key="i" @click.prevent="goTo(link)" class="dark:hover:bg-gray-600 px-2 py-1 transition-all" :class="link.active ? 'dark:bg-gray-900' : 'dark:bg-gray-800'" v-html="link.label"></button>
       </div>
     </div>
   </div>
