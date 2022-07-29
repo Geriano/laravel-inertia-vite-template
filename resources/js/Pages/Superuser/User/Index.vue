@@ -141,86 +141,96 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
         <div class="flex flex-col space-y-2">
           <Builder :url="route('api.v1.superuser.user.paginate')">
             <template v-slot:thead="table">
-              <tr class="bg-gray-200 dark:bg-gray-800">
-                <Th class="border border-gray-300 dark:border-gray-900 px-3 py-2 text-center" :table="table" :sort="false">no</Th>
-                <Th class="border border-gray-300 dark:border-gray-900 px-3 py-2 text-center whitespace-nowrap" :table="table" :sort="true" name="name">name</Th>
-                <Th class="border border-gray-300 dark:border-gray-900 px-3 py-2 text-center whitespace-nowrap" :table="table" :sort="true" name="username">username</Th>
-                <Th class="border border-gray-300 dark:border-gray-900 px-3 py-2 text-center whitespace-nowrap" :table="table" :sort="true" name="email">email</Th>
-                <Th class="border border-gray-300 dark:border-gray-900 px-3 py-2 text-center whitespace-nowrap" :table="table" :sort="false">permissions</Th>
-                <Th class="border border-gray-300 dark:border-gray-900 px-3 py-2 text-center whitespace-nowrap" :table="table" :sort="false">roles</Th>
-                <Th class="border border-gray-300 dark:border-gray-900 px-3 py-2 text-center whitespace-nowrap" :table="table" :sort="true" name="email_verified_at">verified at</Th>
-                <Th class="border border-gray-300 dark:border-gray-900 px-3 py-2 text-center whitespace-nowrap" :table="table" :sort="true" name="created_at">created at</Th>
-                <Th class="border border-gray-300 dark:border-gray-900 px-3 py-2 text-center whitespace-nowrap" :table="table" :sort="true" name="updated_at">updated at</Th>
-                <Th class="border border-gray-300 dark:border-gray-900 px-3 py-2 text-center whitespace-nowrap" :table="table" :sort="false">action</Th>
+              <tr class="bg-gray-200 dark:bg-gray-800 border-gray-300 dark:border-gray-900">
+                <Th class="border px-3 py-2 text-center" :table="table" :sort="false">no</Th>
+                <Th class="border px-3 py-2 text-center whitespace-nowrap" :table="table" :sort="true" name="name">name</Th>
+                <Th class="border px-3 py-2 text-center whitespace-nowrap" :table="table" :sort="true" name="username">username</Th>
+                <Th class="border px-3 py-2 text-center whitespace-nowrap" :table="table" :sort="true" name="email">email</Th>
+                <Th class="border px-3 py-2 text-center whitespace-nowrap" :table="table" :sort="false">permissions</Th>
+                <Th class="border px-3 py-2 text-center whitespace-nowrap" :table="table" :sort="false">roles</Th>
+                <Th class="border px-3 py-2 text-center whitespace-nowrap" :table="table" :sort="true" name="email_verified_at">verified at</Th>
+                <Th class="border px-3 py-2 text-center whitespace-nowrap" :table="table" :sort="true" name="created_at">created at</Th>
+                <Th class="border px-3 py-2 text-center whitespace-nowrap" :table="table" :sort="true" name="updated_at">updated at</Th>
+                <Th class="border px-3 py-2 text-center whitespace-nowrap" :table="table" :sort="false">action</Th>
               </tr>
             </template>
 
             <template v-slot:tfoot="table">
-              <tr class="bg-gray-200 dark:bg-gray-800">
-                <Th class="border border-gray-300 dark:border-gray-900 px-3 py-2 text-center" :table="table" :sort="false">no</Th>
-                <Th class="border border-gray-300 dark:border-gray-900 px-3 py-2 text-center whitespace-nowrap" :table="table" :sort="false">name</Th>
-                <Th class="border border-gray-300 dark:border-gray-900 px-3 py-2 text-center whitespace-nowrap" :table="table" :sort="false">username</Th>
-                <Th class="border border-gray-300 dark:border-gray-900 px-3 py-2 text-center whitespace-nowrap" :table="table" :sort="false">email</Th>
-                <Th class="border border-gray-300 dark:border-gray-900 px-3 py-2 text-center whitespace-nowrap" :table="table" :sort="false">permissions</Th>
-                <Th class="border border-gray-300 dark:border-gray-900 px-3 py-2 text-center whitespace-nowrap" :table="table" :sort="false">roles</Th>
-                <Th class="border border-gray-300 dark:border-gray-900 px-3 py-2 text-center whitespace-nowrap" :table="table" :sort="false">verified at</Th>
-                <Th class="border border-gray-300 dark:border-gray-900 px-3 py-2 text-center whitespace-nowrap" :table="table" :sort="false">created at</Th>
-                <Th class="border border-gray-300 dark:border-gray-900 px-3 py-2 text-center whitespace-nowrap" :table="table" :sort="false">updated at</Th>
-                <Th class="border border-gray-300 dark:border-gray-900 px-3 py-2 text-center whitespace-nowrap" :table="table" :sort="false">action</Th>
+              <tr class="bg-gray-200 dark:bg-gray-800 border-gray-300 dark:border-gray-900">
+                <Th class="border px-3 py-2 text-center" :table="table" :sort="false">no</Th>
+                <Th class="border px-3 py-2 text-center whitespace-nowrap" :table="table" :sort="false">name</Th>
+                <Th class="border px-3 py-2 text-center whitespace-nowrap" :table="table" :sort="false">username</Th>
+                <Th class="border px-3 py-2 text-center whitespace-nowrap" :table="table" :sort="false">email</Th>
+                <Th class="border px-3 py-2 text-center whitespace-nowrap" :table="table" :sort="false">permissions</Th>
+                <Th class="border px-3 py-2 text-center whitespace-nowrap" :table="table" :sort="false">roles</Th>
+                <Th class="border px-3 py-2 text-center whitespace-nowrap" :table="table" :sort="false">verified at</Th>
+                <Th class="border px-3 py-2 text-center whitespace-nowrap" :table="table" :sort="false">created at</Th>
+                <Th class="border px-3 py-2 text-center whitespace-nowrap" :table="table" :sort="false">updated at</Th>
+                <Th class="border px-3 py-2 text-center whitespace-nowrap" :table="table" :sort="false">action</Th>
               </tr>
             </template>
 
-            <template v-slot:tbody="{ data, refresh }">
-              <tr v-for="(user, i) in (tableRefresh = refresh) ? data : data" :key="i">
-                <td class="px-2 py-1 border dark:border-gray-800 text-center">{{ i + 1 }}</td>
-                <td class="px-2 py-1 border dark:border-gray-800 uppercase">{{ user.name }}</td>
-                <td class="px-2 py-1 border dark:border-gray-800 uppercase">{{ user.username }}</td>
-                <td class="px-2 py-1 border dark:border-gray-800 uppercase">{{ user.email }}</td>
-                <td class="px-2 py-1 border dark:border-gray-800">
-                  <div class="flex-wrap">
-                    <div v-for="(permission, j) in user.permissions" :key="j" class="inline-block bg-gray-600 rounded-md px-3 py-1 m-[1px] text-sm">
-                      <div class="flex items-center justify-between space-x-1">
-                        <p class="uppercase font-semibold">{{ permission.name }}</p>
+            <template v-slot:tbody="{ data, processing, empty, refresh }">
+              <template v-if="processing">
+                <tr v-for="i in Array(5).fill(0)" :key="i">
+                  <td class="text-5xl text-center p-2" colspan="1000">
+                    <div class="lowercase first-letter:capitalize font-semibold dark:bg-gray-800 animate-pulse p-5 rounded-md"></div>
+                  </td>
+                </tr>
+              </template>
 
-                        <Icon @click.prevent="detachPermission(user, permission, refresh)" v-if="can('update user')" name="times" class="px-2 py-1 rounded-md dark:bg-gray-700 transition-all hover:bg-red-500 cursor-pointer" />
+              <template v-else>
+                <tr v-for="(user, i) in (tableRefresh = refresh) ? data : data" :key="i" class="dark:hover:bg-gray-600 transition-all">
+                  <td class="px-2 py-1 border dark:border-gray-800 text-center">{{ i + 1 }}</td>
+                  <td class="px-2 py-1 border dark:border-gray-800 uppercase">{{ user.name }}</td>
+                  <td class="px-2 py-1 border dark:border-gray-800 uppercase">{{ user.username }}</td>
+                  <td class="px-2 py-1 border dark:border-gray-800 uppercase">{{ user.email }}</td>
+                  <td class="px-2 py-1 border dark:border-gray-800">
+                    <div class="flex-wrap">
+                      <div v-for="(permission, j) in user.permissions" :key="j" class="inline-block bg-gray-600 rounded-md px-3 py-1 m-[1px] text-sm">
+                        <div class="flex items-center justify-between space-x-1">
+                          <p class="uppercase font-semibold">{{ permission.name }}</p>
+
+                          <Icon @click.prevent="detachPermission(user, permission, refresh)" v-if="can('update user')" name="times" class="px-2 py-1 rounded-md dark:bg-gray-700 transition-all hover:bg-red-500 cursor-pointer" />
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </td>
-                <td class="px-2 py-1 border dark:border-gray-800">
-                  <div class="flex-wrap">
-                    <div v-for="(role, j) in user.roles" :key="j" class="inline-block dark:bg-gray-800 dark:hover:bg-gray-900 border dark:border-gray-800 rounded-md px-3 py-1 m-[1px] text-sm transition-all">
-                      <div class="flex items-center justify-between space-x-2">
-                        <p class="uppercase font-semibold">{{ role.name }}</p>
+                  </td>
+                  <td class="px-2 py-1 border dark:border-gray-800">
+                    <div class="flex-wrap">
+                      <div v-for="(role, j) in user.roles" :key="j" class="inline-block dark:bg-gray-800 dark:hover:bg-gray-900 border dark:border-gray-800 rounded-md px-3 py-1 m-[1px] text-sm transition-all">
+                        <div class="flex items-center justify-between space-x-2">
+                          <p class="uppercase font-semibold">{{ role.name }}</p>
 
-                        <Icon @click.prevent="detachRole(user, role, refresh)" v-if="can('update user')" name="times" class="px-2 py-1 rounded-md dark:bg-gray-700 transition-all hover:bg-red-500 cursor-pointer" />
+                          <Icon @click.prevent="detachRole(user, role, refresh)" v-if="can('update user')" name="times" class="px-2 py-1 rounded-md dark:bg-gray-700 transition-all hover:bg-red-500 cursor-pointer" />
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </td>
-                <td class="px-2 py-1 border dark:border-gray-800 uppercase">{{ new Date(user.email_verified_at).toLocaleString('id') }}</td>
-                <td class="px-2 py-1 border dark:border-gray-800 uppercase">{{ new Date(user.created_at).toLocaleString('id') }}</td>
-                <td class="px-2 py-1 border dark:border-gray-800 uppercase">{{ new Date(user.updated_at).toLocaleString('id') }}</td>
-                <td class="px-2 py-1 border dark:border-gray-800">
-                  <div class="flex items-center space-x-2">
-                    <button @click.prevent="edit(user, refresh)" class="bg-blue-600 rounded-md px-3 py-1 transition-all hover:bg-blue-700 text-white text-sm">
-                      <div class="flex items-center space-x-2">
-                        <Icon name="edit" />
-                        <p class="uppercase">edit</p>
-                      </div>
-                    </button>
+                  </td>
+                  <td class="px-2 py-1 border dark:border-gray-800 uppercase">{{ new Date(user.email_verified_at).toLocaleString('id') }}</td>
+                  <td class="px-2 py-1 border dark:border-gray-800 uppercase">{{ new Date(user.created_at).toLocaleString('id') }}</td>
+                  <td class="px-2 py-1 border dark:border-gray-800 uppercase">{{ new Date(user.updated_at).toLocaleString('id') }}</td>
+                  <td class="px-2 py-1 border dark:border-gray-800">
+                    <div class="flex items-center space-x-2">
+                      <button @click.prevent="edit(user, refresh)" class="bg-blue-600 rounded-md px-3 py-1 transition-all hover:bg-blue-700 text-white text-sm">
+                        <div class="flex items-center space-x-2">
+                          <Icon name="edit" />
+                          <p class="uppercase">edit</p>
+                        </div>
+                      </button>
 
-                    <button @click.prevent="destroy(user, refresh)" class="bg-red-600 rounded-md px-3 py-1 transition-all hover:bg-red-700 text-white text-sm">
-                      <div class="flex items-center space-x-2">
-                        <Icon name="trash" />
-                        <p class="uppercase">delete</p>
-                      </div>
-                    </button>
-                  </div>
-                </td>
-              </tr>
+                      <button @click.prevent="destroy(user, refresh)" class="bg-red-600 rounded-md px-3 py-1 transition-all hover:bg-red-700 text-white text-sm">
+                        <div class="flex items-center space-x-2">
+                          <Icon name="trash" />
+                          <p class="uppercase">delete</p>
+                        </div>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              </template>
 
-              <tr v-if="!data?.length">
+              <tr v-if="empty">
                 <td class="text-5xl text-center p-4" colspan="1000">
                   <p class="lowercase first-letter:capitalize font-semibold">there are no data available</p>
                 </td>
