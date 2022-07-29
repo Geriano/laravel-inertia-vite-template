@@ -74,12 +74,21 @@ const createFloatingTh = () => {
     let ths = tfoot.querySelectorAll('th')
     ths.forEach((th, i) => {
       const floating = document.createElement('div')
-      floating.className = 'absolute top-0 left-0 w-full h-full border border-1 border-inherit'
+      floating.className = 'absolute bottom-0 left-0 w-full h-full border border-1 border-inherit'
       i === 0 && floating.classList.add('rounded-bl-md')
       i + 1 === ths.length && floating.classList.add('rounded-br-md')
 
       th.append(floating)
     })
+  }
+}
+
+const inherit = () => {
+  const { thead, tfoot } = self.refs
+
+  if (thead && tfoot) {
+    thead.querySelectorAll('th').forEach(th => th.classList.add('bg-inherit', 'border-inherit'))
+    tfoot.querySelectorAll('th').forEach(th => th.classList.add('bg-inherit', 'border-inherit'))
   }
 }
 
@@ -92,6 +101,7 @@ const rounded = () => {
 
 onMounted(fetch)
 onMounted(() => config.sticky && createFloatingTh())
+onMounted(() => inherit())
 onMounted(() => rounded())
 onUpdated(() => rounded())
 </script>
@@ -102,11 +112,11 @@ onUpdated(() => rounded())
       <div class="w-full sm:max-w-xs flex items-center space-x-2">
         <label for="per_page" class="w-1/4 sm:w-auto lowercase first-letter:capitalize">per page</label>
         <select name="per_page" v-model="config.per_page" @change.prevent="fetch()" class="w-full sm:w-auto bg-transparent border dark:border-gray-600 rounded-md px-3 py-1">
-          <option value="10">10</option>
-          <option value="15">15</option>
-          <option value="25">25</option>
-          <option value="50">50</option>
-          <option value="100">100</option>
+          <option class="dark:bg-gray-700" value="10">10</option>
+          <option class="dark:bg-gray-700" value="15">15</option>
+          <option class="dark:bg-gray-700" value="25">25</option>
+          <option class="dark:bg-gray-700" value="50">50</option>
+          <option class="dark:bg-gray-700" value="100">100</option>
         </select>
       </div>
 
@@ -117,13 +127,13 @@ onUpdated(() => rounded())
     </div>
 
     <div class="p-2">
-      <div class="overflow-auto rounded-md border dark:border-gray-900">
+      <div class="overflow-auto rounded-md border dark:border-gray-900 max-h-96">
         <table class="w-full border-collapse">
-          <thead ref="thead" class="border-inherit">
+          <thead ref="thead" class="border-inherit" :class="config.sticky && 'sticky top-0 left-0'">
             <slot name="thead" :config="config" :paginator="paginator" :data="paginator.data" :refresh="fetch" />
           </thead>
 
-          <tfoot ref="tfoot" class="border-inherit">
+          <tfoot ref="tfoot" class="border-inherit" :class="config.sticky && 'sticky bottom-0 left-0'">
             <slot name="tfoot" :config="config" :paginator="paginator" :data="paginator.data" :refresh="fetch" />
           </tfoot>
 
@@ -134,7 +144,7 @@ onUpdated(() => rounded())
       </div>
     </div>
 
-    <div class="flex items-center space-x-4 p-2">
+    <div v-if="paginator.total > paginator.per_page" class="flex items-center space-x-4 p-2">
       <p class="flex-none w-1/4">
         Displaying from {{ paginator.from }} to {{ paginator.to }} in total {{ paginator.total }}
       </p>
