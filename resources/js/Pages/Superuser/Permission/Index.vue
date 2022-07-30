@@ -7,6 +7,7 @@ import DashboardLayout from '@/Layouts/DashboardLayout.vue'
 import Card from '@/Components/Card.vue'
 import Icon from '@/Components/Icon.vue'
 import { Inertia } from '@inertiajs/inertia'
+import Modal from '@/Components/Modal.vue'
 
 const self = getCurrentInstance()
 const permissions = ref([])
@@ -135,56 +136,42 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
       </template>
     </Card>
   </DashboardLayout>
+  
+  <Modal :show="open">
+    <form @submit.prevent="submit" class="w-full max-w-xl shadow-xl">
+      <Card class="bg-gray-50 dark:bg-gray-700 dark:text-gray-100 border dark:border-gray-700">
+        <template #header>
+          <div class="flex items-center space-x-2 justify-end bg-gray-200 dark:bg-gray-800 dark:text-gray-50 p-2">
+            <Icon @click.prevent="close" name="times" class="border border-transparent dark:bg-gray-700 px-2 py-1 rounded-md cursor-pointer transition-all bg-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:border-gray-600" />
+          </div>
+        </template>
 
-  <transition
-    enterActiveClass="transition-all duration-500"
-    leaveActiveClass="transition-all duration-500"
-    enterFromClass="opacity-0"
-    leaveToClass="opacity-0">
-    <div v-if="open" class="fixed top-0 left-0 w-full h-screen bg-black bg-opacity-80 z-20 overflow-hidden blur-3xl"></div>
-  </transition>
-
-  <transition
-    enterActiveClass="transition-all duration-150"
-    leaveActiveClass="transition-all duration-150"
-    enterFromClass="-translate-y-full opacity-0"
-    leaveToClass="-translate-y-full opacity-0">
-    <div v-if="open" class="fixed top-0 left-0 w-full h-screen flex justify-center overflow-auto z-20 p-10">
-      <form @submit.prevent="submit" class="w-full max-w-xl shadow-xl">
-        <Card class="bg-gray-50 dark:bg-gray-700 dark:text-gray-100 border dark:border-gray-700">
-          <template #header>
-            <div class="flex items-center space-x-2 justify-end bg-gray-200 dark:bg-gray-800 dark:text-gray-50 p-2">
-              <Icon @click.prevent="close" name="times" class="border border-transparent dark:bg-gray-700 px-2 py-1 rounded-md cursor-pointer transition-all bg-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:border-gray-600" />
-            </div>
-          </template>
-
-          <template #body>
-            <div class="flex flex-col space-y-4 p-4">
-              <div class="flex flex-col space-y-2">
-                <div class="flex items-center space-x-2">
-                  <label for="name" class="lowercase first-letter:capitalize flex-none w-1/4">name</label>
-                  <input ref="name" type="text" v-model="form.name" class="bg-transparent w-full rounded-md px-3 py-1 text-sm placeholder:capitalize" placeholder="name">
-                </div>
-                
-                <transition name="fade">
-                  <div v-if="form.errors.name" class="text-red-400 text-sm text-right">{{ form.errors.name }}</div>
-                </transition>
+        <template #body>
+          <div class="flex flex-col space-y-4 p-4">
+            <div class="flex flex-col space-y-2">
+              <div class="flex items-center space-x-2">
+                <label for="name" class="lowercase first-letter:capitalize flex-none w-1/4">name</label>
+                <input ref="name" type="text" v-model="form.name" class="bg-transparent w-full rounded-md px-3 py-1 text-sm placeholder:capitalize" placeholder="name">
               </div>
+              
+              <transition name="fade">
+                <div v-if="form.errors.name" class="text-red-400 text-sm text-right">{{ form.errors.name }}</div>
+              </transition>
             </div>
-          </template>
+          </div>
+        </template>
 
-          <template #footer>
-            <div class="flex items-center space-x-2 justify-end bg-gray-200 dark:bg-gray-800 text-white px-2 py-1">
-              <button type="submit" class="bg-green-600 rounded-md px-3 py-1 text-sm transition-all hover:bg-green-700">
-                <div class="flex items-center space-x-1">
-                  <Icon name="check" />
-                  <p class="uppercase font-semibold">{{ form.id ? 'update' : 'create' }}</p>
-                </div>
-              </button>
-            </div>
-          </template>
-        </Card>
-      </form>
-    </div>
-  </transition>
+        <template #footer>
+          <div class="flex items-center space-x-2 justify-end bg-gray-200 dark:bg-gray-800 text-white px-2 py-1">
+            <button type="submit" class="bg-green-600 rounded-md px-3 py-1 text-sm transition-all hover:bg-green-700">
+              <div class="flex items-center space-x-1">
+                <Icon name="check" />
+                <p class="uppercase font-semibold">{{ form.id ? 'update' : 'create' }}</p>
+              </div>
+            </button>
+          </div>
+        </template>
+      </Card>
+    </form>
+  </Modal>
 </template>

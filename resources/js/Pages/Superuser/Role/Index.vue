@@ -9,6 +9,7 @@ import Builder from '@/Components/DataTable/Builder.vue'
 import Th from '@/Components/DataTable/Th.vue'
 import Swal from 'sweetalert2'
 import Select from '@vueform/multiselect'
+import Modal from '@/Components/Modal.vue'
 
 const self = getCurrentInstance()
 const { permissions } = defineProps({
@@ -31,7 +32,6 @@ const show = () => {
 const close = () => {
   open.value = false
   form.reset()
-  tableRefresh.value && tableRefresh.value()
 }
 
 const detach = async (role, permission, refresh) => {
@@ -190,73 +190,59 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
     </Card>
   </DashboardLayout>
 
-  <transition
-    enterActiveClass="transition-all duration-500"
-    leaveActiveClass="transition-all duration-500"
-    enterFromClass="opacity-0"
-    leaveToClass="opacity-0">
-    <div v-if="open" class="fixed top-0 left-0 w-full h-full bg-black bg-opacity-80 z-20 overflow-hidden blur-3xl"></div>
-  </transition>
+  <Modal :show="open">
+    <form @submit.prevent="submit" class="w-full max-w-xl shadow-xl">
+      <Card class="bg-gray-50 dark:bg-gray-700 dark:text-gray-100">
+        <template #header>
+          <div class="flex items-center justify-end bg-gray-200 dark:bg-gray-800 p-2">
+            <Icon @click.prevent="close" name="times" class="px-2 py-1 bg-gray-300 hover:bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 rounded-md transition-all cursor-pointer" />
+          </div>
+        </template>
 
-  <transition
-    enterActiveClass="transition-all duration-150"
-    leaveActiveClass="transition-all duration-150"
-    enterFromClass="-translate-y-full opacity-0"
-    leaveToClass="-translate-y-full opacity-0">
-    <div v-if="open" class="fixed top-0 left-0 w-full h-full flex justify-center overflow-auto z-20 p-10">
-      <form @submit.prevent="submit" class="w-full max-w-xl shadow-xl">
-        <Card class="bg-gray-50 dark:bg-gray-700 dark:text-gray-100">
-          <template #header>
-            <div class="flex items-center justify-end bg-gray-200 dark:bg-gray-800 p-2">
-              <Icon @click.prevent="close" name="times" class="px-2 py-1 bg-gray-300 hover:bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 rounded-md transition-all cursor-pointer" />
-            </div>
-          </template>
-
-          <template #body>
-            <div class="flex flex-col space-y-4 p-4">
-              <div class="flex flex-col space-y-2">
-                <div class="flex items-center space-x-2">
-                  <label for="name" class="w-1/3 lowercase first-letter:capitalize">name</label>
-                  <input ref="name" type="text" name="name" v-model="form.name" class="w-full bg-white dark:bg-transparent rounded px-3 py-2 placeholder:capitalize" placeholder="name" required>
-                </div>
-
-                <p v-if="form.errors.name" class="text-red-500 text-right lowercase first-letter:capitalize">{{ form.errors.name }}</p>
+        <template #body>
+          <div class="flex flex-col space-y-4 p-4">
+            <div class="flex flex-col space-y-2">
+              <div class="flex items-center space-x-2">
+                <label for="name" class="w-1/3 lowercase first-letter:capitalize">name</label>
+                <input ref="name" type="text" name="name" v-model="form.name" class="w-full bg-white dark:bg-transparent rounded px-3 py-2 placeholder:capitalize" placeholder="name" required>
               </div>
 
-              <div class="flex flex-col space-y-2">
-                <div class="flex items-center space-x-2">
-                  <label for="permissions" class="w-1/3 lowercase first-letter:capitalize">permissions</label>
-                  <Select
-                    v-model="form.permissions"
-                    :options="permissions.map(p => ({
-                      label: p.name,
-                      value: p.id,
-                    }))"
-                    :searchable="true"
-                    :clearOnSelect="false"
-                    :closeOnSelect="false"
-                    class="text-gray-800 uppercase"
-                    mode="tags" />
-                </div>
+              <p v-if="form.errors.name" class="text-red-500 text-right lowercase first-letter:capitalize">{{ form.errors.name }}</p>
+            </div>
 
-                <p v-if="form.errors.permissions" class="text-red-500 text-right lowercase first-letter:capitalize">{{ form.errors.permissions }}</p>
+            <div class="flex flex-col space-y-2">
+              <div class="flex items-center space-x-2">
+                <label for="permissions" class="w-1/3 lowercase first-letter:capitalize">permissions</label>
+                <Select
+                  v-model="form.permissions"
+                  :options="permissions.map(p => ({
+                    label: p.name,
+                    value: p.id,
+                  }))"
+                  :searchable="true"
+                  :clearOnSelect="false"
+                  :closeOnSelect="false"
+                  class="text-gray-800 uppercase"
+                  mode="tags" />
               </div>
-            </div>
-          </template>
 
-          <template #footer>
-            <div class="flex items-center justify-end space-x-2 bg-gray-200 dark:bg-gray-800 px-2 py-1">
-              <button type="submit" class="bg-green-600 hover:bg-green-700 rounded-md px-3 py-1 text-sm text-white transition-all">
-                <div class="flex items-center space-x-1">
-                  <Icon name="check" />
-
-                  <p class="uppercase font-semibold">{{ form.id ? 'update' : 'create' }}</p>
-                </div>
-              </button>
+              <p v-if="form.errors.permissions" class="text-red-500 text-right lowercase first-letter:capitalize">{{ form.errors.permissions }}</p>
             </div>
-          </template>
-        </Card>
-      </form>
-    </div>
-  </transition>
+          </div>
+        </template>
+
+        <template #footer>
+          <div class="flex items-center justify-end space-x-2 bg-gray-200 dark:bg-gray-800 px-2 py-1">
+            <button type="submit" class="bg-green-600 hover:bg-green-700 rounded-md px-3 py-1 text-sm text-white transition-all">
+              <div class="flex items-center space-x-1">
+                <Icon name="check" />
+
+                <p class="uppercase font-semibold">{{ form.id ? 'update' : 'create' }}</p>
+              </div>
+            </button>
+          </div>
+        </template>
+      </Card>
+    </form>
+  </Modal>
 </template>
