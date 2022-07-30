@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Superuser;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\DataTableRequest;
 use App\Models\Permission;
 use App\Models\Role;
 use Illuminate\Database\Eloquent\Builder;
@@ -33,17 +34,12 @@ class RoleController extends Controller
     }
 
     /**
-     * @param \Illuminate\Http\Request $request
+     * @param \App\Http\Requests\DataTableRequest $request
      * @return \Illuminate\Http\Response
      */
-    public function paginate(Request $request)
+    public function paginate(DataTableRequest $request)
     {
-        $request->validate([
-            'search' => 'nullable|string',
-            'per_page' => 'nullable|integer|max:1000',
-            'order.key' => 'nullable|string',
-            'order.dir' => 'nullable|in:asc,desc',
-        ]);
+        $request->validated();
 
         return Role::where(function (Builder $query) use ($request) {
                         $search = '%' . $request->search . '%';
