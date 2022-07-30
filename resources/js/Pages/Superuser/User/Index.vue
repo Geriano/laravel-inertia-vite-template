@@ -128,7 +128,7 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
 <style src="@vueform/multiselect/themes/default.css"></style>
 
 <template>
-  <DashboardLayout title="user">
+  <DashboardLayout title="User">
     <Card class="bg-gray-50 dark:bg-gray-700 dark:text-gray-100">
       <template #header>
         <div class="flex items-center space-x-2 p-2 bg-gray-200 dark:bg-gray-800">
