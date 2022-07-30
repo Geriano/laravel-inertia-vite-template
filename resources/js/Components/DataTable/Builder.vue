@@ -14,7 +14,7 @@ const { url, sticky } = defineProps({
 })
 
 const paginator = ref({})
-const processing = ref(false)
+const processing = ref(true)
 const last = ref(null)
 const config = useForm({
   page: 1,
@@ -114,14 +114,22 @@ onUpdated(() => rounded())
   <div class="flex flex-col w-full">
     <div class="flex flex-col sm:flex-row items-center sm:justify-between space-y-2 sm:space-y-0 sm:space-x-2 p-2">
       <div class="w-full sm:max-w-xs flex items-center space-x-2">
-        <label for="per_page" class="w-1/4 sm:w-auto lowercase first-letter:capitalize">per page</label>
-        <select name="per_page" v-model="config.per_page" @change.prevent="fetch()" class="w-full sm:w-auto bg-transparent border dark:border-gray-600 rounded-md px-3 py-1">
-          <option class="dark:bg-gray-700" value="10">10</option>
-          <option class="dark:bg-gray-700" value="15">15</option>
-          <option class="dark:bg-gray-700" value="25">25</option>
-          <option class="dark:bg-gray-700" value="50">50</option>
-          <option class="dark:bg-gray-700" value="100">100</option>
-        </select>
+        <TransitionGroup
+          enterActiveClass="transition-all duration-300"
+          leaveActiveClass="transition-all duration-300"
+          enterFromClass="translate-y-[100%]"
+          leaveToClass="translate-y-[100%]">
+          <template v-if="paginator?.total > config.per_page">
+            <label for="per_page" class="w-1/4 sm:w-auto lowercase first-letter:capitalize">per page</label>
+            <select name="per_page" v-model="config.per_page" @change.prevent="fetch()" class="w-full sm:w-auto bg-transparent border dark:border-gray-600 rounded-md px-3 py-1">
+              <option class="dark:bg-gray-700" value="10">10</option>
+              <option class="dark:bg-gray-700" value="15">15</option>
+              <option class="dark:bg-gray-700" value="25">25</option>
+              <option class="dark:bg-gray-700" value="50">50</option>
+              <option class="dark:bg-gray-700" value="100">100</option>
+            </select>
+          </template>
+        </TransitionGroup>
       </div>
 
       <div class="w-full sm:max-w-sm flex items-center space-x-2 sm:justify-end">
@@ -148,14 +156,20 @@ onUpdated(() => rounded())
       </div>
     </div>
 
-    <div v-if="paginator.total > paginator.per_page" class="flex items-center space-x-4 p-2">
-      <p class="flex-none w-1/4">
-        Displaying from {{ paginator.from }} to {{ paginator.to }} in total {{ paginator.total }}
-      </p>
+    <Transition
+      enterActiveClass="transition-all duration-300"
+      leaveActiveClass="transition-all duration-300"
+      enterFromClass="-translate-y-[100%]"
+      leaveToClass="-translate-y-[100%]">
+      <div v-if="paginator.total > paginator.per_page" class="flex items-center space-x-4 p-2">
+        <p class="flex-none w-1/4">
+          Displaying from {{ paginator.from }} to {{ paginator.to }} in total {{ paginator.total }}
+        </p>
 
-      <div ref="links" class="flex items-center justify-end overflow-auto w-full">
-        <button v-for="(link, i) in paginator.links" :key="i" @click.prevent="goTo(link)" class="dark:hover:bg-gray-600 px-2 py-1 transition-all" :class="link.active ? 'dark:bg-gray-900' : 'dark:bg-gray-800'" v-html="link.label"></button>
+        <div ref="links" class="flex items-center justify-end overflow-auto w-full">
+          <button v-for="(link, i) in paginator.links" :key="i" @click.prevent="goTo(link)" class="dark:hover:bg-gray-600 px-2 py-1 transition-all" :class="link.active ? 'dark:bg-gray-900' : 'dark:bg-gray-800'" v-html="link.label"></button>
+        </div>
       </div>
-    </div>
+    </Transition>
   </div>
 </template>
