@@ -187,7 +187,7 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
                 </template>
 
                 <template v-else>
-                  <tr v-for="(user, i) in (tableRefresh = refresh) ? data : data" :key="i" class="dark:hover:bg-gray-600 transition-all">
+                  <tr v-for="(user, i) in (tableRefresh = refresh) ? data : data" :key="i" class="dark:hover:bg-gray-600 transition-all duration-300">
                     <td class="px-2 py-1 border dark:border-gray-800 text-center">{{ i + 1 }}</td>
                     <td class="px-2 py-1 border dark:border-gray-800 uppercase">{{ user.name }}</td>
                     <td class="px-2 py-1 border dark:border-gray-800 uppercase">{{ user.username }}</td>

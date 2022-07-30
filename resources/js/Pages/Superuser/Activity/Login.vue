@@ -22,7 +22,7 @@ const self = getCurrentInstance()
         <Builder :url="route('api.v1.superuser.activity.login')">
           <template #thead="table">
             <tr class="bg-gray-200 dark:bg-gray-800 border-gray-300 dark:border-gray-900">
-              <Th class="border px-3 py-2 text-center" :table="table" :sort="false">no</Th>
+              <Th class="border p-2 text-center" :table="table" :sort="false">no</Th>
               <Th class="border px-3 py-2 text-center whitespace-nowrap" :table="table" :sort="true" name="users.name">name</Th>
               <Th class="border px-3 py-2 text-center whitespace-nowrap" :table="table" :sort="true" name="users.username">username</Th>
               <Th class="border px-3 py-2 text-center whitespace-nowrap" :table="table" :sort="true" name="login_activities.ip_address">ip address</Th>
@@ -34,7 +34,7 @@ const self = getCurrentInstance()
 
           <template #tfoot="table">
             <tr class="bg-gray-200 dark:bg-gray-800 border-gray-300 dark:border-gray-900">
-              <Th class="border px-3 py-2 text-center" :table="table" :sort="false">no</Th>
+              <Th class="border p-2 text-center" :table="table" :sort="false">no</Th>
               <Th class="border px-3 py-2 text-center whitespace-nowrap" :table="table" :sort="false">name</Th>
               <Th class="border px-3 py-2 text-center whitespace-nowrap" :table="table" :sort="false">username</Th>
               <Th class="border px-3 py-2 text-center whitespace-nowrap" :table="table" :sort="false">ip address</Th>
@@ -50,7 +50,7 @@ const self = getCurrentInstance()
               leaveActiveClass="transition-all duration-50"
               enterFromClass="opacity-0 -scale-y-100"
               leaveToClass="opacity-0 -scale-y-100">
-              <tr v-for="(activity, i) in data" :key="i" class="dark:hover:bg-gray-600 dark:border-gray-800 transition-all">
+              <tr v-for="(activity, i) in data" :key="i" class="dark:hover:bg-gray-600 dark:border-gray-800 transition-all duration-300">
                 <td class="px-2 py-1 border border-inherit text-center">{{ i + 1 }}</td>
                 <td class="px-2 py-1 border border-inherit uppercase">{{ activity.name }}</td>
                 <td class="px-2 py-1 border border-inherit uppercase">{{ activity.username }}</td>
