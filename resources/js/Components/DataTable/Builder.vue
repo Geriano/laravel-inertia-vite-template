@@ -167,7 +167,7 @@ onUpdated(() => rounded())
         </p>
 
         <div ref="links" class="flex items-center justify-end overflow-auto w-full">
-          <button v-for="(link, i) in paginator.links" :key="i" @click.prevent="goTo(link)" class="dark:hover:bg-gray-600 px-2 py-1 transition-all" :class="link.active ? 'dark:bg-gray-900' : 'dark:bg-gray-800'" v-html="link.label"></button>
+          <button v-for="(link, i) in paginator.links" :key="i" @click.prevent="goTo(link)" class="hover:bg-gray-100 dark:hover:bg-gray-600 px-2 py-1 transition-all" :class="link.active ? 'bg-gray-300 dark:bg-gray-900' : 'bg-gray-200 dark:bg-gray-800'" v-html="link.label"></button>
         </div>
       </div>
     </Transition>
