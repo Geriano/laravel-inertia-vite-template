@@ -247,7 +247,7 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
   </DashboardLayout>
 
   <Modal :show="open">
-    <form @submit.prevent="submit" class="w-full max-w-xl sm:max-w-5xl shadow-xl">
+    <form @submit.prevent="submit" class="w-full max-w-xl sm:max-w-5xl h-fit shadow-xl">
       <Card class="bg-gray-50 dark:bg-gray-700 dark:text-gray-100">
         <template #header>
           <div class="flex items-center justify-end bg-gray-200 dark:bg-gray-800 p-2">
