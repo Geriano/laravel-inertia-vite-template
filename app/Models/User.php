@@ -73,9 +73,7 @@ class User extends Authenticatable
         return Menu::whereNull('parent_id')
                     ->where(function (Builder $query) {
                         $query->whereHas('permissions', function (Builder $query) {
-                            $query->whereIn('permissions.id', $this->permissions->pluck('id'));
-
-                            $this->roles->each(fn (Role $role) => $query->orWhereIn('permissions.id', $role->permissions->pluck('id')));
+                            $query->whereIn('permissions.id', $this->permissions->pluck('id')->push(...$this->roles->pluck('permissions')->flatten()->pluck('id')));
                         })->orDoesntHave('permissions');
                     })
                     ->orderBy('position')
