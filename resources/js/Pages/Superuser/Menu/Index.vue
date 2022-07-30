@@ -10,6 +10,9 @@ import Swal from 'sweetalert2'
 import Select from '@vueform/multiselect'
 import Nested from './Nested.vue'
 import Modal from '@/Components/Modal.vue'
+import Close from '@/Components/Button/Close.vue'
+import ButtonGreen from '@/Components/Button/Green.vue'
+import ButtonBlue from '@/Components/Button/Blue.vue'
 
 const self = getCurrentInstance()
 const { permissions, routes, icons } = defineProps({
@@ -144,12 +147,10 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
     <Card class="bg-gray-50 dark:bg-gray-700 dark:text-gray-100">
       <template #header>
         <div class="flex items-center space-x-2 p-2 bg-gray-200 dark:bg-gray-800">
-          <button @click.prevent="show" class="bg-green-600 hover:bg-green-700 rounded-md px-3 py-1 text-sm text-white transition-all">
-            <div class="flex items-center space-x-1">
-              <Icon name="plus" />
-              <p class="uppercase font-semibold">create</p>
-            </div>
-          </button>
+          <ButtonGreen @click.prevent="show">
+            <Icon name="plus" />
+            <p class="uppercase font-semibold">create</p>
+          </ButtonGreen>
         </div>
       </template>
 
@@ -166,7 +167,7 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
       <Card class="bg-gray-50 dark:bg-gray-700 dark:text-gray-100">
         <template #header>
           <div class="flex items-center space-x-2 p-2 justify-end bg-gray-200 dark:bg-gray-800">
-            <Icon @click.prevent="close" name="times" class="px-2 py-1 bg-gray-300 hover:bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 rounded-md transition-all cursor-pointer" />
+            <Close @click.prevent="close" />
           </div>
         </template>
 
@@ -245,13 +246,10 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
 
                 <p class="text-sm uppercase">{{ form.icon }}</p>
                 
-                <button @click.prevent="icon = true" type="button" class="bg-blue-600 hover hover:bg-blue-700 rounded-md px-3 py-1 text-white text-sm transition-all">
-                  <div class="flex items-center space-x-1">
-                    <Icon name="edit" />
-
-                    <p class="uppercase font-semibold">change</p>
-                  </div>
-                </button>
+                <ButtonBlue @click.prevent="icon = true" type="button">
+                  <Icon name="edit" />
+                  <p class="uppercase font-semibold">change</p>
+                </ButtonBlue>
               </div>
             </div>
           </div>
@@ -259,12 +257,10 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
 
         <template #footer>
           <div class="flex items-center justify-end space-x-2 bg-gray-200 dark:bg-gray-800 py-1 px-2">
-            <button type="submit" class="bg-green-600 hover:bg-green-700 rounded-md px-3 py-1 text-white text-sm transition-all">
-              <div class="flex items-center space-x-1">
-                <Icon name="check" />
-                <p class="uppercase font-semibold">{{ form.id ? 'update' : 'create' }}</p>
-              </div>
-            </button>
+            <ButtonGreen type="submit">
+              <Icon name="check" />
+              <p class="uppercase font-semibold">{{ form.id ? 'update' : 'create' }}</p>
+            </ButtonGreen>
           </div>
         </template>
       </Card>

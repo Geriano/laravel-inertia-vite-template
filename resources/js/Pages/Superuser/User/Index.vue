@@ -10,6 +10,10 @@ import Th from '@/Components/DataTable/Th.vue'
 import Swal from 'sweetalert2'
 import Select from '@vueform/multiselect'
 import Modal from '@/Components/Modal.vue'
+import ButtonGreen from '@/Components/Button/Green.vue'
+import ButtonBlue from '@/Components/Button/Blue.vue'
+import ButtonRed from '@/Components/Button/Red.vue'
+import Close from '@/Components/Button/Close.vue'
 
 const self = getCurrentInstance()
 const { permissions, roles } = defineProps({
@@ -128,12 +132,10 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
     <Card class="bg-gray-50 dark:bg-gray-700 dark:text-gray-100">
       <template #header>
         <div class="flex items-center space-x-2 p-2 bg-gray-200 dark:bg-gray-800">
-          <button v-if="can('create user')" @click.prevent="show" class="bg-green-600 hover:bg-green-700 rounded-md px-3 py-1 text-sm text-white transition-all">
-            <div class="flex items-center space-x-1">
-              <Icon name="plus" />
-              <p class="uppercase font-semibold">create</p>
-            </div>
-          </button>
+          <ButtonGreen v-if="can('create user')" @click.prevent="show">
+            <Icon name="plus" />
+            <p class="uppercase font-semibold">create</p>
+          </ButtonGreen>
         </div>
       </template>
 
@@ -217,19 +219,15 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
                     <td class="px-2 py-1 border dark:border-gray-800 uppercase">{{ new Date(user.updated_at).toLocaleString('id') }}</td>
                     <td class="px-2 py-1 border dark:border-gray-800">
                       <div class="flex items-center space-x-2">
-                        <button @click.prevent="edit(user, refresh)" class="bg-blue-600 rounded-md px-3 py-1 transition-all hover:bg-blue-700 text-white text-sm">
-                          <div class="flex items-center space-x-2">
-                            <Icon name="edit" />
-                            <p class="uppercase">edit</p>
-                          </div>
-                        </button>
+                        <ButtonBlue @click.prevent="edit(user, refresh)">
+                          <Icon name="edit" />
+                          <p class="uppercase">edit</p>
+                        </ButtonBlue>
 
-                        <button @click.prevent="destroy(user, refresh)" class="bg-red-600 rounded-md px-3 py-1 transition-all hover:bg-red-700 text-white text-sm">
-                          <div class="flex items-center space-x-2">
-                            <Icon name="trash" />
-                            <p class="uppercase">delete</p>
-                          </div>
-                        </button>
+                        <ButtonRed @click.prevent="destroy(user, refresh)">
+                          <Icon name="trash" />
+                          <p class="uppercase">delete</p>
+                        </ButtonRed>
                       </div>
                     </td>
                   </tr>
@@ -248,20 +246,12 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
     </Card>
   </DashboardLayout>
 
-  <transition
-    enterActiveClass="transition-all duration-500"
-    leaveActiveClass="transition-all duration-500"
-    enterFromClass="opacity-0"
-    leaveToClass="opacity-0">
-    <div v-if="open" class="fixed top-0 left-0 w-full h-full bg-black bg-opacity-80 z-20 overflow-hidden blur-3xl"></div>
-  </transition>
-
   <Modal :show="open">
     <form @submit.prevent="submit" class="w-full max-w-xl sm:max-w-5xl shadow-xl">
       <Card class="bg-gray-50 dark:bg-gray-700 dark:text-gray-100">
         <template #header>
           <div class="flex items-center justify-end bg-gray-200 dark:bg-gray-800 p-2">
-            <Icon @click.prevent="close" name="times" class="px-2 py-1 bg-gray-300 hover:bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 rounded-md transition-all cursor-pointer" />
+            <Close @click.prevent="close" />
           </div>
         </template>
 
@@ -354,13 +344,11 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
 
         <template #footer>
           <div class="flex items-center justify-end space-x-2 bg-gray-200 dark:bg-gray-800 px-2 py-1">
-            <button type="submit" class="bg-green-600 hover:bg-green-700 rounded-md px-3 py-1 text-sm text-white transition-all">
-              <div class="flex items-center space-x-1">
-                <Icon name="check" />
+            <ButtonGreen type="submit">
+              <Icon name="check" />
 
-                <p class="uppercase font-semibold">{{ form.id ? 'update' : 'create' }}</p>
-              </div>
-            </button>
+              <p class="uppercase font-semibold">{{ form.id ? 'update' : 'create' }}</p>
+            </ButtonGreen>
           </div>
         </template>
       </Card>

@@ -8,6 +8,10 @@ import Card from '@/Components/Card.vue'
 import Icon from '@/Components/Icon.vue'
 import { Inertia } from '@inertiajs/inertia'
 import Modal from '@/Components/Modal.vue'
+import Close from '@/Components/Button/Close.vue'
+import ButtonGreen from '@/Components/Button/Green.vue'
+import ButtonBlue from '@/Components/Button/Blue.vue'
+import ButtonRed from '@/Components/Button/Red.vue'
 
 const self = getCurrentInstance()
 const permissions = ref([])
@@ -99,12 +103,10 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
     <Card class="bg-gray-50 dark:bg-slate-700 shadow-md">
       <template #header>
         <div class="flex items-center space-x-2 bg-gray-200 dark:bg-gray-800 p-2">
-          <button @click.prevent="show()" class="bg-green-600 hover:bg-green-700 rounded-md px-3 py-1 text-sm text-white transition-all">
-            <div class="flex items-center space-x-1">
-              <Icon name="plus" />
-              <p class="font-semibold uppercase">create</p>
-            </div>
-          </button>
+          <ButtonGreen v-if="can('create permission')" @click.prevent="show()">
+            <Icon name="plus" />
+            <p class="font-semibold uppercase">create</p>
+          </ButtonGreen>
         </div>
       </template>
 
@@ -142,7 +144,7 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
       <Card class="bg-gray-50 dark:bg-gray-700 dark:text-gray-100 border dark:border-gray-700">
         <template #header>
           <div class="flex items-center space-x-2 justify-end bg-gray-200 dark:bg-gray-800 dark:text-gray-50 p-2">
-            <Icon @click.prevent="close" name="times" class="border border-transparent dark:bg-gray-700 px-2 py-1 rounded-md cursor-pointer transition-all bg-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:border-gray-600" />
+            <Close @click.prevent="close" />
           </div>
         </template>
 
@@ -163,12 +165,10 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
 
         <template #footer>
           <div class="flex items-center space-x-2 justify-end bg-gray-200 dark:bg-gray-800 text-white px-2 py-1">
-            <button type="submit" class="bg-green-600 rounded-md px-3 py-1 text-sm transition-all hover:bg-green-700">
-              <div class="flex items-center space-x-1">
-                <Icon name="check" />
-                <p class="uppercase font-semibold">{{ form.id ? 'update' : 'create' }}</p>
-              </div>
-            </button>
+            <ButtonGreen type="submit">
+              <Icon name="check" />
+              <p class="uppercase font-semibold">{{ form.id ? 'update' : 'create' }}</p>
+            </ButtonGreen>
           </div>
         </template>
       </Card>
