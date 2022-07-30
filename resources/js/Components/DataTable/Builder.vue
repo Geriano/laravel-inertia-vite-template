@@ -161,13 +161,13 @@ onUpdated(() => rounded())
       leaveActiveClass="transition-all duration-300"
       enterFromClass="-translate-y-[100%]"
       leaveToClass="-translate-y-[100%]">
-      <div v-if="paginator.total > paginator.per_page" class="flex items-center space-x-4 p-2">
-        <p class="flex-none w-1/4">
+      <div v-if="paginator.total > paginator.per_page" class="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0 sm:space-x-4 p-2">
+        <p class="flex-none sm:w-1/4">
           Displaying from {{ paginator.from }} to {{ paginator.to }} in total {{ paginator.total }}
         </p>
 
-        <div ref="links" class="flex items-center justify-end overflow-auto w-full">
-          <button v-for="(link, i) in paginator.links" :key="i" @click.prevent="goTo(link)" class="hover:bg-gray-100 dark:hover:bg-gray-600 px-2 py-1 transition-all" :class="link.active ? 'bg-gray-300 dark:bg-gray-900' : 'bg-gray-200 dark:bg-gray-800'" v-html="link.label"></button>
+        <div ref="links" class="w-full flex items-center justify-end overflow-auto">
+          <button v-for="(link, i) in paginator.links" :key="i" @click.prevent="goTo(link)" class="flex-none hover:bg-gray-100 dark:hover:bg-gray-600 px-2 py-1 transition-all" :class="link.active ? 'bg-gray-300 dark:bg-gray-900' : 'bg-gray-200 dark:bg-gray-800'" v-html="link.label"></button>
         </div>
       </div>
     </Transition>
