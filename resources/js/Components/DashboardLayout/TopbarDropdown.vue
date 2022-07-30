@@ -3,11 +3,21 @@ import { getCurrentInstance, ref } from 'vue'
 import { usePage, Link } from '@inertiajs/inertia-vue3'
 import { Inertia } from '@inertiajs/inertia'
 import Icon from '../Icon.vue'
+import Swal from 'sweetalert2'
 
 const open = ref(false)
 const { user } = usePage().props.value
 
-const logout = () => Inertia.post(route('logout'))
+const logout = async () => {
+  const response = await Swal.fire({
+    title: 'Are you sure?',
+    icon: 'question',
+    showCloseButton: true,
+    showCancelButton: true,
+  })
+
+  response.isConfirmed && Inertia.post(route('logout'))
+}
 </script>
 
 <style scoped>
