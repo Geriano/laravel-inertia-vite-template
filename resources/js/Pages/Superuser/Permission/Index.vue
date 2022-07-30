@@ -127,8 +127,8 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
                   <p class="uppercase">{{ permission.name }}</p>
 
                   <div class="flex items-center space-x-1">
-                    <Icon @click.prevent="edit(permission)" name="pen" class="px-2 py-1 rounded cursor-pointer text-white bg-blue-600 hover:bg-blue-700 transition-all" />
-                    <Icon @click.prevent="destroy(permission)" name="trash" class="px-2 py-1 rounded cursor-pointer text-white bg-red-600 hover:bg-red-700 transition-all" />
+                    <Icon v-if="can('update permission')" @click.prevent="edit(permission)" name="pen" class="px-2 py-1 rounded cursor-pointer text-white bg-blue-600 hover:bg-blue-700 transition-all" />
+                    <Icon v-if="can('delete permission')" @click.prevent="destroy(permission)" name="trash" class="px-2 py-1 rounded cursor-pointer text-white bg-red-600 hover:bg-red-700 transition-all" />
                   </div>
                 </div>
               </div>

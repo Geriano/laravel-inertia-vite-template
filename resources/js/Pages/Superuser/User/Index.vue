@@ -219,12 +219,12 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
                     <td class="px-2 py-1 border dark:border-gray-800 uppercase">{{ new Date(user.updated_at).toLocaleString('id') }}</td>
                     <td class="px-2 py-1 border dark:border-gray-800">
                       <div class="flex items-center space-x-2">
-                        <ButtonBlue @click.prevent="edit(user, refresh)">
+                        <ButtonBlue v-if="can('update user')" @click.prevent="edit(user, refresh)">
                           <Icon name="edit" />
                           <p class="uppercase">edit</p>
                         </ButtonBlue>
 
-                        <ButtonRed @click.prevent="destroy(user, refresh)">
+                        <ButtonRed v-if="can('delete user')" @click.prevent="destroy(user, refresh)">
                           <Icon name="trash" />
                           <p class="uppercase">delete</p>
                         </ButtonRed>

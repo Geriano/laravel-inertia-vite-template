@@ -161,12 +161,12 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
                     </td>
                     <td class="px-2 py-1 border dark:border-gray-800">
                       <div class="flex items-center space-x-2">
-                        <ButtonBlue @click.prevent="edit(role, refresh)">
+                        <ButtonBlue v-if="can('update role')" @click.prevent="edit(role, refresh)">
                           <Icon name="edit" />
                           <p class="uppercase">edit</p>
                         </ButtonBlue>
 
-                        <ButtonRed @click.prevent="destroy(role, refresh)">
+                        <ButtonRed v-if="can('delete role')" @click.prevent="destroy(role, refresh)">
                           <Icon name="trash" />
                           <p class="uppercase">delete</p>
                         </ButtonRed>

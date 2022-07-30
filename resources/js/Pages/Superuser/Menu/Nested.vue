@@ -28,8 +28,8 @@ const { menus, edit, destroy, save } = defineProps({
           </div>
 
           <div ref="container" class="flex-none flex items-center rounded-md space-x-1">
-            <Icon @click.prevent="edit(element)" name="edit" class="bg-blue-600 hover:bg-blue-700 px-2 py-1 rounded-md text-sm text-white transition-all cursor-pointer" />
-            <Icon v-if="element.deleteable" @click.prevent="destroy(element)" name="trash" class="bg-red-600 hover:bg-red-700 px-2 py-1 rounded-md text-sm text-white transition-all cursor-pointer" />
+            <Icon v-if="can('update menu')" @click.prevent="edit(element)" name="edit" class="bg-blue-600 hover:bg-blue-700 px-2 py-1 rounded-md text-sm text-white transition-all cursor-pointer" />
+            <Icon v-if="can('delete menu') && element.deleteable" @click.prevent="destroy(element)" name="trash" class="bg-red-600 hover:bg-red-700 px-2 py-1 rounded-md text-sm text-white transition-all cursor-pointer" />
           </div>
         </div>
 
