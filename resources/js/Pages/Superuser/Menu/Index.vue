@@ -53,6 +53,8 @@ const icon = ref(false)
 const open = ref(false)
 const show = () => {
   open.value = true
+
+  nextTick(() => self.refs.name?.focus())
 }
 
 const close = () => {
@@ -191,6 +193,7 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
                   :searchable="true"
                   :createOption="true"
                   :value="form.route_or_url"
+                  ref="route_or_url"
                   class="text-gray-800 placeholder:capitalize"
                   placeholder="route name or url" />
               </div>
@@ -209,6 +212,7 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
                   :clearOnSelect="false"
                   :createTag="true"
                   mode="tags"
+                  ref="actives"
                   class="text-gray-800 placeholder:capitalize"
                   placeholder="actives" />
               </div>
@@ -229,6 +233,7 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
                   :closeOnSelect="false"
                   :clearOnSelect="false"
                   mode="tags"
+                  ref="permissions"
                   class="text-gray-800 placeholder:capitalize"
                   placeholder="permissions" />
               </div>
