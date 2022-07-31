@@ -175,11 +175,7 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
             </template>
 
             <template #tbody="{ data, processing, empty }">
-              <transition-group
-                enterActiveClass="transition-all duration-100"
-                leaveActiveClass="transition-all duration-50"
-                enterFromClass="opacity-0 -scale-y-100"
-                leaveToClass="opacity-0 -scale-y-100">
+              <TransitionGroup enterActiveClass="transition-all duration-200" leaveActiveClass="transition-all duration-200" enterFromClass="opacity-0 -scale-y-100" leaveToClass="opacity-0 -scale-y-100">
                 <template v-if="empty">
                   <tr v-if="empty">
                     <td class="text-5xl text-center p-4" colspan="1000">
@@ -189,62 +185,52 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
                 </template>
 
                 <template v-else>
-                  <template v-if="processing">
-                    <tr v-for="i in Array(5).fill(0)" :key="i" class="border dark:border-gray-800">
-                      <td class="text-5xl text-center p-2" colspan="1000">
-                        <div class="lowercase first-letter:capitalize font-semibold dark:bg-gray-800 animate-pulse p-5 rounded-md"></div>
-                      </td>
-                    </tr>
-                  </template>
+                  <tr v-for="(user, i) in data" :key="i" class="dark:hover:bg-gray-600 transition-all duration-300" :class="processing && 'bg-gray-800'">
+                    <td class="px-2 py-1 border dark:border-gray-800 text-center">{{ i + 1 }}</td>
+                    <td class="px-2 py-1 border dark:border-gray-800 uppercase">{{ user.name }}</td>
+                    <td class="px-2 py-1 border dark:border-gray-800 uppercase">{{ user.username }}</td>
+                    <td class="px-2 py-1 border dark:border-gray-800 uppercase">{{ user.email }}</td>
+                    <td class="px-2 py-1 border dark:border-gray-800">
+                      <div class="flex-wrap">
+                        <div v-for="(permission, j) in user.permissions" :key="j" class="inline-block bg-gray-600 rounded-md px-3 py-1 m-[1px] text-sm">
+                          <div class="flex items-center justify-between space-x-1">
+                            <p class="uppercase font-semibold">{{ permission.name }}</p>
 
-                  <template v-else>
-                    <tr v-for="(user, i) in data" :key="i" class="dark:hover:bg-gray-600 transition-all duration-300">
-                      <td class="px-2 py-1 border dark:border-gray-800 text-center">{{ i + 1 }}</td>
-                      <td class="px-2 py-1 border dark:border-gray-800 uppercase">{{ user.name }}</td>
-                      <td class="px-2 py-1 border dark:border-gray-800 uppercase">{{ user.username }}</td>
-                      <td class="px-2 py-1 border dark:border-gray-800 uppercase">{{ user.email }}</td>
-                      <td class="px-2 py-1 border dark:border-gray-800">
-                        <div class="flex-wrap">
-                          <div v-for="(permission, j) in user.permissions" :key="j" class="inline-block bg-gray-600 rounded-md px-3 py-1 m-[1px] text-sm">
-                            <div class="flex items-center justify-between space-x-1">
-                              <p class="uppercase font-semibold">{{ permission.name }}</p>
-
-                              <Icon @click.prevent="detachPermission(user, permission)" v-if="can('update user')" name="times" class="px-2 py-1 rounded-md dark:bg-gray-700 transition-all hover:bg-red-500 cursor-pointer" />
-                            </div>
+                            <Icon @click.prevent="detachPermission(user, permission)" v-if="can('update user')" name="times" class="px-2 py-1 rounded-md dark:bg-gray-700 transition-all hover:bg-red-500 cursor-pointer" />
                           </div>
                         </div>
-                      </td>
-                      <td class="px-2 py-1 border dark:border-gray-800">
-                        <div class="flex-wrap">
-                          <div v-for="(role, j) in user.roles" :key="j" class="inline-block dark:bg-gray-800 dark:hover:bg-gray-900 border dark:border-gray-800 rounded-md px-3 py-1 m-[1px] text-sm transition-all">
-                            <div class="flex items-center justify-between space-x-2">
-                              <p class="uppercase font-semibold">{{ role.name }}</p>
+                      </div>
+                    </td>
+                    <td class="px-2 py-1 border dark:border-gray-800">
+                      <div class="flex-wrap">
+                        <div v-for="(role, j) in user.roles" :key="j" class="inline-block dark:bg-gray-800 dark:hover:bg-gray-900 border dark:border-gray-800 rounded-md px-3 py-1 m-[1px] text-sm transition-all">
+                          <div class="flex items-center justify-between space-x-2">
+                            <p class="uppercase font-semibold">{{ role.name }}</p>
 
-                              <Icon @click.prevent="detachRole(user, role)" v-if="can('update user')" name="times" class="px-2 py-1 rounded-md dark:bg-gray-700 transition-all hover:bg-red-500 cursor-pointer" />
-                            </div>
+                            <Icon @click.prevent="detachRole(user, role)" v-if="can('update user')" name="times" class="px-2 py-1 rounded-md dark:bg-gray-700 transition-all hover:bg-red-500 cursor-pointer" />
                           </div>
                         </div>
-                      </td>
-                      <td class="px-2 py-1 border dark:border-gray-800 uppercase">{{ new Date(user.email_verified_at).toLocaleString('id') }}</td>
-                      <td class="px-2 py-1 border dark:border-gray-800 uppercase">{{ new Date(user.created_at).toLocaleString('id') }}</td>
-                      <td class="px-2 py-1 border dark:border-gray-800 uppercase">{{ new Date(user.updated_at).toLocaleString('id') }}</td>
-                      <td class="px-2 py-1 border dark:border-gray-800">
-                        <div class="flex items-center space-x-2">
-                          <ButtonBlue v-if="can('update user')" @click.prevent="edit(user)">
-                            <Icon name="edit" />
-                            <p class="uppercase">edit</p>
-                          </ButtonBlue>
+                      </div>
+                    </td>
+                    <td class="px-2 py-1 border dark:border-gray-800 uppercase">{{ new Date(user.email_verified_at).toLocaleString('id') }}</td>
+                    <td class="px-2 py-1 border dark:border-gray-800 uppercase">{{ new Date(user.created_at).toLocaleString('id') }}</td>
+                    <td class="px-2 py-1 border dark:border-gray-800 uppercase">{{ new Date(user.updated_at).toLocaleString('id') }}</td>
+                    <td class="px-2 py-1 border dark:border-gray-800">
+                      <div class="flex items-center space-x-2">
+                        <ButtonBlue v-if="can('update user')" @click.prevent="edit(user)">
+                          <Icon name="edit" />
+                          <p class="uppercase">edit</p>
+                        </ButtonBlue>
 
-                          <ButtonRed v-if="can('delete user')" @click.prevent="destroy(user)">
-                            <Icon name="trash" />
-                            <p class="uppercase">delete</p>
-                          </ButtonRed>
-                        </div>
-                      </td>
-                    </tr>
-                  </template>
+                        <ButtonRed v-if="can('delete user')" @click.prevent="destroy(user)">
+                          <Icon name="trash" />
+                          <p class="uppercase">delete</p>
+                        </ButtonRed>
+                      </div>
+                    </td>
+                  </tr>
                 </template>
-              </transition-group>
+              </TransitionGroup>
             </template>
           </Builder>
         </div>

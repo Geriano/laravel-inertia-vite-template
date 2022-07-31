@@ -14,7 +14,7 @@ const { url, sticky } = defineProps({
 })
 
 const paginator = ref({})
-const processing = ref(true)
+const processing = ref(false)
 const last = ref(null)
 const config = useForm({
   page: 1,
