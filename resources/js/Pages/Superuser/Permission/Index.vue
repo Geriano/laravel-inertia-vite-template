@@ -139,39 +139,39 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
         </div>
       </template>
     </Card>
-  </DashboardLayout>
-  
-  <Modal :show="open">
-    <form @submit.prevent="submit" class="w-full max-w-xl h-fit shadow-xl">
-      <Card class="bg-gray-50 dark:bg-gray-700 dark:text-gray-100 border dark:border-gray-700">
-        <template #header>
-          <div class="flex items-center space-x-2 justify-end bg-gray-200 dark:bg-gray-800 dark:text-gray-50 p-2">
-            <Close @click.prevent="close" />
-          </div>
-        </template>
 
-        <template #body>
-          <div class="flex flex-col space-y-4 p-4">
-            <div class="flex flex-col space-y-2">
-              <div class="flex items-center space-x-2">
-                <label for="name" class="lowercase first-letter:capitalize flex-none w-1/4">name</label>
-                <Input v-model="form.name" type="text" placeholder="name" required autofocus />
-              </div>
-              
-              <InputError :error="form.errors.name" />
+    <Modal :show="open">
+      <form @submit.prevent="submit" class="w-full max-w-xl h-fit shadow-xl">
+        <Card class="bg-gray-50 dark:bg-gray-700 dark:text-gray-100 border dark:border-gray-700">
+          <template #header>
+            <div class="flex items-center space-x-2 justify-end bg-gray-200 dark:bg-gray-800 dark:text-gray-50 p-2">
+              <Close @click.prevent="close" />
             </div>
-          </div>
-        </template>
+          </template>
 
-        <template #footer>
-          <div class="flex items-center space-x-2 justify-end bg-gray-200 dark:bg-gray-800 text-white px-2 py-1">
-            <ButtonGreen type="submit">
-              <Icon name="check" />
-              <p class="uppercase font-semibold">{{ form.id ? 'update' : 'create' }}</p>
-            </ButtonGreen>
-          </div>
-        </template>
-      </Card>
-    </form>
-  </Modal>
+          <template #body>
+            <div class="flex flex-col space-y-4 p-4">
+              <div class="flex flex-col space-y-2">
+                <div class="flex items-center space-x-2">
+                  <label for="name" class="lowercase first-letter:capitalize flex-none w-1/4">name</label>
+                  <Input v-model="form.name" type="text" placeholder="name" required autofocus />
+                </div>
+                
+                <InputError :error="form.errors.name" />
+              </div>
+            </div>
+          </template>
+
+          <template #footer>
+            <div class="flex items-center space-x-2 justify-end bg-gray-200 dark:bg-gray-800 text-white px-2 py-1">
+              <ButtonGreen type="submit">
+                <Icon name="check" />
+                <p class="uppercase font-semibold">{{ form.id ? 'update' : 'create' }}</p>
+              </ButtonGreen>
+            </div>
+          </template>
+        </Card>
+      </form>
+    </Modal>
+  </DashboardLayout>
 </template>
