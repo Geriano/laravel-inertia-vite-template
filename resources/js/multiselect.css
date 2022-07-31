@@ -1,0 +1,55 @@
+.multiselect {
+  @apply dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200;
+}
+.multiselect-tags-search {
+  @apply dark:bg-gray-700 dark:text-gray-200;
+}
+.multiselect.is-disabled {
+  @apply dark:bg-gray-600 dark:border-gray-700 dark:text-gray-300;
+}
+.multiselect.is-active {
+  box-shadow: 0 0 0 var(--ms-ring-width, 3px) var(--ms-ring-color, rgba(16, 185, 129, 0.188));
+}
+.multiselect-placeholder {
+  @apply dark:text-gray-300;
+}
+.multiselect-search {
+  @apply dark:bg-gray-700;
+}
+.multiselect-tag.is-disabled {
+  @apply dark:bg-gray-600 dark:text-gray-300;
+}
+.multiselect-tag-remove:hover {
+  @apply dark:bg-gray-500;
+}
+.multiselect-clear:hover .multiselect-clear-icon {
+  @apply dark:bg-white;
+}
+.multiselect-clear-icon {
+  @apply dark:bg-gray-600;
+}
+.multiselect-caret {
+  @apply dark:bg-gray-600;
+}
+.multiselect-dropdown {
+  @apply dark:bg-gray-700 dark:border-gray-800;
+}
+.multiselect-group-label {
+  @apply dark:bg-gray-700 dark:text-gray-200;
+}
+.multiselect-group-label.is-pointed {
+  @apply dark:bg-gray-600 dark:text-gray-300;
+}
+.multiselect-group-label.is-disabled {
+  @apply dark:bg-gray-700 dark:text-gray-200;
+}
+.multiselect-option.is-pointed {
+  @apply dark:bg-gray-700 text-gray-200;
+}
+.multiselect-option.is-disabled {
+  @apply dark:bg-gray-700 dark:text-gray-200;
+}
+.multiselect-no-options,
+.multiselect-no-results {
+  @apply dark:text-gray-200;
+}

@@ -100,6 +100,7 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
 </script>
 
 <style src="@vueform/multiselect/themes/default.css"></style>
+<style src="@/multiselect.css"></style>
 
 <template>
   <DashboardLayout title="Role">
@@ -191,7 +192,7 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
         </div>
       </template>
     </Card>
-    
+
     <Modal :show="open">
       <form @submit.prevent="submit" class="w-full max-w-xl h-fit shadow-xl">
         <Card class="bg-gray-50 dark:bg-gray-700 dark:text-gray-100">
@@ -224,7 +225,8 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
                     :searchable="true"
                     :clearOnSelect="false"
                     :closeOnSelect="false"
-                    class="text-gray-800 uppercase"
+                    class="uppercase"
+                    placeholder="permissions"
                     mode="tags" />
                 </div>
 

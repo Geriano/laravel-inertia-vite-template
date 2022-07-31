@@ -140,6 +140,7 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
 </script>
 
 <style src="@vueform/multiselect/themes/default.css"></style>
+<style src="@/multiselect.css"></style>
 
 <template>
   <DashboardLayout title="Menu">
@@ -190,7 +191,7 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
                     :createOption="true"
                     :value="form.route_or_url"
                     ref="route_or_url"
-                    class="text-gray-800 placeholder:capitalize"
+                    
                     placeholder="route name or url" />
                 </div>
 
@@ -209,7 +210,7 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
                     :createTag="true"
                     mode="tags"
                     ref="actives"
-                    class="text-gray-800 placeholder:capitalize"
+                    
                     placeholder="actives" />
                 </div>
 
@@ -230,7 +231,7 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
                     :clearOnSelect="false"
                     mode="tags"
                     ref="permissions"
-                    class="text-gray-800 placeholder:capitalize"
+                    
                     placeholder="permissions" />
                 </div>
 
