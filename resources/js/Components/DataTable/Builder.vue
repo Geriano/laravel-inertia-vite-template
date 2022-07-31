@@ -103,6 +103,10 @@ const rounded = () => {
   links && links.lastElementChild?.classList.add('rounded-r-md')
 }
 
+defineExpose({
+  refresh: fetch,
+})
+
 onMounted(fetch)
 onMounted(() => config.sticky && createFloatingTh())
 onMounted(() => inherit())
