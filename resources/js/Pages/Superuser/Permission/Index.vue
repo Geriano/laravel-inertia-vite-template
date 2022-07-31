@@ -12,6 +12,8 @@ import Close from '@/Components/Button/Close.vue'
 import ButtonGreen from '@/Components/Button/Green.vue'
 import ButtonBlue from '@/Components/Button/Blue.vue'
 import ButtonRed from '@/Components/Button/Red.vue'
+import Input from '@/Components/Input.vue'
+import InputError from '@/Components/InputError.vue'
 
 const self = getCurrentInstance()
 const permissions = ref([])
@@ -153,12 +155,10 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
             <div class="flex flex-col space-y-2">
               <div class="flex items-center space-x-2">
                 <label for="name" class="lowercase first-letter:capitalize flex-none w-1/4">name</label>
-                <input ref="name" type="text" v-model="form.name" class="bg-transparent w-full rounded-md px-3 py-1 text-sm placeholder:capitalize" placeholder="name">
+                <Input v-model="form.name" type="text" placeholder="name" required autofocus />
               </div>
               
-              <transition name="fade">
-                <div v-if="form.errors.name" class="text-red-400 text-sm text-right">{{ form.errors.name }}</div>
-              </transition>
+              <InputError :error="form.errors.name" />
             </div>
           </div>
         </template>

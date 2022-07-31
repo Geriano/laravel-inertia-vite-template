@@ -14,6 +14,8 @@ import Close from '@/Components/Button/Close.vue'
 import ButtonGreen from '@/Components/Button/Green.vue'
 import ButtonBlue from '@/Components/Button/Blue.vue'
 import ButtonRed from '@/Components/Button/Red.vue'
+import Input from '@/Components/Input.vue'
+import InputError from '@/Components/InputError.vue'
 
 const self = getCurrentInstance()
 const { permissions } = defineProps({
@@ -29,10 +31,7 @@ const form = useForm({
 const table = ref(null)
 const open = ref(false)
 
-const show = () => {
-  open.value = true
-  nextTick(() => self.refs.name?.focus())
-}
+const show = () => open.value = true
 
 const close = () => {
   open.value = false
@@ -204,10 +203,10 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
             <div class="flex flex-col space-y-2">
               <div class="flex items-center space-x-2">
                 <label for="name" class="w-1/3 lowercase first-letter:capitalize">name</label>
-                <input ref="name" type="text" name="name" v-model="form.name" class="w-full bg-white dark:bg-transparent rounded px-3 py-2 placeholder:capitalize" placeholder="name" required>
+                <Input v-model="form.name" type="text" name="name" placeholder="name" required autofocus />
               </div>
 
-              <p v-if="form.errors.name" class="text-red-500 text-right lowercase first-letter:capitalize">{{ form.errors.name }}</p>
+              <InputError :error="form.errors.name" />
             </div>
 
             <div class="flex flex-col space-y-2">
@@ -226,7 +225,7 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
                   mode="tags" />
               </div>
 
-              <p v-if="form.errors.permissions" class="text-red-500 text-right lowercase first-letter:capitalize">{{ form.errors.permissions }}</p>
+              <InputError :error="form.errors.permissions" />
             </div>
           </div>
         </template>

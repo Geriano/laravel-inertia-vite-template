@@ -14,12 +14,15 @@ import ButtonGreen from '@/Components/Button/Green.vue'
 import ButtonBlue from '@/Components/Button/Blue.vue'
 import ButtonRed from '@/Components/Button/Red.vue'
 import Close from '@/Components/Button/Close.vue'
+import Input from '@/Components/Input.vue'
+import InputError from '@/Components/InputError.vue'
 
 const self = getCurrentInstance()
 const { permissions, roles } = defineProps({
   permissions: Array,
   roles: Array,
 })
+
 const form = useForm({
   id: null,
   name: '',
@@ -34,10 +37,7 @@ const form = useForm({
 const table = ref(null)
 const open = ref(false)
 
-const show = () => {
-  open.value = true
-  nextTick(() => self.refs.name?.focus())
-}
+const show = () => open.value = true
 
 const close = () => {
   open.value = false
@@ -261,46 +261,46 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
             <div class="flex flex-col space-y-2">
               <div class="flex items-center space-x-2">
                 <label for="name" class="w-1/3 lowercase first-letter:capitalize">name</label>
-                <input ref="name" type="text" name="name" v-model="form.name" class="w-full bg-white dark:bg-transparent rounded px-3 py-2 placeholder:capitalize" placeholder="name" required>
+                <Input v-model="form.name" type="text" name="name" placeholder="name" required autofocus />
               </div>
 
-              <p v-if="form.errors.name" class="text-red-500 text-right lowercase first-letter:capitalize">{{ form.errors.name }}</p>
+              <InputError :error="form.errors.name" />
             </div>
 
             <div class="flex flex-col space-y-2">
               <div class="flex items-center space-x-2">
                 <label for="username" class="w-1/3 lowercase first-letter:capitalize">username</label>
-                <input ref="username" type="text" name="username" v-model="form.username" class="w-full bg-white dark:bg-transparent rounded px-3 py-2 placeholder:capitalize" placeholder="username" required>
+                <Input v-model="form.username" type="text" name="username" placeholder="username" required />
               </div>
 
-              <p v-if="form.errors.username" class="text-red-500 text-right lowercase first-letter:capitalize">{{ form.errors.username }}</p>
+              <InputError :error="form.errors.username" />
             </div>
 
             <div class="flex flex-col space-y-2">
               <div class="flex items-center space-x-2">
                 <label for="email" class="w-1/3 lowercase first-letter:capitalize">email</label>
-                <input ref="email" type="email" name="email" v-model="form.email" class="w-full bg-white dark:bg-transparent rounded px-3 py-2 placeholder:capitalize" placeholder="email" required>
+                <Input v-model="form.email" type="email" name="email" placeholder="email" required />
               </div>
 
-              <p v-if="form.errors.email" class="text-red-500 text-right lowercase first-letter:capitalize">{{ form.errors.email }}</p>
+              <InputError :error="form.errors.email" />
             </div>
 
             <div class="flex flex-col space-y-2">
               <div class="flex items-center space-x-2">
                 <label for="password" class="w-1/3 lowercase first-letter:capitalize">password</label>
-                <input ref="password" type="password" name="password" v-model="form.password" class="w-full bg-white dark:bg-transparent rounded px-3 py-2 placeholder:capitalize" placeholder="password" :required="form.id === null">
+                <Input v-model="form.password" type="password" name="password" placeholder="password" :required="form.id === null" />
               </div>
 
-              <p v-if="form.errors.password" class="text-red-500 text-right lowercase first-letter:capitalize">{{ form.errors.password }}</p>
+              <InputError :error="form.errors.password" />
             </div>
 
             <div class="flex flex-col space-y-2">
               <div class="flex items-center space-x-2">
                 <label for="password_confirmation" class="w-1/3 lowercase first-letter:capitalize">password confirmation</label>
-                <input ref="password_confirmation" type="password" name="password_confirmation" v-model="form.password_confirmation" class="w-full bg-white dark:bg-transparent rounded px-3 py-2 placeholder:capitalize" placeholder="password confirmation" :required="form.id === null">
+                <Input v-model="form.password_confirmation" type="password" name="password_confirmation" placeholder="password confirmation" :required="form.id === null" />
               </div>
 
-              <p v-if="form.errors.password_confirmation" class="text-red-500 text-right lowercase first-letter:capitalize">{{ form.errors.password_confirmation }}</p>
+              <InputError :error="form.errors.password_confirmation" />
             </div>
 
             <div class="flex flex-col space-y-2">
@@ -319,7 +319,7 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
                   mode="tags" />
               </div>
 
-              <p v-if="form.errors.permissions" class="text-red-500 text-right lowercase first-letter:capitalize">{{ form.errors.permissions }}</p>
+              <InputError :error="form.errors.permissions" />
             </div>
 
             <div class="flex flex-col space-y-2">
@@ -338,7 +338,7 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
                   mode="tags" />
               </div>
 
-              <p v-if="form.errors.roles" class="text-red-500 text-right lowercase first-letter:capitalize">{{ form.errors.roles }}</p>
+              <InputError :error="form.errors.roles" />
             </div>
           </div>
         </template>

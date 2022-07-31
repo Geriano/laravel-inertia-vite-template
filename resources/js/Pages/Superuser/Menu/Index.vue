@@ -13,6 +13,8 @@ import Modal from '@/Components/Modal.vue'
 import Close from '@/Components/Button/Close.vue'
 import ButtonGreen from '@/Components/Button/Green.vue'
 import ButtonBlue from '@/Components/Button/Blue.vue'
+import Input from '@/Components/Input.vue'
+import InputError from '@/Components/InputError.vue'
 
 const self = getCurrentInstance()
 const props = defineProps({
@@ -173,10 +175,10 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
             <div class="flex flex-col space-y-1">
               <div class="flex items-center space-x-2">
                 <label for="name" class="lowercase first-letter:capitalize w-1/3">name</label>
-                <input type="text" name="name" v-model="form.name" ref="name" class="w-full bg-white dark:bg-transparent rounded px-3 py-2 border dark:border-gray-800 uppercase placeholder:capitalize" placeholder="name" required>
+                <Input v-model="form.name" type="text" name="name" placeholder="name" required autofocus />
               </div>
 
-              <div v-if="form.errors.name" class="text-right text-sm text-red-500">{{ form.errors.name }}</div>
+              <InputError :error="form.errors.name" />
             </div>
 
             <div class="flex flex-col space-y-1">
@@ -193,7 +195,7 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
                   placeholder="route name or url" />
               </div>
 
-              <div v-if="form.errors.route_or_url" class="text-right text-sm text-red-500">{{ form.errors.route_or_url }}</div>
+              <InputError :error="form.errors.route_or_url" />
             </div>
 
             <div class="flex flex-col space-y-1">
@@ -212,7 +214,7 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
                   placeholder="actives" />
               </div>
 
-              <div v-if="form.errors.actives" class="text-right text-sm text-red-500">{{ form.errors.actives }}</div>
+              <InputError :error="form.errors.actives" />
             </div>
 
             <div class="flex flex-col space-y-1">
@@ -233,7 +235,7 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
                   placeholder="permissions" />
               </div>
 
-              <div v-if="form.errors.permissions" class="text-right text-sm text-red-500">{{ form.errors.permissions }}</div>
+              <InputError :error="form.errors.permissions" />
             </div>
 
             <div class="flex items-center space-x-2">
