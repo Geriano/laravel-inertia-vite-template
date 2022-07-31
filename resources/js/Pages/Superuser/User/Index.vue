@@ -31,7 +31,7 @@ const form = useForm({
   roles: [],
 })
 
-const tableRefresh = ref(null)
+const table = ref(null)
 const open = ref(false)
 
 const show = () => {
@@ -42,12 +42,12 @@ const show = () => {
 const close = () => {
   open.value = false
   form.reset()
-  form.clearErrors()
+  table.value?.refresh()
 }
 
 const store = () => {
   return form.post(route('superuser.user.store'), {
-    onSuccess: () => close() || (tableRefresh.value && tableRefresh.value()),
+    onSuccess: () => close(),
     onError: () => show(),
   })
 }
@@ -65,12 +65,12 @@ const edit = user => {
 
 const update = () => {
   return form.patch(route('superuser.user.update', form.id), {
-    onSuccess: () => close() || (tableRefresh.value && tableRefresh.value()),
+    onSuccess: () => close(),
     onError: () => show(),
   })
 }
 
-const destroy = async (user, refresh) => {
+const destroy = async user => {
   const response = await Swal.fire({
     title: 'Are you sure?',
     text: 'You can\'t restore it after deleted',
@@ -80,7 +80,7 @@ const destroy = async (user, refresh) => {
   })
 
   if (response.isConfirmed) {
-    Inertia.on('finish', () => refresh())
+    Inertia.on('finish', () => close())
 
     return Inertia.delete(route('superuser.user.destroy', user.id))
   }
@@ -88,7 +88,7 @@ const destroy = async (user, refresh) => {
 
 const submit = () => form.id ? update() : store()
 
-const detachPermission = async (user, permission, refresh) => {
+const detachPermission = async (user, permission) => {
   const response = await Swal.fire({
     title: 'Are you sure?',
     text: 'You can re adding it on edit page',
@@ -100,11 +100,11 @@ const detachPermission = async (user, permission, refresh) => {
   if (!response.isConfirmed)
     return
 
-  Inertia.on('finish', () => refresh())
+  Inertia.on('finish', () => close())
   Inertia.patch(route('superuser.user.permission.detach', { user: user.id, permission: permission.id }))
 }
 
-const detachRole = async (user, role, refresh) => {
+const detachRole = async (user, role) => {
   const response = await Swal.fire({
     title: 'Are you sure?',
     text: 'You can re adding it on edit page',
@@ -116,11 +116,12 @@ const detachRole = async (user, role, refresh) => {
   if (!response.isConfirmed)
     return
 
-  Inertia.on('finish', () => refresh())
+  Inertia.on('finish', () => close())
   Inertia.patch(route('superuser.user.role.detach', { user: user.id, role: role.id }))
 }
 
 const esc = e => e.key === 'Escape' && close()
+
 onMounted(() => window.addEventListener('keydown', esc))
 onUnmounted(() => window.removeEventListener('keydown', esc))
 </script>
@@ -141,8 +142,8 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
 
       <template #body>
         <div class="flex flex-col space-y-2">
-          <Builder :url="route('api.v1.superuser.user.paginate')">
-            <template v-slot:thead="table">
+          <Builder ref="table" :url="route('api.v1.superuser.user.paginate')">
+            <template #thead="table">
               <tr class="bg-gray-200 dark:bg-gray-800 border-gray-300 dark:border-gray-900">
                 <Th class="border px-3 py-2 text-center" :table="table" :sort="false">no</Th>
                 <Th class="border px-3 py-2 text-center whitespace-nowrap" :table="table" :sort="true" name="name">name</Th>
@@ -157,7 +158,7 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
               </tr>
             </template>
 
-            <template v-slot:tfoot="table">
+            <template #tfoot="table">
               <tr class="bg-gray-200 dark:bg-gray-800 border-gray-300 dark:border-gray-900">
                 <Th class="border px-3 py-2 text-center" :table="table" :sort="false">no</Th>
                 <Th class="border px-3 py-2 text-center whitespace-nowrap" :table="table" :sort="false">name</Th>
@@ -172,7 +173,7 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
               </tr>
             </template>
 
-            <template v-slot:tbody="{ data, processing, empty, refresh }">
+            <template #tbody="{ data, processing, empty }">
               <transition-group
                 enterActiveClass="transition-all duration-100"
                 leaveActiveClass="transition-all duration-50"
@@ -187,7 +188,7 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
                 </template>
 
                 <template v-else>
-                  <tr v-for="(user, i) in (tableRefresh = refresh) ? data : data" :key="i" class="dark:hover:bg-gray-600 transition-all duration-300">
+                  <tr v-for="(user, i) in data" :key="i" class="dark:hover:bg-gray-600 transition-all duration-300">
                     <td class="px-2 py-1 border dark:border-gray-800 text-center">{{ i + 1 }}</td>
                     <td class="px-2 py-1 border dark:border-gray-800 uppercase">{{ user.name }}</td>
                     <td class="px-2 py-1 border dark:border-gray-800 uppercase">{{ user.username }}</td>
@@ -198,7 +199,7 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
                           <div class="flex items-center justify-between space-x-1">
                             <p class="uppercase font-semibold">{{ permission.name }}</p>
 
-                            <Icon @click.prevent="detachPermission(user, permission, refresh)" v-if="can('update user')" name="times" class="px-2 py-1 rounded-md dark:bg-gray-700 transition-all hover:bg-red-500 cursor-pointer" />
+                            <Icon @click.prevent="detachPermission(user, permission)" v-if="can('update user')" name="times" class="px-2 py-1 rounded-md dark:bg-gray-700 transition-all hover:bg-red-500 cursor-pointer" />
                           </div>
                         </div>
                       </div>
@@ -209,7 +210,7 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
                           <div class="flex items-center justify-between space-x-2">
                             <p class="uppercase font-semibold">{{ role.name }}</p>
 
-                            <Icon @click.prevent="detachRole(user, role, refresh)" v-if="can('update user')" name="times" class="px-2 py-1 rounded-md dark:bg-gray-700 transition-all hover:bg-red-500 cursor-pointer" />
+                            <Icon @click.prevent="detachRole(user, role)" v-if="can('update user')" name="times" class="px-2 py-1 rounded-md dark:bg-gray-700 transition-all hover:bg-red-500 cursor-pointer" />
                           </div>
                         </div>
                       </div>
@@ -219,12 +220,12 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
                     <td class="px-2 py-1 border dark:border-gray-800 uppercase">{{ new Date(user.updated_at).toLocaleString('id') }}</td>
                     <td class="px-2 py-1 border dark:border-gray-800">
                       <div class="flex items-center space-x-2">
-                        <ButtonBlue v-if="can('update user')" @click.prevent="edit(user, refresh)">
+                        <ButtonBlue v-if="can('update user')" @click.prevent="edit(user)">
                           <Icon name="edit" />
                           <p class="uppercase">edit</p>
                         </ButtonBlue>
 
-                        <ButtonRed v-if="can('delete user')" @click.prevent="destroy(user, refresh)">
+                        <ButtonRed v-if="can('delete user')" @click.prevent="destroy(user)">
                           <Icon name="trash" />
                           <p class="uppercase">delete</p>
                         </ButtonRed>

@@ -19,13 +19,14 @@ const self = getCurrentInstance()
 const { permissions } = defineProps({
   permissions: Array,
 })
+
 const form = useForm({
   id: null,
   name: '',
   permissions: [],
 })
 
-const tableRefresh = ref(null)
+const table = ref(null)
 const open = ref(false)
 
 const show = () => {
@@ -36,9 +37,10 @@ const show = () => {
 const close = () => {
   open.value = false
   form.reset()
+  table.value?.refresh()
 }
 
-const detach = async (role, permission, refresh) => {
+const detach = async (role, permission) => {
   const response = await Swal.fire({
     title: 'are you sure?',
     icon: 'question',
@@ -49,13 +51,13 @@ const detach = async (role, permission, refresh) => {
   if (!response.isConfirmed)
     return
 
-  Inertia.on('finish', () => refresh())
+  Inertia.on('finish', () => close())
   Inertia.patch(route('superuser.role.detach', { role: role.id, permission: permission.id }))
 }
 
 const store = () => {
   return form.post(route('superuser.role.store'), {
-    onSuccess: () => close() || (tableRefresh.value && tableRefresh.value()),
+    onSuccess: () => close(),
     onError: () => show(),
   })
 }
@@ -70,12 +72,12 @@ const edit = role => {
 
 const update = () => {
   return form.patch(route('superuser.role.update', form.id), {
-    onSuccess: () => close() || (tableRefresh.value && tableRefresh.value()),
+    onSuccess: () => close(),
     onError: () => show(),
   })
 }
 
-const destroy = async (role, refresh) => {
+const destroy = async role => {
   const response = await Swal.fire({
     title: 'Are you sure?',
     text: 'You can\'t restore it after deleted',
@@ -85,7 +87,7 @@ const destroy = async (role, refresh) => {
   })
 
   if (response.isConfirmed) {
-    Inertia.on('finish', () => refresh())
+    Inertia.on('finish', () => close())
 
     return Inertia.delete(route('superuser.role.destroy', role.id))
   }
@@ -114,8 +116,8 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
 
       <template #body>
         <div class="flex flex-col space-y-2">
-          <Builder :url="route('api.v1.superuser.role.paginate')">
-            <template v-slot:thead="table">
+          <Builder ref="table" :url="route('api.v1.superuser.role.paginate')">
+            <template #thead="table">
               <tr class="bg-gray-200 dark:bg-gray-800 border-gray-300 dark:border-gray-900">
                 <Th class="border px-3 py-2 text-center" :table="table" :sort="false">no</Th>
                 <Th class="border px-3 py-2 text-center whitespace-nowrap" :table="table" :sort="true" name="name">name</Th>
@@ -124,7 +126,7 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
               </tr>
             </template>
 
-            <template v-slot:tfoot="table">
+            <template #tfoot="table">
               <tr class="bg-gray-200 dark:bg-gray-800 border-gray-300 dark:border-gray-900">
                 <Th class="border px-3 py-2 text-center" :table="table" :sort="false">no</Th>
                 <Th class="border px-3 py-2 text-center whitespace-nowrap" :table="table" :sort="false">name</Th>
@@ -133,7 +135,7 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
               </tr>
             </template>
 
-            <template v-slot:tbody="{ data, processing, empty, refresh }">
+            <template #tbody="{ data, processing, empty, refresh }">
               <transition-group
                 enterActiveClass="transition-all duration-300"
                 leaveActiveClass="transition-all duration-100"
@@ -145,7 +147,7 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
                 </template>
 
                 <template v-else>
-                  <tr v-for="(role, i) in (tableRefresh = refresh) ? data : data" :key="i" class="dark:hover:bg-gray-600 transition-all duration-300">
+                  <tr v-for="(role, i) in data" :key="i" class="dark:hover:bg-gray-600 transition-all duration-300">
                     <td class="px-2 py-1 border dark:border-gray-800 text-center">{{ i + 1 }}</td>
                     <td class="px-2 py-1 border dark:border-gray-800 uppercase">{{ role.name }}</td>
                     <td class="px-2 py-1 border dark:border-gray-800">
@@ -161,12 +163,12 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
                     </td>
                     <td class="px-2 py-1 border dark:border-gray-800">
                       <div class="flex items-center space-x-2">
-                        <ButtonBlue v-if="can('update role')" @click.prevent="edit(role, refresh)">
+                        <ButtonBlue v-if="can('update role')" @click.prevent="edit(role)">
                           <Icon name="edit" />
                           <p class="uppercase">edit</p>
                         </ButtonBlue>
 
-                        <ButtonRed v-if="can('delete role')" @click.prevent="destroy(role, refresh)">
+                        <ButtonRed v-if="can('delete role')" @click.prevent="destroy(role)">
                           <Icon name="trash" />
                           <p class="uppercase">delete</p>
                         </ButtonRed>
