@@ -26,13 +26,13 @@
   @apply dark:bg-white;
 }
 .multiselect-clear-icon {
-  @apply dark:bg-gray-600;
+  @apply dark:bg-gray-400;
 }
 .multiselect-caret {
-  @apply dark:bg-gray-600;
+  @apply dark:bg-gray-400;
 }
 .multiselect-dropdown {
-  @apply dark:bg-gray-700 dark:border-gray-800;
+  @apply dark:bg-gray-700 dark:border-gray-600;
 }
 .multiselect-group-label {
   @apply dark:bg-gray-700 dark:text-gray-200;
@@ -44,7 +44,7 @@
   @apply dark:bg-gray-700 dark:text-gray-200;
 }
 .multiselect-option.is-pointed {
-  @apply dark:bg-gray-700 text-gray-200;
+  @apply dark:bg-gray-600 dark:text-gray-200;
 }
 .multiselect-option.is-disabled {
   @apply dark:bg-gray-700 dark:text-gray-200;
