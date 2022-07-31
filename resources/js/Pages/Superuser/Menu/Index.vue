@@ -15,14 +15,14 @@ import ButtonGreen from '@/Components/Button/Green.vue'
 import ButtonBlue from '@/Components/Button/Blue.vue'
 
 const self = getCurrentInstance()
-const { permissions, routes, icons } = defineProps({
+const props = defineProps({
   permissions: Array,
   routes: Array,
   icons: Array,
+  menus: Array,
 })
 
-const a = ref(true)
-const menus = ref([])
+const menus = ref(props.menus || [])
 const search = ref('')
 const form = useForm({
   id: null,
@@ -131,11 +131,6 @@ const save = () => {
 }
 
 const esc = e => e.key === 'Escape' && close()
-
-Inertia.on('finish', () => {
-  a.value = false
-  nextTick(() => a.value = true)
-})
 
 onMounted(fetch)
 onMounted(() => window.addEventListener('keydown', esc))

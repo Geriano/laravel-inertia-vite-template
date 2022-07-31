@@ -28,6 +28,7 @@ class MenuController extends Controller
             'permissions' => Permission::get(),
             'routes' => array_values($routes),
             'icons' => $this->icons(),
+            'menus' => $this->get(),
         ]);
     }
 
