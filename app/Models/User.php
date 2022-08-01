@@ -72,12 +72,24 @@ class User extends Authenticatable
     {
         return Menu::whereNull('parent_id')
                     ->where(function (Builder $query) {
-                        $query->whereHas('permissions', function (Builder $query) {
-                            $query->whereIn('permissions.id', $this->permissions->pluck('id')->push(...$this->roles->pluck('permissions')->flatten()->pluck('id')));
+                        $permissions = $this->permissions->pluck('id')->push(...$this->roles->pluck('permissions')->flatten()->pluck('id'));
+
+                        $query->whereHas('permissions', function (Builder $query) use ($permissions) {
+                            $query->whereIn('permissions.id', $permissions);
                         })->orDoesntHave('permissions');
                     })
                     ->orderBy('position')
-                    ->with('childs')
-                    ->get();
+                    ->with('childsByPermissions')
+                    ->get()
+                    ->each([$this, 'changeChildsByPermissionsToChilds']);
+    }
+
+    /**
+     * @param \App\Models\Menu $menu
+     * @return void
+     */
+    public function changeChildsByPermissionsToChilds(Menu $menu)
+    {
+        $menu->childs = collect($menu->childsByPermissions)->each([$this, 'changeChildsByPermissionsToChilds']);
     }
 }

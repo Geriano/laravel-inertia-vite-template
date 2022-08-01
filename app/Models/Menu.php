@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -46,7 +47,27 @@ class Menu extends Model
      */
     public function childs()
     {
-        return $this->hasMany(Menu::class, 'parent_id', 'id')->with(['parent', 'childs'])->orderBy('position');
+        return $this->hasMany(Menu::class, 'parent_id', 'id')
+                    ->with(['parent', 'childs'])
+                    ->orderBy('position');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function childsByPermissions()
+    {
+        return $this->hasMany(Menu::class, 'parent_id', 'id')
+                    ->where(function (Builder $query) {
+                        $user = request()->user();
+                        $permissions = $user->permissions->pluck('id')->push(...$user->roles->pluck('permissions')->flatten()->pluck('id'));
+
+                        $query->whereHas('permissions', function (Builder $query) use ($permissions) {
+                            $query->whereIn('permissions.id', $permissions);
+                        })->orDoesntHave('permissions');
+                    })
+                    ->with(['parent', 'childsByPermissions'])
+                    ->orderBy('position');
     }
 
     /**
