@@ -7,15 +7,15 @@ use {{ namespacedUserModel }};
 
 class {{ class }}
 {
-    use HandlesAuthorization;
-
-    /**
-     * Create a new policy instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        //
-    }
+  use HandlesAuthorization;
+  
+  /**
+  * Create a new policy instance.
+  *
+  * @return void
+  */
+  public function __construct()
+  {
+    //
+  }
 }
