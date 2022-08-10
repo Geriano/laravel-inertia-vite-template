@@ -31,6 +31,15 @@ class MenuSeeder extends Seeder
             'deleteable' => false,
         ]);
 
+        $builtin->permissions()->attach(
+            Permission::whereIn('name', [
+                'read permission',
+                'read role',
+                'read user',
+                'read menu',
+            ])->get()->pluck(['id'])
+        );
+
         $permission = $builtin->childs()->create([
             'name' => 'permission',
             'route_or_url' => 'superuser.permission.index',

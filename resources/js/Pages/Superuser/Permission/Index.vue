@@ -105,7 +105,7 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
     <Card class="bg-gray-50 dark:bg-slate-700 shadow-md">
       <template #header>
         <div class="flex items-center space-x-2 bg-gray-200 dark:bg-gray-800 p-2">
-          <ButtonGreen v-if="can('create permission')" @click.prevent="show()">
+          <ButtonGreen v-if="can('create permission')" @click.prevent="form.id = null; show()">
             <Icon name="plus" />
             <p class="font-semibold uppercase">create</p>
           </ButtonGreen>
