@@ -28,3 +28,8 @@ Route::prefix('/v1')->name('api.v1.')->middleware(['auth:sanctum'])->group(funct
 
     Route::get('/user', fn () => request()->user());
 });
+
+Route::prefix('/translation/{locale?}')->name('api.translation.')->controller(App\Http\Controllers\TranslationController::class)->group(function () {
+    Route::get('/', 'get')->name('get');
+    Route::post('/', 'register')->name('register');
+});

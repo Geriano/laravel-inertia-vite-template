@@ -34,8 +34,31 @@ const can = (abilities) => {
   }
 }
 
+window.translations = {}
+window.locale = localStorage.getItem('locale') || 'id'
+
+const translation = () => axios.get(route('api.translation.get', window.locale))
+                                .then(response => response.data)
+                                .then(response => window.translations = response)
+
+translation()
+
 window.can = can
 window.__ = (text, replacements = {}) => {
+  if (typeof text === 'string') {
+    if (window.translations.hasOwnProperty(text)) {
+      text = window.translations[text]
+    } else {
+      axios.post(route(
+        'api.translation.register', window.locale
+      ), { text }).then(translation)
+    }
+
+    for (const key in replacements) {
+      text = text.replace(new RegExp(`:${key}`, 'g'), replacements[key])
+    }
+  }
+
   return text
 }
 
