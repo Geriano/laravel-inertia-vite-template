@@ -13,10 +13,14 @@ const link = route().has(menu.route_or_url) ? route(menu.route_or_url) : menu.ro
 </script>
 
 <template>
-  <Link :href="link" class="w-full px-4 py-3" :class="`${themes().get('sidebar', 'bg-slate-700 text-gray-200')} ${active && 'bg-slate-800'} pl-${padding !== 0 && padding}`">
+  <Link
+    :href="link"
+    :class="`${themes().get('sidebar', 'bg-slate-700 text-gray-200')} ${active && 'bg-slate-800'} pl-${padding !== 0 && padding}`"
+    class="w-full px-4 py-3"
+  >
     <div class="flex items-center space-x-2">
       <Icon :name="menu.icon" />
-      <p class="uppercase font-semibold">{{ menu.name }}</p>
+      <p class="uppercase font-semibold">{{ __(menu.name) }}</p>
     </div>
   </Link>
 </template>
