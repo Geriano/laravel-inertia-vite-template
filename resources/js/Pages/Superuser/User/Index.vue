@@ -72,8 +72,8 @@ const update = () => {
 
 const destroy = async user => {
   const response = await Swal.fire({
-    title: 'Are you sure?',
-    text: 'You can\'t restore it after deleted',
+    title: __('are you sure') + '?',
+    text: __('you can\'t restore it after deleted'),
     icon: 'question',
     showCancelButton: true,
     showCloseButton: true,
@@ -90,8 +90,8 @@ const submit = () => form.id ? update() : store()
 
 const detachPermission = async (user, permission) => {
   const response = await Swal.fire({
-    title: 'Are you sure?',
-    text: 'You can re adding it on edit page',
+    title: __('are you sure') + '?',
+    text: __('you can re adding it on edit page'),
     icon: 'question',
     showCancelButton: true,
     showCloseButton: true,
@@ -106,8 +106,8 @@ const detachPermission = async (user, permission) => {
 
 const detachRole = async (user, role) => {
   const response = await Swal.fire({
-    title: 'Are you sure?',
-    text: 'You can re adding it on edit page',
+    title: __('are you sure') + '?',
+    text: __('you can re adding it on edit page'),
     icon: 'question',
     showCancelButton: true,
     showCloseButton: true,
@@ -130,101 +130,322 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
 <style src="@/multiselect.css"></style>
 
 <template>
-  <DashboardLayout title="User">
+  <DashboardLayout
+    :title="__('user')"
+  >
     <Card class="bg-gray-50 dark:bg-gray-700 dark:text-gray-100">
       <template #header>
         <div class="flex items-center space-x-2 p-2 bg-gray-200 dark:bg-gray-800">
-          <ButtonGreen v-if="can('create user')" @click.prevent="form.id = null; show()">
+          <ButtonGreen
+            v-if="can('create user')"
+            @click.prevent="form.id = null; show()"
+          >
             <Icon name="plus" />
-            <p class="uppercase font-semibold">create</p>
+            <p class="uppercase font-semibold">
+              {{ __('create') }}
+            </p>
           </ButtonGreen>
         </div>
       </template>
 
       <template #body>
         <div class="flex flex-col space-y-2">
-          <Builder ref="table" :url="route('api.v1.superuser.user.paginate')">
+          <Builder
+            :url="route('api.v1.superuser.user.paginate')"
+            ref="table"
+          >
             <template #thead="table">
               <tr class="bg-gray-200 dark:bg-gray-800 border-gray-300 dark:border-gray-900">
-                <Th class="border px-3 py-2 text-center" :table="table" :sort="false">no</Th>
-                <Th class="border px-3 py-2 text-center whitespace-nowrap" :table="table" :sort="true" name="name">name</Th>
-                <Th class="border px-3 py-2 text-center whitespace-nowrap" :table="table" :sort="true" name="username">username</Th>
-                <Th class="border px-3 py-2 text-center whitespace-nowrap" :table="table" :sort="true" name="email">email</Th>
-                <Th class="border px-3 py-2 text-center whitespace-nowrap" :table="table" :sort="false">permissions</Th>
-                <Th class="border px-3 py-2 text-center whitespace-nowrap" :table="table" :sort="false">roles</Th>
-                <Th class="border px-3 py-2 text-center whitespace-nowrap" :table="table" :sort="true" name="email_verified_at">verified at</Th>
-                <Th class="border px-3 py-2 text-center whitespace-nowrap" :table="table" :sort="true" name="created_at">created at</Th>
-                <Th class="border px-3 py-2 text-center whitespace-nowrap" :table="table" :sort="true" name="updated_at">updated at</Th>
-                <Th class="border px-3 py-2 text-center whitespace-nowrap" :table="table" :sort="false">action</Th>
+                <Th
+                  :table="table"
+                  :sort="false"
+                  class="border px-3 py-2 text-center"
+                >
+                  {{ __('no') }}
+                </Th>
+
+                <Th
+                  :table="table"
+                  :sort="true"
+                  name="name"
+                  class="border px-3 py-2 text-center whitespace-nowrap"
+                >
+                  {{ __('name') }}
+                </Th>
+
+                <Th
+                  :table="table"
+                  :sort="true"
+                  name="username"
+                  class="border px-3 py-2 text-center whitespace-nowrap"
+                >
+                  {{ __('username') }}
+                </Th>
+
+                <Th
+                  :table="table"
+                  :sort="true"
+                  name="email"
+                  class="border px-3 py-2 text-center whitespace-nowrap"
+                >
+                  {{ __('email') }}
+                </Th>
+
+                <Th
+                  :table="table"
+                  :sort="false"
+                  class="border px-3 py-2 text-center whitespace-nowrap"
+                >
+                  {{ __('permissions') }}
+                </Th>
+
+                <Th
+                  :table="table"
+                  :sort="false"
+                  class="border px-3 py-2 text-center whitespace-nowrap"
+                >
+                  {{ __('roles') }}
+                </Th>
+
+                <Th
+                  :table="table"
+                  :sort="true"
+                  name="email_verified_at"
+                  class="border px-3 py-2 text-center whitespace-nowrap"
+                >
+                  {{ __('verified at') }}
+                </Th>
+
+                <Th
+                  :table="table"
+                  :sort="true"
+                  name="created_at"
+                  class="border px-3 py-2 text-center whitespace-nowrap"
+                >
+                  {{ __('created at') }}
+                </Th>
+
+                <Th
+                  :table="table"
+                  :sort="true"
+                  name="updated_at"
+                  class="border px-3 py-2 text-center whitespace-nowrap"
+                >
+                  {{ __('updated at') }}
+                </Th>
+
+                <Th
+                  :table="table"
+                  :sort="false"
+                  class="border px-3 py-2 text-center whitespace-nowrap"
+                >
+                  {{ __('action') }}
+                </Th>
               </tr>
             </template>
 
             <template #tfoot="table">
               <tr class="bg-gray-200 dark:bg-gray-800 border-gray-300 dark:border-gray-900">
-                <Th class="border px-3 py-2 text-center" :table="table" :sort="false">no</Th>
-                <Th class="border px-3 py-2 text-center whitespace-nowrap" :table="table" :sort="false">name</Th>
-                <Th class="border px-3 py-2 text-center whitespace-nowrap" :table="table" :sort="false">username</Th>
-                <Th class="border px-3 py-2 text-center whitespace-nowrap" :table="table" :sort="false">email</Th>
-                <Th class="border px-3 py-2 text-center whitespace-nowrap" :table="table" :sort="false">permissions</Th>
-                <Th class="border px-3 py-2 text-center whitespace-nowrap" :table="table" :sort="false">roles</Th>
-                <Th class="border px-3 py-2 text-center whitespace-nowrap" :table="table" :sort="false">verified at</Th>
-                <Th class="border px-3 py-2 text-center whitespace-nowrap" :table="table" :sort="false">created at</Th>
-                <Th class="border px-3 py-2 text-center whitespace-nowrap" :table="table" :sort="false">updated at</Th>
-                <Th class="border px-3 py-2 text-center whitespace-nowrap" :table="table" :sort="false">action</Th>
+                <Th
+                  :table="table"
+                  :sort="false"
+                  class="border px-3 py-2 text-center"
+                >
+                  {{ __('no') }}
+                </Th>
+
+                <Th
+                  :table="table"
+                  :sort="false"
+                  class="border px-3 py-2 text-center whitespace-nowrap"
+                >
+                  {{ __('name') }}
+                </Th>
+
+                <Th
+                  :table="table"
+                  :sort="false"
+                  class="border px-3 py-2 text-center whitespace-nowrap"
+                >
+                  {{ __('username') }}
+                </Th>
+
+                <Th
+                  :table="table"
+                  :sort="false"
+                  class="border px-3 py-2 text-center whitespace-nowrap"
+                >
+                  {{ __('email') }}
+                </Th>
+
+                <Th
+                  :table="table"
+                  :sort="false"
+                  class="border px-3 py-2 text-center whitespace-nowrap"
+                >
+                  {{ __('permissions') }}
+                </Th>
+
+                <Th
+                  :table="table"
+                  :sort="false"
+                  class="border px-3 py-2 text-center whitespace-nowrap"
+                >
+                  {{ __('roles') }}
+                </Th>
+
+                <Th
+                  :table="table"
+                  :sort="false"
+                  class="border px-3 py-2 text-center whitespace-nowrap"
+                >
+                  {{ __('verified at') }}
+                </Th>
+
+                <Th
+                  :table="table"
+                  :sort="false"
+                  class="border px-3 py-2 text-center whitespace-nowrap"
+                >
+                  {{ __('created at') }}
+                </Th>
+
+                <Th
+                  :table="table"
+                  :sort="false"
+                  class="border px-3 py-2 text-center whitespace-nowrap"
+                >
+                  {{ __('updated at') }}
+                </Th>
+
+                <Th
+                  :table="table"
+                  :sort="false"
+                  class="border px-3 py-2 text-center whitespace-nowrap"
+                >
+                  {{ __('action') }}
+                </Th>
               </tr>
             </template>
 
             <template #tbody="{ data, processing, empty }">
-              <TransitionGroup enterActiveClass="transition-all duration-200" leaveActiveClass="transition-all duration-200" enterFromClass="opacity-0 -scale-y-100" leaveToClass="opacity-0 -scale-y-100">
+              <TransitionGroup
+                enterActiveClass="transition-all duration-200"
+                leaveActiveClass="transition-all duration-200"
+                enterFromClass="opacity-0 -scale-y-100"
+                leaveToClass="opacity-0 -scale-y-100"
+              >
                 <template v-if="empty">
-                  <tr v-if="empty">
+                  <tr>
                     <td class="text-5xl text-center p-4" colspan="1000">
-                      <p class="lowercase first-letter:capitalize font-semibold">there are no data available</p>
+                      <p class="lowercase first-letter:capitalize font-semibold">
+                        {{ __('there are no data available') }}
+                      </p>
                     </td>
                   </tr>
                 </template>
 
                 <template v-else>
-                  <tr v-for="(user, i) in data" :key="i" class="dark:hover:bg-gray-600 transition-all duration-300" :class="processing && 'bg-gray-800'">
-                    <td class="px-2 py-1 border dark:border-gray-800 text-center">{{ i + 1 }}</td>
-                    <td class="px-2 py-1 border dark:border-gray-800 uppercase">{{ user.name }}</td>
-                    <td class="px-2 py-1 border dark:border-gray-800 uppercase">{{ user.username }}</td>
-                    <td class="px-2 py-1 border dark:border-gray-800 uppercase">{{ user.email }}</td>
+                  <tr
+                    v-for="(user, i) in data"
+                    :key="i"
+                    :class="processing && 'bg-gray-800'"
+                    class="dark:hover:bg-gray-600 transition-all duration-300"
+                  >
+                    <td class="px-2 py-1 border dark:border-gray-800 text-center">
+                      {{ i + 1 }}
+                    </td>
+
+                    <td class="px-2 py-1 border dark:border-gray-800 uppercase">
+                      {{ user.name }}
+                    </td>
+
+                    <td class="px-2 py-1 border dark:border-gray-800 uppercase">
+                      {{ user.username }}
+                    </td>
+
+                    <td class="px-2 py-1 border dark:border-gray-800 uppercase">
+                      {{ user.email }}
+                    </td>
+
                     <td class="px-2 py-1 border dark:border-gray-800">
                       <div class="flex-wrap">
-                        <div v-for="(permission, j) in user.permissions" :key="j" class="inline-block bg-gray-600 rounded-md px-3 py-1 m-[1px] text-sm">
+                        <div
+                          v-for="(permission, j) in user.permissions"
+                          :key="j"
+                          class="inline-block bg-gray-600 rounded-md px-3 py-1 m-[1px] text-sm"
+                        >
                           <div class="flex items-center justify-between space-x-1">
-                            <p class="uppercase font-semibold">{{ permission.name }}</p>
+                            <p class="uppercase font-semibold">
+                              {{ __(permission.name) }}
+                            </p>
 
-                            <Icon @click.prevent="detachPermission(user, permission)" v-if="can('update user')" name="times" class="px-2 py-1 rounded-md dark:bg-gray-700 transition-all hover:bg-red-500 cursor-pointer" />
+                            <Icon
+                              v-if="can('update user')"
+                              @click.prevent="detachPermission(user, permission)"
+                              name="times"
+                              class="px-2 py-1 rounded-md dark:bg-gray-700 transition-all hover:bg-red-500 cursor-pointer"
+                            />
                           </div>
                         </div>
                       </div>
                     </td>
+
                     <td class="px-2 py-1 border dark:border-gray-800">
                       <div class="flex-wrap">
-                        <div v-for="(role, j) in user.roles" :key="j" class="inline-block dark:bg-gray-800 dark:hover:bg-gray-900 border dark:border-gray-800 rounded-md px-3 py-1 m-[1px] text-sm transition-all">
+                        <div
+                          v-for="(role, j) in user.roles"
+                          :key="j"
+                          class="inline-block dark:bg-gray-800 dark:hover:bg-gray-900 border dark:border-gray-800 rounded-md px-3 py-1 m-[1px] text-sm transition-all"
+                        >
                           <div class="flex items-center justify-between space-x-2">
-                            <p class="uppercase font-semibold">{{ role.name }}</p>
+                            <p class="uppercase font-semibold">
+                              {{ __(role.name) }}
+                            </p>
 
-                            <Icon @click.prevent="detachRole(user, role)" v-if="can('update user')" name="times" class="px-2 py-1 rounded-md dark:bg-gray-700 transition-all hover:bg-red-500 cursor-pointer" />
+                            <Icon
+                              v-if="can('update user')"
+                              @click.prevent="detachRole(user, role)"
+                              name="times"
+                              class="px-2 py-1 rounded-md dark:bg-gray-700 transition-all hover:bg-red-500 cursor-pointer"
+                            />
                           </div>
                         </div>
                       </div>
                     </td>
-                    <td class="px-2 py-1 border dark:border-gray-800 uppercase">{{ new Date(user.email_verified_at).toLocaleString('id') }}</td>
-                    <td class="px-2 py-1 border dark:border-gray-800 uppercase">{{ new Date(user.created_at).toLocaleString('id') }}</td>
-                    <td class="px-2 py-1 border dark:border-gray-800 uppercase">{{ new Date(user.updated_at).toLocaleString('id') }}</td>
+
+                    <td class="px-2 py-1 border dark:border-gray-800 uppercase">
+                      {{ new Date(user.email_verified_at).toLocaleString('id') }}
+                    </td>
+
+                    <td class="px-2 py-1 border dark:border-gray-800 uppercase">
+                      {{ new Date(user.created_at).toLocaleString('id') }}
+                    </td>
+
+                    <td class="px-2 py-1 border dark:border-gray-800 uppercase">
+                      {{ new Date(user.updated_at).toLocaleString('id') }}
+                    </td>
+
                     <td class="px-2 py-1 border dark:border-gray-800">
                       <div class="flex items-center space-x-2">
-                        <ButtonBlue v-if="can('update user')" @click.prevent="edit(user)">
+                        <ButtonBlue
+                          v-if="can('update user')"
+                          @click.prevent="edit(user)"
+                        >
                           <Icon name="edit" />
-                          <p class="uppercase">edit</p>
+                          <p class="uppercase">
+                            {{ __('edit') }}
+                          </p>
                         </ButtonBlue>
 
-                        <ButtonRed v-if="can('delete user')" @click.prevent="destroy(user)">
+                        <ButtonRed
+                          v-if="can('delete user')"
+                          @click.prevent="destroy(user)"
+                        >
                           <Icon name="trash" />
-                          <p class="uppercase">delete</p>
+                          <p class="uppercase">
+                            {{ __('delete') }}
+                          </p>
                         </ButtonRed>
                       </div>
                     </td>
@@ -238,7 +459,10 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
     </Card>
 
     <Modal :show="open">
-      <form @submit.prevent="submit" class="w-full max-w-xl sm:max-w-5xl h-fit shadow-xl">
+      <form
+        @submit.prevent="submit"
+        class="w-full max-w-xl sm:max-w-5xl h-fit shadow-xl"
+      >
         <Card class="bg-gray-50 dark:bg-gray-700 dark:text-gray-100">
           <template #header>
             <div class="flex items-center justify-end bg-gray-200 dark:bg-gray-800 p-2">
@@ -250,8 +474,18 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
             <div class="flex flex-col space-y-4 p-4">
               <div class="flex flex-col space-y-2">
                 <div class="flex items-center space-x-2">
-                  <label for="name" class="w-1/3 lowercase first-letter:capitalize">name</label>
-                  <Input v-model="form.name" type="text" name="name" placeholder="name" required autofocus />
+                  <label for="name" class="w-1/3 lowercase first-letter:capitalize">
+                    {{ __('name') }}
+                  </label>
+
+                  <Input
+                    v-model="form.name"
+                    :placeholder="__('name')"
+                    type="text"
+                    name="name"
+                    required
+                    autofocus
+                  />
                 </div>
 
                 <InputError :error="form.errors.name" />
@@ -259,8 +493,17 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
 
               <div class="flex flex-col space-y-2">
                 <div class="flex items-center space-x-2">
-                  <label for="username" class="w-1/3 lowercase first-letter:capitalize">username</label>
-                  <Input v-model="form.username" type="text" name="username" placeholder="username" required />
+                  <label for="username" class="w-1/3 lowercase first-letter:capitalize">
+                    {{ __('username') }}
+                  </label>
+                  
+                  <Input
+                    v-model="form.username"
+                    :placeholder="__('username')"
+                    type="text"
+                    name="username"
+                    required
+                  />
                 </div>
 
                 <InputError :error="form.errors.username" />
@@ -268,8 +511,17 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
 
               <div class="flex flex-col space-y-2">
                 <div class="flex items-center space-x-2">
-                  <label for="email" class="w-1/3 lowercase first-letter:capitalize">email</label>
-                  <Input v-model="form.email" type="email" name="email" placeholder="email" required />
+                  <label for="email" class="w-1/3 lowercase first-letter:capitalize">
+                    {{ __('name') }}
+                  </label>
+
+                  <Input
+                    v-model="form.email"
+                    :placeholder="__('email')"
+                    type="email"
+                    name="email"
+                    required
+                  />
                 </div>
 
                 <InputError :error="form.errors.email" />
@@ -277,8 +529,17 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
 
               <div class="flex flex-col space-y-2">
                 <div class="flex items-center space-x-2">
-                  <label for="password" class="w-1/3 lowercase first-letter:capitalize">password</label>
-                  <Input v-model="form.password" type="password" name="password" placeholder="password" :required="form.id === null" />
+                  <label for="password" class="w-1/3 lowercase first-letter:capitalize">
+                    {{ __('password') }}
+                  </label>
+
+                  <Input
+                    v-model="form.password"
+                    :placeholder="__('password')"
+                    :required="form.id === null"
+                    type="password"
+                    name="password"
+                  />
                 </div>
 
                 <InputError :error="form.errors.password" />
@@ -286,8 +547,17 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
 
               <div class="flex flex-col space-y-2">
                 <div class="flex items-center space-x-2">
-                  <label for="password_confirmation" class="w-1/3 lowercase first-letter:capitalize">password confirmation</label>
-                  <Input v-model="form.password_confirmation" type="password" name="password_confirmation" placeholder="password confirmation" :required="form.id === null" />
+                  <label for="password_confirmation" class="w-1/3 lowercase first-letter:capitalize">
+                    {{ __('password confirmation') }}
+                  </label>
+
+                  <Input
+                    v-model="form.password_confirmation"
+                    :required="form.id === null"
+                    :placeholder="__('password confirmation')"
+                    type="password"
+                    name="password_confirmation"
+                  />
                 </div>
 
                 <InputError :error="form.errors.password_confirmation" />
@@ -295,19 +565,23 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
 
               <div class="flex flex-col space-y-2">
                 <div class="flex items-center space-x-2">
-                  <label for="permissions" class="w-1/3 lowercase first-letter:capitalize">permissions</label>
+                  <label for="permissions" class="w-1/3 lowercase first-letter:capitalize">
+                    {{ __('permissions') }}
+                  </label>
+
                   <Select
                     v-model="form.permissions"
                     :options="permissions.map(p => ({
-                      label: p.name,
+                      label: __(p.name),
                       value: p.id,
                     }))"
                     :clearOnSelect="false"
                     :closeOnSelect="false"
                     :searchable="true"
+                    :placeholder="__('permissions')"
                     class="uppercase"
-                    placeholder="permissions"
-                    mode="tags" />
+                    mode="tags"
+                  />
                 </div>
 
                 <InputError :error="form.errors.permissions" />
@@ -315,19 +589,23 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
 
               <div class="flex flex-col space-y-2">
                 <div class="flex items-center space-x-2">
-                  <label for="roles" class="w-1/3 lowercase first-letter:capitalize">roles</label>
+                  <label for="roles" class="w-1/3 lowercase first-letter:capitalize">
+                    {{ __('roles') }}
+                  </label>
+
                   <Select
                     v-model="form.roles"
                     :options="roles.map(r => ({
-                      label: r.name,
+                      label: __(r.name),
                       value: r.id,
                     }))"
                     :searchable="true"
                     :clearOnSelect="false"
                     :closeOnSelect="false"
+                    :placeholder="__('roles')"
                     class="uppercase"
-                    placeholder="roles"
-                    mode="tags" />
+                    mode="tags"
+                  />
                 </div>
 
                 <InputError :error="form.errors.roles" />
@@ -339,8 +617,9 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
             <div class="flex items-center justify-end space-x-2 bg-gray-200 dark:bg-gray-800 px-2 py-1">
               <ButtonGreen type="submit">
                 <Icon name="check" />
-
-                <p class="uppercase font-semibold">{{ form.id ? 'update' : 'create' }}</p>
+                <p class="uppercase font-semibold">
+                  {{ __(form.id ? 'update' : 'create') }}
+                </p>
               </ButtonGreen>
             </div>
           </template>
