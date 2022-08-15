@@ -11,7 +11,7 @@ const { translations } = defineProps({
   translations: Object,
 })
 
-const search = ref(null)
+const search = ref('')
 
 const update = (key, value) => {
   return useForm({key, value}).patch(route('superuser.translation.update'), {
