@@ -41,7 +41,7 @@ class ActivityController extends Controller
                         $query->where('users.id', $request->user()->id);
                     })
                     ->select(['users.*', 'login_activities.*'])
-                    ->orderBy($request->input('order.key') ?: 'created_at', $request->input('order.dir') ?: 'desc')
+                    ->orderBy($request->input('order.key') ?: 'login_activities.created_at', $request->input('order.dir') ?: 'desc')
                     ->paginate($request->per_page ?: 10);
     }
 }
