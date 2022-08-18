@@ -53,5 +53,12 @@ class InitialSeeder extends Seeder
                 ]);
             });
         });
+
+        collect(['read activities', 'read login activities'])->each(function ($p) {
+            Permission::create([
+                'name' => $p,
+                'guard_name' => 'web',
+            ]);
+        });
     }
 }

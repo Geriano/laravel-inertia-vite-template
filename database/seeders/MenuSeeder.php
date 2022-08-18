@@ -37,6 +37,7 @@ class MenuSeeder extends Seeder
                 'read role',
                 'read user',
                 'read menu',
+                'read translation'
             ])->get()->pluck(['id'])
         );
 
@@ -119,6 +120,12 @@ class MenuSeeder extends Seeder
             ],
         ]);
 
+        $translation->permissions()->attach(
+            Permission::whereIn('name', [
+                'create translation', 'read translation', 'update translation', 'delete translation',
+            ])->get(['id'])
+        );
+
         $activities = Menu::create([
             'name' => 'activities',
             'icon' => 'address-card',
@@ -126,7 +133,13 @@ class MenuSeeder extends Seeder
             'deleteable' => false,
         ]);
 
-        $activities->childs()->create([
+        $activities->permissions()->attach(
+            Permission::whereIn('name', [
+                'read activities',
+            ])->get()->pluck(['id'])
+        );
+
+        $login = $activities->childs()->create([
             'name' => 'login',
             'route_or_url' => 'superuser.activity.login',
             'icon' => 'user-clock',
@@ -136,5 +149,11 @@ class MenuSeeder extends Seeder
                 'superuser.activity.login',
             ],
         ]);
+
+        $login->permissions()->attach(
+            Permission::whereIn('name', [
+                'read login activities',
+            ])->get(['id'])
+        );
     }
 }
