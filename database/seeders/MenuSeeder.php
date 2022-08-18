@@ -108,6 +108,17 @@ class MenuSeeder extends Seeder
             ])->get(['id'])
         );
 
+        $translation = $builtin->childs()->create([
+            'name' => 'translation',
+            'route_or_url' => 'superuser.translation.index',
+            'icon' => 'language',
+            'position' => 5,
+            'deleteable' => false,
+            'actives' => [
+                'superuser.translation.*',
+            ],
+        ]);
+
         $activities = Menu::create([
             'name' => 'activities',
             'icon' => 'address-card',

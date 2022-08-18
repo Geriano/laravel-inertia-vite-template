@@ -43,6 +43,11 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
         Route::resource('menu', App\Http\Controllers\Superuser\MenuController::class)->only([
             'index', 'store', 'update', 'destroy',
         ])->middleware(['permission:read menu']);
+
+        Route::prefix('/translation')->name('translation.')->controller(App\Http\Controllers\TranslationController::class)->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::patch('/', 'update')->name('update');
+        });
         
         Route::get('/activity/login', [App\Http\Controllers\ActivityController::class, 'login'])->name('activity.login');
     });

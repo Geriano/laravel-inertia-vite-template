@@ -41,8 +41,8 @@ const fetch = async () => {
     menus.value = response.data
   } catch (e) {
     const response = await Swal.fire({
-      title: 'Are you want to try again?',
-      text: `${e}`,
+      title: __('are you want to try again') + '?',
+      text: __(`${e}`),
       icon: 'question',
       showCancelButton: true,
       showCloseButton: true,
@@ -105,8 +105,8 @@ const update = () => {
 
 const destroy = async menu => {
   const response = await Swal.fire({
-    title: 'Are you sure want to delete?',
-    text: 'You can\'t recover it after deleted',
+    title: __('are you sure want to delete') + '?',
+    text: __('you can\'t recover it after deleted'),
     icon: 'question',
     showCloseButton: true,
     showCancelButton: true,
@@ -143,26 +143,41 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
 <style src="@/multiselect.css"></style>
 
 <template>
-  <DashboardLayout title="Menu">
+  <DashboardLayout
+    :title="__('menu')"
+  >
     <Card class="bg-gray-50 dark:bg-gray-700 dark:text-gray-100">
       <template #header>
         <div class="flex items-center space-x-2 p-2 bg-gray-200 dark:bg-gray-800">
-          <ButtonGreen v-if="can('create menu')" @click.prevent="form.id = null; show()">
+          <ButtonGreen
+            v-if="can('create menu')"
+            @click.prevent="form.id = null; show()"
+          >
             <Icon name="plus" />
-            <p class="uppercase font-semibold">create</p>
+            <p class="uppercase font-semibold">
+              {{ __('create') }}
+            </p>
           </ButtonGreen>
         </div>
       </template>
 
       <template #body>
         <div class="flex flex-col space-y-1 p-2">
-          <Nested :menus="menus" :edit="edit" :destroy="destroy" :save="save" />
+          <Nested
+            :menus="menus"
+            :edit="edit"
+            :destroy="destroy"
+            :save="save"
+          />
         </div>
       </template>
     </Card>
 
     <Modal :show="open">
-      <form @submit.prevent="submit" class="w-full max-w-xl sm:max-w-5xl h-fit rounded-md shadow-xl">
+      <form
+        @submit.prevent="submit"
+        class="w-full max-w-xl sm:max-w-5xl h-fit rounded-md shadow-xl"
+      >
         <Card class="bg-gray-50 dark:bg-gray-700 dark:text-gray-100">
           <template #header>
             <div class="flex items-center space-x-2 p-2 justify-end bg-gray-200 dark:bg-gray-800">
@@ -174,33 +189,53 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
             <div class="flex flex-col space-y-2 p-4">
               <div class="flex flex-col space-y-1">
                 <div class="flex items-center space-x-2">
-                  <label for="name" class="lowercase first-letter:capitalize w-1/3">name</label>
-                  <Input v-model="form.name" type="text" name="name" placeholder="name" required autofocus />
+                  <label for="name" class="lowercase first-letter:capitalize w-1/3">
+                    {{ __('name') }}
+                  </label>
+
+                  <Input
+                    v-model="form.name"
+                    :placeholder="__('name')"
+                    type="text"
+                    name="name"
+                    required
+                    autofocus
+                  />
                 </div>
 
-                <InputError :error="form.errors.name" />
+                <InputError
+                  :error="form.errors.name"
+                />
               </div>
 
               <div class="flex flex-col space-y-1">
                 <div class="flex items-center space-x-2">
-                  <label for="route_or_url" class="lowercase first-letter:capitalize w-1/3">route name or url</label>
+                  <label for="route_or_url" class="lowercase first-letter:capitalize w-1/3">
+                    {{ __('route name or url') }}
+                  </label>
+
                   <Select
                     v-model="form.route_or_url"
                     :options="routes"
                     :searchable="true"
                     :createOption="true"
                     :value="form.route_or_url"
-                    ref="route_or_url"
-                    
-                    placeholder="route name or url" />
+                    :placeholder="__('route name or url')"
+                    ref="route_or_url"  
+                  />
                 </div>
 
-                <InputError :error="form.errors.route_or_url" />
+                <InputError
+                  :error="form.errors.route_or_url"
+                />
               </div>
 
               <div class="flex flex-col space-y-1">
                 <div class="flex items-center space-x-2">
-                  <label for="actives" class="lowercase first-letter:capitalize w-1/3">actives</label>
+                  <label for="actives" class="lowercase first-letter:capitalize w-1/3">
+                    {{ __('actives') }}
+                  </label>
+
                   <Select
                     v-model="form.actives"
                     :options="[...routes, ...form.actives.filter(active => ! routes.includes(active))]"
@@ -208,10 +243,10 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
                     :closeOnSelect="false"
                     :clearOnSelect="false"
                     :createTag="true"
-                    mode="tags"
+                    :placeholder="__('actives')"
                     ref="actives"
-                    
-                    placeholder="actives" />
+                    mode="tags"
+                  />
                 </div>
 
                 <InputError :error="form.errors.actives" />
@@ -219,38 +254,55 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
 
               <div class="flex flex-col space-y-1">
                 <div class="flex items-center space-x-2">
-                  <label for="permissions" class="lowercase first-letter:capitalize w-1/3">permissions</label>
+                  <label for="permissions" class="lowercase first-letter:capitalize w-1/3">
+                    {{ __('permissions') }}
+                  </label>
+
                   <Select
                     v-model="form.permissions"
                     :options="permissions.map(p => ({
-                      label: p.name,
+                      label: __(p.name),
                       value: p.id,
                     }))"
                     :searchable="true"
                     :closeOnSelect="false"
                     :clearOnSelect="false"
-                    mode="tags"
+                    :placeholder="__('permissions')"
                     ref="permissions"
-                    
-                    placeholder="permissions" />
+                    mode="tags"
+                  />
                 </div>
 
-                <InputError :error="form.errors.permissions" />
+                <InputError
+                  :error="form.errors.permissions"
+                />
               </div>
 
               <div class="flex items-center space-x-2">
-                <label class="flex-none lowercase first-letter:capitalize w-1/4">icon</label>
+                <label class="flex-none lowercase first-letter:capitalize w-1/4">
+                  {{ __('icon') }}
+                </label>
 
                 <div class="flex items-center justify-between w-full">
                   <p class="text-3xl">
-                    <Icon :name="form.icon" class="dark:text-white" />
+                    <Icon
+                      :name="form.icon"
+                      class="dark:text-white"
+                    />
                   </p>
 
-                  <p class="text-sm uppercase">{{ form.icon }}</p>
+                  <p class="text-sm uppercase">
+                    {{ form.icon }}
+                  </p>
                   
-                  <ButtonBlue @click.prevent="icon = true" type="button">
+                  <ButtonBlue
+                    @click.prevent="icon = true"
+                    type="button"
+                  >
                     <Icon name="edit" />
-                    <p class="uppercase font-semibold">change</p>
+                    <p class="uppercase font-semibold">
+                      {{ __('change') }}
+                    </p>
                   </ButtonBlue>
                 </div>
               </div>
@@ -261,7 +313,9 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
             <div class="flex items-center justify-end space-x-2 bg-gray-200 dark:bg-gray-800 py-1 px-2">
               <ButtonGreen type="submit">
                 <Icon name="check" />
-                <p class="uppercase font-semibold">{{ form.id ? 'update' : 'create' }}</p>
+                <p class="uppercase font-semibold">
+                  {{ __(form.id ? 'update' : 'create') }}
+                </p>
               </ButtonGreen>
             </div>
           </template>
@@ -273,14 +327,29 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
       <Card class="bg-gray-50 dark:bg-gray-700 dark:text-gray-100 w-full max-w-xl sm:max-w-5xl max-h-96 overflow-auto">
         <template #header>
           <div class="flex items-center space-x-2 p-2 justify-end bg-gray-200 dark:bg-gray-800 sticky top-0 left-0">
-            <input type="search" v-model="search" class="py-1 w-full bg-white dark:bg-transparent rounded-md text-sm uppercase" placeholder="search something">
-            <Icon @click.prevent="icon = false" name="times" class="px-2 py-1 bg-gray-300 hover:bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 rounded-md transition-all cursor-pointer" />
+            <input
+              v-model="search"
+              :placeholder="__('search something')"
+              type="search"
+              class="py-1 w-full bg-white dark:bg-transparent rounded-md text-sm uppercase"
+            >
+            <Icon
+              @click.prevent="icon = false"
+              name="times"
+              class="px-2 py-1 bg-gray-300 hover:bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 rounded-md transition-all cursor-pointer"
+            />
           </div>
         </template>
 
         <template #body>
           <div class="flex-wrap p-4">
-            <Icon v-for="(icx, i) in icons.filter(icx => icx.includes(search.trim().toLocaleLowerCase()))" :key="i" @click.prevent="form.icon = icx; icon = false" :name="icx" class="m-1 text-5xl px-2 py-1 text-gray-800 bg-gray-200 hover:bg-gray-100 dark:text-white dark:bg-gray-600 dark:hover:bg-gray-700 rounded-md cursor-pointer transition-all" />
+            <Icon
+              v-for="(icx, i) in icons.filter(icx => icx.includes(search.trim().toLocaleLowerCase()))"
+              :key="i"
+              @click.prevent="form.icon = icx; icon = false"
+              :name="icx"
+              class="m-1 text-5xl px-2 py-1 text-gray-800 bg-gray-200 hover:bg-gray-100 dark:text-white dark:bg-gray-600 dark:hover:bg-gray-700 rounded-md cursor-pointer transition-all"
+            />
           </div>
         </template>
       </Card>
