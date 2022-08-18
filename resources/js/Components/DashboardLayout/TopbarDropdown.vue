@@ -23,15 +23,18 @@ const logout = async () => {
 <style scoped>
 .slide-enter-active, .slide-leave-active {
   transition: all 500ms ease-in-out;
+  opacity: 1;
 }
 
 .slide-enter-from, .slide-leave-to {
   right: -100vw;
+  opacity: 0;
 }
 
 @media (min-width: 669px) {
   .slide-enter-from, .slide-leave-to {
-    right: -15rem;
+    right: -12rem;
+    opacity: 0;
   }
 }
 </style>

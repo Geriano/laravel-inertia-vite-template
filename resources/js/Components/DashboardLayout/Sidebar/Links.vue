@@ -25,6 +25,22 @@ const self = getCurrentInstance()
 const open = ref(active ? true : false)
 </script>
 
+<style scoped>
+  .slide-fade-enter-active {
+    transition: all 0.3s ease-out;
+  }
+
+  .slide-fade-leave-active {
+    transition: all 0.3s cubic-bezier(1, 0.5, 0.8, 1);
+  }
+
+  .slide-fade-enter-from,
+  .slide-fade-leave-to {
+    transform: translateX(-20px);
+    opacity: 0;
+  }
+</style>
+
 <template>
   <div class="w-full flex flex-col">
     <button @click.prevent="open = ! open" class="w-full p-4" :class="`${themes().get('sidebar', 'bg-slate-700 text-gray-200')} ${open && 'dark:bg-gray-800'} pl-${padding !== 0 && padding}`">
@@ -35,8 +51,10 @@ const open = ref(active ? true : false)
       </div>
     </button>
 
-    <div v-if="open" class="flex flex-col" ref="container">
-      <slot />
-    </div>
+    <Transition name="slide-fade" mode="in-out">
+      <div v-if="open" class="flex flex-col" ref="container">
+        <slot />
+      </div>
+    </Transition>
   </div>
 </template>
