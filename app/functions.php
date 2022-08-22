@@ -24,10 +24,12 @@ if (! function_exists('__')) {
     }
 
     if (is_string($key)) {
+      $value = $key;
+      $key = mb_strtolower($key);
       $all = $allDefinedTranslation();
 
       if (!array_key_exists($key, $all)) {
-        $all[$key] = $key;
+        $all[$key] = $value;
 
         $path = lang_path(app()->getLocale() . '.json');
 
