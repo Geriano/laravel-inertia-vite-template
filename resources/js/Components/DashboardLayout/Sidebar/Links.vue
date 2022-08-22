@@ -17,7 +17,7 @@ const trace = menu => {
     }
   }
 
-  return route().current(menu.route_or_url)
+  return route().current(menu.route_or_url) || menu.actives.filter(active => route().current(active)).length > 0
 }
 
 const active = childs.find(trace)

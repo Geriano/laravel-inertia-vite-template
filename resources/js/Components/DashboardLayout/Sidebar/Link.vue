@@ -8,7 +8,7 @@ const { menu } = defineProps({
   padding: Number,
 })
 
-const active = route().current(menu.route_or_url)
+const active = route().current(menu.route_or_url) || menu.actives.filter(active => route().current(active)).length > 0
 const link = route().has(menu.route_or_url) ? route(menu.route_or_url) : menu.route_or_url
 </script>
 
