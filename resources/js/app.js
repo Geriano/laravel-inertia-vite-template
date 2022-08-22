@@ -46,8 +46,8 @@ translation()
 window.can = can
 window.__ = (text, replacements = {}) => {
   if (typeof text === 'string') {
-    if (window.translations.hasOwnProperty(text)) {
-      text = window.translations[text]
+    if (window.translations.hasOwnProperty(text.trim().toLowerCase())) {
+      text = window.translations[text.trim().toLocaleLowerCase()]
     } else {
       axios.post(route(
         'api.translation.register', window.locale

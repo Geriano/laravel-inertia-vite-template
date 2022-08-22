@@ -93,9 +93,10 @@ class TranslationController extends Controller
     app()->setLocale($locale);
 
     $all = $this->all();
+    $key = mb_strtolower($request->text);
 
-    if (!array_key_exists($request->text, $all)) {
-      $all[$request->text] = $request->text;
+    if (!array_key_exists($key, $all)) {
+      $all[$key] = $request->text;
     }
 
     return File::put($this->path(), json_encode(
