@@ -8,6 +8,8 @@ const { menu, childs } = defineProps({
   padding: Number,
 })
 
+const counter = ref(0)
+const element = ref(null)
 const trace = menu => {
   if (menu.childs?.length) {
     for (const child of menu.childs) {
@@ -23,6 +25,34 @@ const trace = menu => {
 const active = childs.find(trace)
 const self = getCurrentInstance()
 const open = ref(active ? true : false)
+const fetch = async () => {
+  try {
+    const { data } = await axios.get(route(`superuser.menu.counter`, menu.id))
+    counter.value = data.count
+  } catch (e) {
+    element.value.innerHTML = `<i class="fa fa-times"></i>`
+  }
+}
+
+const resize = () => {
+  if (!element.value) {
+    return
+  }
+
+  const width = element.value.clientWidth
+  const height = element.value.clientHeight
+
+  if (width != height) {
+    const max = Math.max(width, height)
+    element.value.style.width = `${max}px`
+    element.value.style.height = `${max}px`
+  }
+}
+
+onMounted(resize)
+onMounted(fetch)
+onUpdated(resize)
+onUpdated(fetch)
 </script>
 
 <style scoped>
@@ -51,7 +81,15 @@ const open = ref(active ? true : false)
       <div class="flex items-center space-x-2">
         <Icon :name="menu.icon" />
         <p class="uppercase font-semibold w-full text-left">{{ __(menu.name) }}</p>
-        <Icon name="caret-left" class="transition-all ease-in-out duration-150" :class="open && '-rotate-90'" />
+
+        <div class="flex items-center space-x-2">
+          <div v-if="counter > 0" ref="element" class="flex items-center justify-center bg-red-500 text-white text-center rounded-full p-1">
+            <p class="text-xs">
+              {{ counter }}
+            </p>
+          </div>
+          <Icon name="caret-left" class="transition-all ease-in-out duration-150" :class="open && '-rotate-90'" />
+        </div>
       </div>
     </button>
 

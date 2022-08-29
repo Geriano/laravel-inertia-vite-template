@@ -22,6 +22,7 @@ const props = defineProps({
   routes: Array,
   icons: Array,
   menus: Array,
+  handlers: Array,
 })
 
 const menus = ref(props.menus || [])
@@ -31,6 +32,7 @@ const form = useForm({
   name: '',
   icon: 'circle',
   route_or_url: '',
+  counter_handler: null,
   actives: [],
   permissions: [],
 })
@@ -83,6 +85,7 @@ const edit = menu => {
   form.name = menu.name
   form.icon = menu.icon
   form.route_or_url = menu.route_or_url
+  form.counter_handler = menu.counter_handler
   form.actives = menu.actives
   form.permissions = menu.permissions.map(p => p.id)
 
@@ -232,6 +235,29 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
 
               <div class="flex flex-col space-y-1">
                 <div class="flex items-center space-x-2">
+                  <label for="counter_handler" class="lowercase first-letter:capitalize w-1/3">
+                    {{ __('counter handler') }}
+                  </label>
+
+                  <Select
+                    v-model="form.counter_handler"
+                    :options="handlers.map(handler => ({
+                      label: handler.name,
+                      value: handler.class,
+                    }))"
+                    :searchable="true"
+                    :placeholder="__('Counter Handler')"
+                    ref="counter_handler"  
+                  />
+                </div>
+
+                <InputError
+                  :error="form.errors.counter_handler"
+                />
+              </div>
+
+              <div class="flex flex-col space-y-1">
+                <div class="flex items-center space-x-2">
                   <label for="actives" class="lowercase first-letter:capitalize w-1/3">
                     {{ __('actives') }}
                   </label>
@@ -324,25 +350,23 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
     </Modal>
 
     <Modal :show="icon">
-      <Card class="bg-gray-50 dark:bg-gray-700 dark:text-gray-100 w-full max-w-xl sm:max-w-5xl max-h-96 overflow-auto">
+      <Card class="bg-gray-50 dark:bg-gray-700 dark:text-gray-100 w-full max-w-xl sm:max-w-5xl h-fit">
         <template #header>
-          <div class="flex items-center space-x-2 p-2 justify-end bg-gray-200 dark:bg-gray-800 sticky top-0 left-0">
-            <input
+          <div class="flex items-center space-x-2 p-2 justify-end bg-gray-200 dark:bg-gray-800">
+            <Input
               v-model="search"
               :placeholder="__('search something')"
               type="search"
               class="py-1 w-full bg-white dark:bg-transparent rounded-md text-sm uppercase"
-            >
-            <Icon
-              @click.prevent="icon = false"
-              name="times"
-              class="px-2 py-1 bg-gray-300 hover:bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 rounded-md transition-all cursor-pointer"
+              autofocus
             />
+            
+            <Close @click.prevent="icon = false" />
           </div>
         </template>
 
         <template #body>
-          <div class="flex-wrap p-4">
+          <div class="flex-wrap p-4 max-h-96 overflow-auto">
             <Icon
               v-for="(icx, i) in icons.filter(icx => icx.includes(search.trim().toLocaleLowerCase()))"
               :key="i"

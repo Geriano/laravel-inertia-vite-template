@@ -21,6 +21,7 @@ class Menu extends Model
         'name',
         'icon',
         'route_or_url',
+        'counter_handler',
         'position',
         'enable',
         'actives',
@@ -32,6 +33,13 @@ class Menu extends Model
      */
     protected $with = [
         'permissions',
+    ];
+
+    /**
+     * @var string[]
+     */
+    protected $appends = [
+        'counter',
     ];
 
     /**
@@ -86,6 +94,16 @@ class Menu extends Model
         return Attribute::make(
             get: fn ($value) => json_decode($value),
             set: fn ($value) => is_array($value) || $value instanceof JsonSerializable || $value instanceof stdClass ? json_encode($value) : $value,
+        );
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Casts\Attribute
+     */
+    public function counter() : Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this->counter_handler ? new $this->counter_handler : null,
         );
     }
 }

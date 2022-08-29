@@ -43,6 +43,7 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
         Route::resource('menu', App\Http\Controllers\Superuser\MenuController::class)->only([
             'index', 'store', 'update', 'destroy',
         ])->middleware(['permission:read menu']);
+        Route::get('/menu/{menu}/counter', [App\Http\Controllers\Superuser\MenuController::class, 'counter'])->name('menu.counter');
 
         Route::prefix('/translation')->name('translation.')->controller(App\Http\Controllers\TranslationController::class)->group(function () {
             Route::get('/', 'index')->name('index');
