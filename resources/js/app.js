@@ -10,57 +10,16 @@ import Themes from './themes'
 import Swal from 'sweetalert2';
 import { Inertia } from '@inertiajs/inertia';
 import axios from 'axios';
+import * as commons from './common.js'
 
 const appName = window.document.getElementsByTagName('title')[0]?.innerText || 'Laravel';
 
 const { $token } = JSON.parse(document.getElementById('app').dataset.page).props
 axios.defaults.headers.common['Authorization'] = `Bearer ${$token}`
 
-const can = (abilities) => {
-  const { $permissions } = usePage().props.value
-
-  if (Array.isArray(abilities)) {
-    for (const ability of abilities) {
-      if (can(ability)) {
-        return true
-      }
-    }
-  } else if (typeof abilities === 'string') {
-    return $permissions.find(permission => permission.name === abilities) !== undefined
-  } else if (typeof abilities === 'number') {
-    return $permissions.find(permission => permission.id === abilities) !== undefined
-  } else {
-    return false
-  }
-}
-
-window.translations = {}
-window.locale = localStorage.getItem('locale') || 'id'
-
-const translation = () => axios.get(route('api.translation.get', window.locale))
-                                .then(response => response.data)
-                                .then(response => window.translations = response)
-
-translation()
-
-window.can = can
-window.__ = (text, replacements = {}) => {
-  if (typeof text === 'string') {
-    if (window.translations.hasOwnProperty(text.trim().toLowerCase())) {
-      text = window.translations[text.trim().toLocaleLowerCase()]
-    } else {
-      axios.post(route(
-        'api.translation.register', window.locale
-      ), { text }).then(translation)
-    }
-
-    for (const key in replacements) {
-      text = text.replace(new RegExp(`:${key}`, 'g'), replacements[key])
-    }
-  }
-
-  return text
-}
+Object.keys(commons).forEach(key => Object.defineProperty(window, key, {
+  value: commons[key],
+}))
 
 createInertiaApp({
     title: (title) => `${title} - ${appName}`,
@@ -71,9 +30,8 @@ createInertiaApp({
             .use(ZiggyVue, Ziggy)
             .mixin({
                 methods: {
-                    can,
-                    __,
-                    themes: () => Themes,
+                  ...commons,
+                  themes: () => Themes,
                 },
             })
             .mount(el);
@@ -83,7 +41,7 @@ createInertiaApp({
 InertiaProgress.init({ color: '#4B5563' });
 
 window.Swal = Swal
-const Toast = Swal.mixin({
+const Toast = window.Toast = Swal.mixin({
     toast: true,
     position: 'top-end',
     showConfirmButton: false,
@@ -95,19 +53,8 @@ const Toast = Swal.mixin({
     }
 })
 
-const authorization = () => {
-  const { $token } = usePage().props.value
-
-  if ($token) {
-    axios.defaults.headers.common['Authorization'] = `Bearer ${$token}`
-  }
-}
-
-Inertia.on('start', authorization)
-Inertia.on('finish', authorization)
-
-window.Toast = Toast
-
+Inertia.on('start', commons.authorization)
+Inertia.on('finish', commons.authorization)
 Inertia.on('finish', () => {
     const { $flash } = usePage().props.value
     const { success, error, info, warning } = $flash
