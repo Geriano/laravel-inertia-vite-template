@@ -7,6 +7,8 @@ import JetFormSection from '@/Jetstream/FormSection.vue';
 import JetInput from '@/Jetstream/Input.vue';
 import JetInputError from '@/Jetstream/InputError.vue';
 import JetLabel from '@/Jetstream/Label.vue';
+import Button from '@/Jetstream/Button.vue';
+import Icon from '@/Components/Icon.vue';
 
 const passwordInput = ref(null);
 const currentPasswordInput = ref(null);
@@ -16,6 +18,12 @@ const form = useForm({
     password: '',
     password_confirmation: '',
 });
+
+const peek = ref(false);
+
+const toggle = () => {
+    peek.value = !peek.value;
+}
 
 const updatePassword = () => {
     form.put(route('user-password.update'), {
@@ -50,14 +58,24 @@ const updatePassword = () => {
         <template #form>
             <div class="col-span-6 sm:col-span-4">
                 <JetLabel for="current_password" value="Current Password" />
-                <JetInput
-                    id="current_password"
-                    ref="currentPasswordInput"
-                    v-model="form.current_password"
-                    type="password"
-                    class="mt-1 block w-full"
-                    autocomplete="current-password"
-                />
+                <div class="flex">
+                    <JetInput
+                        id="current_password"
+                        ref="currentPasswordInput"
+                        v-model="form.current_password"
+                        :type="peek ? 'text' : 'password'"
+                        class="mt-1 block w-full rounded-r-none"
+                        autocomplete="current-password"
+                    />
+                    <Button
+                        type="button"
+                        class="mt-1 block w-full rounded-l-none basis-12 bg-slate-200 outline outline-1 outline-gray-300 text-black hover:bg-slate-600 hover:text-slate-50"
+                        @click="toggle"
+                    > 
+                        <Icon v-if="peek" name="eye-slash" />
+                        <Icon v-else name="eye" />
+                    </Button>
+                </div>
                 <JetInputError :message="form.errors.current_password" class="mt-2" />
             </div>
 
@@ -67,7 +85,7 @@ const updatePassword = () => {
                     id="password"
                     ref="passwordInput"
                     v-model="form.password"
-                    type="password"
+                    :type="peek ? 'text' : 'password'"
                     class="mt-1 block w-full"
                     autocomplete="new-password"
                 />
@@ -79,7 +97,7 @@ const updatePassword = () => {
                 <JetInput
                     id="password_confirmation"
                     v-model="form.password_confirmation"
-                    type="password"
+                    :type="peek ? 'text' : 'password'"
                     class="mt-1 block w-full"
                     autocomplete="new-password"
                 />
