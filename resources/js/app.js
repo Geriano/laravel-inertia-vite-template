@@ -17,6 +17,8 @@ const appName = window.document.getElementsByTagName('title')[0]?.innerText || '
 const { $token } = JSON.parse(document.getElementById('app').dataset.page).props
 axios.defaults.headers.common['Authorization'] = `Bearer ${$token}`
 
+commons.getAllDefinedTransaction()
+
 Object.keys(commons).forEach(key => Object.defineProperty(window, key, {
   value: commons[key],
 }))
