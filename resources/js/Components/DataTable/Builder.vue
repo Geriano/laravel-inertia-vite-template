@@ -170,8 +170,15 @@ onUpdated(() => rounded())
           Displaying from {{ paginator.from }} to {{ paginator.to }} in total {{ paginator.total }}
         </p>
 
-        <div ref="links" class="w-full flex items-center justify-end overflow-auto">
-          <button v-for="(link, i) in paginator.links" :key="i" @click.prevent="goTo(link)" class="flex-none hover:bg-gray-100 dark:hover:bg-gray-600 px-2 py-1 transition-all" :class="link.active ? 'bg-gray-300 dark:bg-gray-900' : 'bg-gray-200 dark:bg-gray-800'" v-html="link.label"></button>
+        <div ref="links" class="w-full flex items-center flex-wrap justify-end">
+          <button
+            v-for="(link, i) in paginator.links"
+            :key="i"
+            @click.prevent="goTo(link)"
+            class="flex-none border border-gray-300 dark:border-gray-900 px-2 py-1 transition-all uppercase my-[1px] flex-grow text-sm"
+            :class="link.active ? 'bg-gray-300 dark:bg-gray-900' : 'bg-gray-200 dark:bg-gray-800'"
+            v-html="link.label"
+          />
         </div>
       </div>
     </Transition>
