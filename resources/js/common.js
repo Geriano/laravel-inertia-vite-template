@@ -8,7 +8,7 @@ export const getAllDefinedTransaction = () => axios.get(route('api.translation.g
                                                     .then(response => window.translations = response)
 
 export const __ = (text, replacements = {}) => {
-  if (typeof text === 'string') {
+  if (typeof text === 'string' && text.trim() !== '') {
     if (window.translations.hasOwnProperty(text.trim().toLowerCase())) {
       text = window.translations[text.trim().toLocaleLowerCase()]
     } else {
