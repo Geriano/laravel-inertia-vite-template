@@ -3,7 +3,7 @@ import { usePage } from "@inertiajs/inertia-vue3"
 window.translations = {}
 window.locale = localStorage.getItem('locale') || 'id'
 
-export const getAllDefinedTransaction = () => axios.get(route('api.translation.get', window.locale))
+export const getAllDefinedTranslation = () => axios.get(route('api.translation.get', window.locale))
                                                     .then(response => response.data)
                                                     .then(response => window.translations = response)
 
@@ -14,7 +14,7 @@ export const __ = (text, replacements = {}) => {
     } else {
       axios.post(route(
         'api.translation.register', window.locale
-      ), { text }).then(getAllDefinedTransaction)
+      ), { text }).then(getAllDefinedTranslation)
     }
 
     for (const key in replacements) {
