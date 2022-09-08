@@ -46,7 +46,7 @@ const sorted = () => Object.keys(translations).sort().map(key => ({
       </template>
 
       <template #body>
-        <div class="flex flex-col space-y-2 p-4 h-screen max-h-96 overflow-auto">
+        <div class="flex flex-col space-y-2 min-h-[30rem] p-4">
           <TransitionGroup
             enterActiveClass="transition-all duration-300"
             leaveActiveClass="transition-all duration-300"

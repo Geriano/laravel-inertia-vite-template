@@ -5,12 +5,13 @@ import Links from "./Links.vue"
 
 export default defineComponent({
   props: {
+    open: Boolean,
     menus: Array,
   },
 
   setup(props, { attrs }) {
     return props => {
-      const { menus } = props
+      const { menus, open } = props
       const padding = (menu, initial = 0) => menu && menu.parent_id !== null ? padding(menu.parent, initial + 8) : initial
 
       const generate = (menu, attrs = {}) => {
@@ -20,12 +21,13 @@ export default defineComponent({
             padding: padding(menu),
             menu,
             childs: menu.childs,
+            open,
           }, menu.childs.map(child => generate(child, {
             padding: padding(child)
           })))
         }
         
-        return h(Link, { ...attrs, padding: padding(menu), menu })
+        return h(Link, { ...attrs, padding: padding(menu), menu, open, })
       }
 
       return h('div', { class: 'flex flex-col' }, menus.map(menu => generate(menu)))

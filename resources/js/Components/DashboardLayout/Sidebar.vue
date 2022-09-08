@@ -7,7 +7,7 @@ import Icon from '@/Components/Icon.vue'
 import Swal from 'sweetalert2'
 import { Inertia } from '@inertiajs/inertia'
 
-const self = getCurrentInstance()
+const { open } = defineProps(['open'])
 const menus = ref(usePage().props.value.$menus || [])
 const { user } = usePage().props.value
 
@@ -44,7 +44,7 @@ const f = async () => {
 <template>
   <div class="flex flex-col w-full h-full bg-inherit overflow-auto">
     <transition name="op" mode="in-out">
-      <Builder v-if="menus.length" :menus="menus" />
+      <Builder v-if="menus.length" :menus="menus" :open="open" />
     </transition>
   </div>
 

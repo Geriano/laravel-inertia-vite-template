@@ -2,8 +2,9 @@
 import { getCurrentInstance, onMounted, onUpdated, ref } from 'vue'
 import Icon from '@/Components/Icon.vue'
 
-const { menu, childs } = defineProps({
+const { menu, childs, open } = defineProps({
   menu: Object,
+  open: Boolean,
   childs: Array,
   padding: Number,
 })
@@ -24,7 +25,7 @@ const trace = menu => {
 
 const active = childs.find(trace)
 const self = getCurrentInstance()
-const open = ref(active ? true : false)
+const show = ref(open ? (active ? true : false) : false)
 const fetch = async () => {
   try {
     const { data } = await axios.get(route(`superuser.menu.counter`, menu.id))
@@ -74,27 +75,31 @@ onUpdated(fetch)
 <template>
   <div class="w-full flex flex-col">
     <button
-      @click.prevent="open = ! open"
-      :class="`${themes().get('sidebar', 'bg-slate-700 text-gray-200')} ${open && 'dark:bg-gray-800'} pl-${padding !== 0 && padding}`"
+      @click.prevent="show = ! show"
+      :class="`${themes().get('sidebar', 'bg-slate-700 text-gray-200')} ${show && 'dark:bg-gray-800'} pl-${padding !== 0 && padding}`"
+      :title="menu.name"
       class="w-full p-4"
     >
-      <div class="flex items-center space-x-2">
+      <div class="flex items-center justify-center space-x-2">
         <Icon :name="menu.icon" />
-        <p class="uppercase font-semibold w-full text-left">{{ __(menu.name) }}</p>
 
-        <div class="flex items-center space-x-2">
-          <div v-if="counter > 0" ref="element" class="flex items-center justify-center bg-red-500 text-white text-center rounded-full p-1">
-            <p class="text-xs">
-              {{ counter }}
-            </p>
+        <template v-if="open">
+          <p class="uppercase font-semibold w-full text-left">{{ __(menu.name) }}</p>
+
+          <div class="flex items-center space-x-2">
+            <div v-if="counter > 0" ref="element" class="flex items-center justify-center bg-red-500 text-white text-center rounded-full p-1">
+              <p class="text-xs">
+                {{ counter }}
+              </p>
+            </div>
+            <Icon name="caret-left" class="transition-all ease-in-out duration-150" :class="show && '-rotate-90'" />
           </div>
-          <Icon name="caret-left" class="transition-all ease-in-out duration-150" :class="open && '-rotate-90'" />
-        </div>
+        </template>
       </div>
     </button>
 
     <Transition name="slide-fade" mode="in-out">
-      <div v-if="open" class="flex flex-col" ref="container">
+      <div v-if="show && open" class="flex flex-col" ref="container">
         <slot />
       </div>
     </Transition>
