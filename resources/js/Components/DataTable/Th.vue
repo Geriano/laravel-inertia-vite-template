@@ -32,7 +32,7 @@ const click = () => {
 </script>
 
 <template>
-  <th ref="th" class="relative uppercase font-semibold" :class="`${table?.config?.sticky ? 'sticky top-0 left-0 border-0' : 'border-1'} ${sort && 'cursor-pointer'} ${$props.class}`" @click.prevent="sort && table && click()">
+  <th ref="th" class="relative uppercase font-semibold bg-inherit text-inherit" :class="`${table?.config?.sticky ? 'sticky top-0 left-0 border-0' : 'border-1'} ${sort && 'cursor-pointer'} ${$props.class}`" @click.prevent="sort && table && click()">
     <div class="flex items-center justify-center space-x-2">
       <div>
         <slot />
@@ -44,6 +44,21 @@ const click = () => {
           <Icon name="caret-down" class="transition-all duration-300" :class="desc ? 'dark:text-white' : 'dark:text-gray-400'" />
         </div>
       </template>
+    </div>
+
+    <div class="absolute top-0 left-0 w-full h-full outline outline-1 outline-gray-300 dark:outline-gray-900 bg-inherit text-inherit flex items-center justify-center">
+      <div class="flex items-center justify-center space-x-2">
+        <div>
+          <slot />
+        </div>
+
+        <template v-if="table && sort">
+          <div class="flex flex-col items-center justify-center text-xs">
+            <Icon name="caret-up" class="transition-all duration-300" :class="asc ? 'dark:text-white' : 'dark:text-gray-400'" />
+            <Icon name="caret-down" class="transition-all duration-300" :class="desc ? 'dark:text-white' : 'dark:text-gray-400'" />
+          </div>
+        </template>
+      </div>
     </div>
   </th>
 </template>

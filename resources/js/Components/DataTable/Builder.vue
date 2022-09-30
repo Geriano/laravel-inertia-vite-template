@@ -2,7 +2,8 @@
 import { useForm } from '@inertiajs/inertia-vue3'
 import axios from 'axios'
 import Swal from 'sweetalert2'
-import { getCurrentInstance, onMounted, onUpdated, ref } from 'vue'
+import { getCurrentInstance, nextTick, onMounted, onUnmounted, onUpdated, ref } from 'vue'
+import { cloneDeep } from 'lodash'
 
 const self = getCurrentInstance()
 const { url, sticky } = defineProps({
@@ -13,7 +14,9 @@ const { url, sticky } = defineProps({
   },
 })
 
-const paginator = ref({})
+const paginator = ref({
+  data: [],
+})
 const processing = ref(false)
 const last = ref(null)
 const config = useForm({
@@ -33,17 +36,18 @@ const goTo = link => {
   }
   
   config.page = Number(link.url.match(/page=([\d]+)/)[1])
-  paginator.value.current_page !== config.page && fetch()
+  paginator.value.current_page !== config.page && refresh()
 }
 
-const fetch = async u => {
+const refresh = async u => {
   try {
     processing.value = true
-    const a = last.value = u || url
-    const response = await axios.post(a || last.value, config.data())
-    paginator.value = response.data
+    const prev = last.value = u || url
+    const { data } = await axios.post(prev || last.value, config.data())
+    paginator.value = data
+    self.proxy.$forceUpdate()
   } catch (e) {
-    const respose = await Swal.fire({
+    const { isConfirmed } = await Swal.fire({
       title: 'error',
       text: `${e}`,
       icon: 'error',
@@ -51,67 +55,27 @@ const fetch = async u => {
       showCloseButton: true,
     })
 
-    if (respose.isConfirmed) {
-      return fetch(last.value)
+    if (isConfirmed) {
+      return await refresh(last.value)
     }
+  } finally {
+    processing.value = false
   }
 
-  processing.value = false
 }
 
-const createFloatingTh = () => {
-  const { thead, tfoot, tbody } = self.refs
+onMounted(refresh)
 
-  if (thead) {
-    let ths = thead.querySelectorAll('th')
-    ths.forEach((th, i) => {
-      const floating = document.createElement('div')
-      floating.className = 'absolute top-0 left-0 w-full h-full border border-1 border-inherit'
-      i === 0 && floating.classList.add('rounded-tl-md')
-      i + 1 === ths.length && floating.classList.add('rounded-tr-md')
-
-      th.append(floating)
-    })
-  }
-
-  if (tfoot) {
-    let ths = tfoot.querySelectorAll('th')
-    ths.forEach((th, i) => {
-      const floating = document.createElement('div')
-      floating.className = 'absolute bottom-0 left-0 w-full h-full border border-1 border-inherit'
-      i === 0 && floating.classList.add('rounded-bl-md')
-      i + 1 === ths.length && floating.classList.add('rounded-br-md')
-
-      th.append(floating)
-    })
-  }
+const all = {
+  url,
+  config,
+  refresh,
+  paginator: paginator.value,
+  data: paginator.value.data,
+  processing: !processing.value && !paginator.value?.data?.length,
 }
 
-const inherit = () => {
-  const { thead, tfoot } = self.refs
-
-  if (thead && tfoot) {
-    thead.querySelectorAll('th').forEach(th => th.classList.add('bg-inherit', 'border-inherit'))
-    tfoot.querySelectorAll('th').forEach(th => th.classList.add('bg-inherit', 'border-inherit'))
-  }
-}
-
-const rounded = () => {
-  const { links } = self.refs
-
-  links && links.firstElementChild?.classList.add('rounded-l-md')
-  links && links.lastElementChild?.classList.add('rounded-r-md')
-}
-
-defineExpose({
-  refresh: fetch,
-})
-
-onMounted(fetch)
-onMounted(() => config.sticky && createFloatingTh())
-onMounted(() => inherit())
-onMounted(() => rounded())
-onUpdated(() => rounded())
+defineExpose(all)
 </script>
 
 <template>
@@ -125,7 +89,7 @@ onUpdated(() => rounded())
           leaveToClass="translate-y-[100%]">
           <template v-if="paginator?.total > config.per_page">
             <label for="per_page" class="w-1/4 sm:w-auto lowercase first-letter:capitalize">per page</label>
-            <select name="per_page" v-model="config.per_page" @change.prevent="fetch()" class="w-full sm:w-auto bg-transparent border dark:border-gray-600 rounded-md px-3 py-1">
+            <select name="per_page" v-model="config.per_page" @change.prevent="refresh()" class="w-full sm:w-auto bg-transparent border dark:border-gray-600 rounded-md px-3 py-1">
               <option class="dark:bg-gray-700" value="10">10</option>
               <option class="dark:bg-gray-700" value="15">15</option>
               <option class="dark:bg-gray-700" value="25">25</option>
@@ -138,7 +102,7 @@ onUpdated(() => rounded())
 
       <div class="w-full sm:max-w-sm flex items-center space-x-2 sm:justify-end">
         <label for="search" class="w-1/4 sm:w-auto lowercase first-letter:capitalize">search</label>
-        <input v-model="config.search" @input.prevent="fetch()" type="search" name="search" class="w-full bg-transparent border dark border-gray-600 rounded-md px-3 py-1 placeholder:capitalize" placeholder="search" autofocus>
+        <input v-model="config.search" @input.prevent="refresh()" type="search" name="search" class="w-full bg-transparent border dark border-gray-600 rounded-md px-3 py-1 placeholder:capitalize" placeholder="search" autofocus>
       </div>
     </div>
 
@@ -146,15 +110,15 @@ onUpdated(() => rounded())
       <div class="overflow-auto rounded-md border dark:border-gray-900 max-h-96">
         <table class="w-full border-collapse">
           <thead ref="thead" class="border-inherit z-10" :class="config.sticky && 'sticky top-0 left-0'">
-            <slot name="thead" :config="config" :paginator="paginator" :data="paginator.data" :refresh="fetch" />
+            <slot name="thead" :config="config" :paginator="paginator" :data="paginator.data" :refresh="refresh" />
           </thead>
 
           <tfoot ref="tfoot" class="border-inherit z-10" :class="config.sticky && 'sticky bottom-0 left-0'">
-            <slot name="tfoot" :config="config" :paginator="paginator" :data="paginator.data" :refresh="fetch" />
+            <slot name="tfoot" :config="config" :paginator="paginator" :data="paginator.data" :refresh="refresh" />
           </tfoot>
 
           <tbody ref="tbody" class="border-inherit">
-            <slot name="tbody" :config="config" :paginator="paginator" :data="paginator.data" :refresh="fetch" :processing="processing" :empty="!processing && !paginator?.data?.length" />
+            <slot name="tbody" :config="config" :paginator="paginator" :data="paginator.data" :processing="processing" :empty="!processing && !paginator?.data?.length" />
           </tbody>
         </table>
       </div>
@@ -176,7 +140,12 @@ onUpdated(() => rounded())
             :key="i"
             @click.prevent="goTo(link)"
             class="flex-none border border-gray-300 dark:border-gray-900 px-2 py-1 transition-all uppercase my-[1px] flex-grow text-sm"
-            :class="link.active ? 'bg-gray-300 dark:bg-gray-900' : 'bg-gray-200 dark:bg-gray-800'"
+            :class="{
+              'bg-gray-300 dark:bg-gray-900': link.active,
+              'bg-gray-200 dark:bg-gray-800': !link.active,
+              'rounded-l-md': i === 0,
+              'rounded-r-md': i + 1 === paginator.links.length,
+            }"
             v-html="link.label"
           />
         </div>

@@ -1,3 +1,15 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+table {
+  @apply border-collapse w-full;
+}
+
+thead, tfoot {
+  @apply bg-gray-200 dark:bg-gray-800 dark:text-gray-200;
+}
+
+thead tr, tfoot tr {
+  @apply bg-inherit text-inherit;
+}
