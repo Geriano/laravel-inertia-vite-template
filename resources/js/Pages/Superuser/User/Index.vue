@@ -18,6 +18,7 @@ import Input from '@/Components/Input.vue'
 import InputError from '@/Components/InputError.vue'
 
 const self = getCurrentInstance()
+const render = ref(true)
 const { permissions, roles } = defineProps({
   permissions: Array,
   roles: Array,
@@ -42,7 +43,8 @@ const show = () => open.value = true
 const close = () => {
   open.value = false
   form.reset()
-  table.value?.refresh()
+  render.value = false
+  nextTick(() => render.value = true)
 }
 
 const store = () => {
@@ -151,6 +153,7 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
       <template #body>
         <div class="flex flex-col space-y-2">
           <Builder
+            v-if="render"
             :url="route('api.v1.superuser.user.paginate')"
             ref="table"
           >

@@ -22,6 +22,8 @@ const { permissions } = defineProps({
   permissions: Array,
 })
 
+const render = ref(true)
+
 const form = useForm({
   id: null,
   name: '',
@@ -36,19 +38,21 @@ const show = () => open.value = true
 const close = () => {
   open.value = false
   form.reset()
-  table.value?.refresh()
+  render.value = false
+  nextTick(() => render.value = true)
 }
 
 const detach = async (role, permission) => {
-  const response = await Swal.fire({
+  const { isConfirmed } = await Swal.fire({
     title: __('are you sure') + '?',
     icon: 'question',
     showCloseButton: true,
     showCancelButton: true,
   })
 
-  if (!response.isConfirmed)
+  if (!isConfirmed) {
     return
+  }
 
   Inertia.on('finish', () => close())
   Inertia.patch(route('superuser.role.detach', { role: role.id, permission: permission.id }))
@@ -124,6 +128,7 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
       <template #body>
         <div class="flex flex-col space-y-2">
           <Builder
+            v-if="render"
             :url="route('api.v1.superuser.role.paginate')"
             ref="table"
           >
@@ -200,7 +205,7 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
               </tr>
             </template>
 
-            <template #tbody="{ data, processing, empty, refresh }">
+            <template #tbody="{ data, processing, empty }">
               <TransitionGroup
                 enterActiveClass="transition-all duration-200"
                 leaveActiveClass="transition-all duration-200"
@@ -220,7 +225,7 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
                 <template v-else>
                   <tr
                     v-for="(role, i) in data"
-                    :key="i"
+                    :key="role.id"
                     :class="processing && 'bg-gray-800'"
                     class="dark:hover:bg-gray-600 transition-all duration-300"
                   >
@@ -246,7 +251,7 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
 
                             <Icon
                               v-if="can('update role')"
-                              @click.prevent="detach(role, permission, refresh)"
+                              @click.prevent="detach(role, permission)"
                               name="times"
                               class="px-2 py-1 rounded-md bg-red-500 dark:bg-gray-700 transition-all hover:bg-red-600 text-white cursor-pointer"
                             />
