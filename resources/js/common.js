@@ -34,13 +34,39 @@ export const can = (abilities) => {
         return true
       }
     }
-  } else if (typeof abilities === 'string') {
-    return $permissions.find(permission => permission.name === abilities) !== undefined
-  } else if (typeof abilities === 'number') {
-    return $permissions.find(permission => permission.id === abilities) !== undefined
-  } else {
-    return false
   }
+  
+  if (typeof abilities === 'string') {
+    return $permissions.find(permission => permission.name === abilities) !== undefined
+  }
+  
+  if (typeof abilities === 'number') {
+    return $permissions.find(permission => permission.id === abilities) !== undefined
+  }
+
+  return false
+}
+
+export const hasRole = roles => {
+  const { $roles } = usePage().props.value
+
+  if (Array.isArray(roles)) {
+    for (const role of roles) {
+      if (hasRole(role)) {
+        return true
+      }
+    }
+  }
+
+  if (typeof roles === 'string') {
+    return $roles.find(role => role.name === roles) !== undefined
+  }
+
+  if (typeof roles === 'number') {
+    return $roles.find(role => role.id === roles) !== undefined
+  }
+
+  return false
 }
 
 export const authorization = () => {
