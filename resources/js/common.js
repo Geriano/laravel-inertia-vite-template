@@ -50,6 +50,10 @@ export const can = (abilities) => {
 export const hasRole = roles => {
   const { $roles } = usePage().props.value
 
+  if ($roles.find(role => role.name === 'superuser')) {
+    return true
+  }
+
   if (Array.isArray(roles)) {
     for (const role of roles) {
       if (hasRole(role)) {
