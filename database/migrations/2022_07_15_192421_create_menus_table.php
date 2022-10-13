@@ -27,7 +27,7 @@ return new class extends Migration
             $table->unsignedTinyInteger('position');
             $table->boolean('enable')->default(true);
             $table->boolean('deleteable')->default(true);
-            $table->json('actives')->default('[]');
+            $table->longText('actives')->default('[]');
             $table->timestamps();
 
             $table->foreign('parent_id')
