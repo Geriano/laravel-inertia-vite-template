@@ -28,6 +28,10 @@ export const __ = (text, replacements = {}) => {
 export const can = (abilities) => {
   const { $permissions } = usePage().props.value
 
+  if (hasRole(['superuser'])) {
+    return true
+  }
+
   if (Array.isArray(abilities)) {
     for (const ability of abilities) {
       if (can(ability)) {
