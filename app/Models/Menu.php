@@ -106,4 +106,19 @@ class Menu extends Model
             get: fn () => $this->counter_handler ? new $this->counter_handler : null,
         );
     }
+
+    /**
+     * @inheritdoc
+     */
+    public static function boot()
+    {
+        parent::boot();
+        static::bootTraits();
+
+        static::creating(function (Menu $menu) {
+            if (empty($menu->actives)) {
+                $menu->actives = [];
+            }
+        });
+    }
 }
