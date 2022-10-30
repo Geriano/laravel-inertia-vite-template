@@ -13,6 +13,12 @@ class Permission extends Model
   {
     parent::boot();
 
+    static::creating(function (Permission $permission) {
+      if (!$permission->guard_name) {
+        $permission->guard_name = 'web';
+      }
+    });
+
     static::created(function (Permission $permission) {
       if ($role = Role::where('name', 'superuser')->first()) {
         $role->permissions()->attach([$permission->id]);
