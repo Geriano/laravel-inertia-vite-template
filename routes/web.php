@@ -51,5 +51,13 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
         });
         
         Route::get('/activity/login', [App\Http\Controllers\ActivityController::class, 'login'])->name('activity.login');
+
+        Route::get('/user/{user}/menu', fn (App\Models\User $user) => $user->menus())->name('user.menu');
+        Route::get('/permission/get', [App\Http\Controllers\Superuser\PermissionController::class, 'get'])->name('permission');
+        Route::get('/role/get', [App\Http\Controllers\Superuser\RoleController::class, 'get'])->name('role');
+        Route::post('/role/paginate', [App\Http\Controllers\Superuser\RoleController::class, 'paginate'])->name('role.paginate');
+        Route::post('/user/paginate', [App\Http\Controllers\Superuser\UserController::class, 'paginate'])->name('user.paginate');
+        Route::post('/activity/login', [App\Http\Controllers\ActivityController::class, 'logins'])->name('activity.login');
+        Route::get('/menu/get', [App\Http\Controllers\Superuser\MenuController::class, 'get'])->name('menu');
     });
 });

@@ -39,7 +39,7 @@ const form = useForm({
 
 const fetch = async () => {
   try {
-    const response = await axios.get(route('api.v1.superuser.menu'))
+    const response = await axios.get(route('superuser.menu'))
     menus.value = response.data
   } catch (e) {
     const response = await Swal.fire({

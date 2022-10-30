@@ -26,7 +26,7 @@ const form = useForm({
 
 const fetch = async () => {
   try {
-    const response = await axios.get(route('api.v1.superuser.permission'))
+    const response = await axios.get(route('superuser.permission'))
     permissions.value = response.data
   } catch (e) {
     const response = await Swal.fire({

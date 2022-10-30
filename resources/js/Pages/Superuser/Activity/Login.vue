@@ -21,7 +21,7 @@ import Th from '@/Components/DataTable/Th.vue';
 
       <template #body>
         <Builder
-          :url="route('api.v1.superuser.activity.login')"
+          :url="route('superuser.activity.login')"
         >
           <template #thead="table">
             <tr class="bg-gray-200 dark:bg-gray-800 border-gray-300 dark:border-gray-900">

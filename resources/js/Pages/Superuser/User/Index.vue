@@ -154,7 +154,7 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
         <div class="flex flex-col space-y-2">
           <Builder
             v-if="render"
-            :url="route('api.v1.superuser.user.paginate')"
+            :url="route('superuser.user.paginate')"
             ref="table"
           >
             <template #thead="table">
@@ -376,10 +376,10 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
                         <div
                           v-for="(permission, j) in user.permissions"
                           :key="j"
-                          class="inline-block bg-gray-600 rounded-md px-3 py-1 m-[1px] text-sm"
+                          class="inline-block bg-gray-200 dark:bg-gray-800 rounded-md px-3 py-1 m-[1px] text-sm"
                         >
                           <div class="flex items-center justify-between space-x-1">
-                            <p class="uppercase font-semibold">
+                            <p class="uppercase font-semibold whitespace-nowrap">
                               {{ __(permission.name) }}
                             </p>
 
@@ -515,7 +515,7 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
               <div class="flex flex-col space-y-2">
                 <div class="flex items-center space-x-2">
                   <label for="email" class="w-1/3 lowercase first-letter:capitalize">
-                    {{ __('name') }}
+                    {{ __('email') }}
                   </label>
 
                   <Input

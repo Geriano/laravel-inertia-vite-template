@@ -14,19 +14,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::prefix('/v1')->name('api.v1.')->middleware(['auth:sanctum'])->group(function () {
-    Route::get('/user/{user}/menu', fn (App\Models\User $user) => $user->menus())->name('user.menu');
-
-    Route::name('superuser.')->group(function () {
-        Route::get('/superuser/permission', [App\Http\Controllers\Superuser\PermissionController::class, 'get'])->name('permission');
-        Route::get('/superuser/role', [App\Http\Controllers\Superuser\RoleController::class, 'get'])->name('role');
-        Route::post('/superuser/role/paginate', [App\Http\Controllers\Superuser\RoleController::class, 'paginate'])->name('role.paginate');
-        Route::post('/superuser/user/paginate', [App\Http\Controllers\Superuser\UserController::class, 'paginate'])->name('user.paginate');
-        Route::post('/superuser/activity/login', [App\Http\Controllers\ActivityController::class, 'logins'])->name('activity.login');
-        Route::get('/superuser/menu', [App\Http\Controllers\Superuser\MenuController::class, 'get'])->name('menu');
-    });
-
-    Route::get('/user', fn () => request()->user());
+Route::prefix('/v1')->name('api.')->middleware(['auth:sanctum'])->group(function () {
+    Route::get('/user', fn () => request()->user())->name('user');
 });
 
 Route::prefix('/translation/{locale?}')->name('api.translation.')->controller(App\Http\Controllers\TranslationController::class)->group(function () {

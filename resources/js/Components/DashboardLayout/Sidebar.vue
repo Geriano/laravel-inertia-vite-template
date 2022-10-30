@@ -13,7 +13,7 @@ const { user } = usePage().props.value
 
 const f = async () => {
   try {
-    const response = await axios.get(route('api.v1.user.menu', user.id))
+    const response = await axios.get(route('user.menu', user.id))
 
     menus.value = response.data
   } catch (e) {

@@ -129,7 +129,7 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
         <div class="flex flex-col space-y-2">
           <Builder
             v-if="render"
-            :url="route('api.v1.superuser.role.paginate')"
+            :url="route('superuser.role.paginate')"
             ref="table"
           >
             <template #thead="table">
