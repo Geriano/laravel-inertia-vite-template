@@ -146,7 +146,7 @@ defineExpose(all)
               'rounded-l-md': i === 0,
               'rounded-r-md': i + 1 === paginator.links.length,
             }"
-            v-html="link.label"
+            v-html="link.label === 'pagination.next' ? `&gt;` : (link.label === 'pagination.previous' ? '&lt;' : link.label)"
           />
         </div>
       </div>
