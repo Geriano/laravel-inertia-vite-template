@@ -27,6 +27,9 @@ const active = childs.find(trace)
 const self = getCurrentInstance()
 const show = ref(open ? (active ? true : false) : false)
 const fetch = async () => {
+  if (!menu.counter_handler) {
+    return
+  }
   try {
     const { data } = await axios.get(route(`superuser.menu.counter`, menu.id))
     counter.value = data.count
