@@ -34,7 +34,8 @@ const form = useForm({
   route_or_url: '',
   counter_handler: null,
   actives: [],
-  permissions: [],
+  permissions_handler: [],
+
 })
 
 const fetch = async () => {
@@ -87,7 +88,7 @@ const edit = menu => {
   form.route_or_url = menu.route_or_url
   form.counter_handler = menu.counter_handler
   form.actives = menu.actives
-  form.permissions = menu.permissions.map(p => p.id)
+  form.permissions_handler = menu.permissions_handler.map(p => p.id)
 
   nextTick(show)
 }
@@ -146,16 +147,11 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
 <style src="@/multiselect.css"></style>
 
 <template>
-  <DashboardLayout
-    :title="__('menu')"
-  >
+  <DashboardLayout :title="__('menu')">
     <Card class="bg-gray-50 dark:bg-gray-700 dark:text-gray-100">
       <template #header>
         <div class="flex items-center space-x-2 p-2 bg-gray-200 dark:bg-gray-800">
-          <ButtonGreen
-            v-if="can('create menu')"
-            @click.prevent="form.id = null; show()"
-          >
+          <ButtonGreen v-if="can('create menu')" @click.prevent="form.id = null; show()">
             <Icon name="plus" />
             <p class="uppercase font-semibold">
               {{ __('create') }}
@@ -166,21 +162,13 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
 
       <template #body>
         <div class="flex flex-col space-y-1 p-2">
-          <Nested
-            :menus="menus"
-            :edit="edit"
-            :destroy="destroy"
-            :save="save"
-          />
+          <Nested :menus="menus" :edit="edit" :destroy="destroy" :save="save" />
         </div>
       </template>
     </Card>
 
     <Modal :show="open">
-      <form
-        @submit.prevent="submit"
-        class="w-full max-w-xl sm:max-w-5xl h-fit rounded-md shadow-xl"
-      >
+      <form @submit.prevent="submit" class="w-full max-w-xl sm:max-w-5xl h-fit rounded-md shadow-xl">
         <Card class="bg-gray-50 dark:bg-gray-700 dark:text-gray-100">
           <template #header>
             <div class="flex items-center space-x-2 p-2 justify-end bg-gray-200 dark:bg-gray-800">
@@ -196,19 +184,10 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
                     {{ __('name') }}
                   </label>
 
-                  <Input
-                    v-model="form.name"
-                    :placeholder="__('name')"
-                    type="text"
-                    name="name"
-                    required
-                    autofocus
-                  />
+                  <Input v-model="form.name" :placeholder="__('name')" type="text" name="name" required autofocus />
                 </div>
 
-                <InputError
-                  :error="form.errors.name"
-                />
+                <InputError :error="form.errors.name" />
               </div>
 
               <div class="flex flex-col space-y-1">
@@ -217,20 +196,11 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
                     {{ __('route name or url') }}
                   </label>
 
-                  <Select
-                    v-model="form.route_or_url"
-                    :options="routes"
-                    :searchable="true"
-                    :createOption="true"
-                    :value="form.route_or_url"
-                    :placeholder="__('route name or url')"
-                    ref="route_or_url"  
-                  />
+                  <Select v-model="form.route_or_url" :options="routes" :searchable="true" :createOption="true"
+                    :value="form.route_or_url" :placeholder="__('route name or url')" ref="route_or_url" />
                 </div>
 
-                <InputError
-                  :error="form.errors.route_or_url"
-                />
+                <InputError :error="form.errors.route_or_url" />
               </div>
 
               <div class="flex flex-col space-y-1">
@@ -239,21 +209,13 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
                     {{ __('counter handler') }}
                   </label>
 
-                  <Select
-                    v-model="form.counter_handler"
-                    :options="handlers.map(handler => ({
-                      label: handler.name,
-                      value: handler.class,
-                    }))"
-                    :searchable="true"
-                    :placeholder="__('Counter Handler')"
-                    ref="counter_handler"  
-                  />
+                  <Select v-model="form.counter_handler" :options="handlers.map(handler => ({
+                    label: handler.name,
+                    value: handler.class,
+                  }))" :searchable="true" :placeholder="__('Counter Handler')" ref="counter_handler" />
                 </div>
 
-                <InputError
-                  :error="form.errors.counter_handler"
-                />
+                <InputError :error="form.errors.counter_handler" />
               </div>
 
               <div class="flex flex-col space-y-1">
@@ -262,17 +224,10 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
                     {{ __('actives') }}
                   </label>
 
-                  <Select
-                    v-model="form.actives"
-                    :options="[...routes, ...form.actives.filter(active => ! routes.includes(active))]"
-                    :searchable="true"
-                    :closeOnSelect="false"
-                    :clearOnSelect="false"
-                    :createTag="true"
-                    :placeholder="__('actives')"
-                    ref="actives"
-                    mode="tags"
-                  />
+                  <Select v-model="form.actives"
+                    :options="[...routes, ...form.actives.filter(active => !routes.includes(active))]" :searchable="true"
+                    :closeOnSelect="false" :clearOnSelect="false" :createTag="true" :placeholder="__('actives')"
+                    ref="actives" mode="tags" />
                 </div>
 
                 <InputError :error="form.errors.actives" />
@@ -284,24 +239,16 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
                     {{ __('permissions') }}
                   </label>
 
-                  <Select
-                    v-model="form.permissions"
-                    :options="permissions.map(p => ({
-                      label: __(p.name),
-                      value: p.id,
-                    }))"
-                    :searchable="true"
-                    :closeOnSelect="false"
-                    :clearOnSelect="false"
-                    :placeholder="__('permissions')"
-                    ref="permissions"
-                    mode="tags"
-                  />
+                  <Select v-model="form.permissions_handler" :options="permissions.map(p => ({
+                    label: __(p.name),
+                    value: p.id,
+                  }))" :searchable="true" :closeOnSelect="false" :clearOnSelect="false"
+                    :placeholder="__('permissions')" ref="permissions_handler" mode="tags" />
+
+
                 </div>
 
-                <InputError
-                  :error="form.errors.permissions"
-                />
+                <InputError :error="form.errors.permissions_handler" />
               </div>
 
               <div class="flex items-center space-x-2">
@@ -311,20 +258,14 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
 
                 <div class="flex items-center justify-between w-full">
                   <p class="text-3xl">
-                    <Icon
-                      :name="form.icon"
-                      class="dark:text-white"
-                    />
+                    <Icon :name="form.icon" class="dark:text-white" />
                   </p>
 
                   <p class="text-sm uppercase">
                     {{ form.icon }}
                   </p>
-                  
-                  <ButtonBlue
-                    @click.prevent="icon = true"
-                    type="button"
-                  >
+
+                  <ButtonBlue @click.prevent="icon = true" type="button">
                     <Icon name="edit" />
                     <p class="uppercase font-semibold">
                       {{ __('change') }}
@@ -353,27 +294,18 @@ onUnmounted(() => window.removeEventListener('keydown', esc))
       <Card class="bg-gray-50 dark:bg-gray-700 dark:text-gray-100 w-full max-w-xl sm:max-w-5xl h-fit">
         <template #header>
           <div class="flex items-center space-x-2 p-2 justify-end bg-gray-200 dark:bg-gray-800">
-            <Input
-              v-model="search"
-              :placeholder="__('search something')"
-              type="search"
-              class="py-1 w-full bg-white dark:bg-transparent rounded-md text-sm uppercase"
-              autofocus
-            />
-            
+            <Input v-model="search" :placeholder="__('search something')" type="search"
+              class="py-1 w-full bg-white dark:bg-transparent rounded-md text-sm uppercase" autofocus />
+
             <Close @click.prevent="icon = false" />
           </div>
         </template>
 
         <template #body>
           <div class="flex-wrap p-4 max-h-96 overflow-auto">
-            <Icon
-              v-for="(icx, i) in icons.filter(icx => icx.includes(search.trim().toLocaleLowerCase()))"
-              :key="i"
-              @click.prevent="form.icon = icx; icon = false"
-              :name="icx"
-              class="m-1 text-5xl px-2 py-1 text-gray-800 bg-gray-200 hover:bg-gray-100 dark:text-white dark:bg-gray-600 dark:hover:bg-gray-700 rounded-md cursor-pointer transition-all"
-            />
+            <Icon v-for="(icx, i) in icons.filter(icx => icx.includes(search.trim().toLocaleLowerCase()))" :key="i"
+              @click.prevent="form.icon = icx; icon = false" :name="icx"
+              class="m-1 text-5xl px-2 py-1 text-gray-800 bg-gray-200 hover:bg-gray-100 dark:text-white dark:bg-gray-600 dark:hover:bg-gray-700 rounded-md cursor-pointer transition-all" />
           </div>
         </template>
       </Card>
